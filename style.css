@@ -83,3 +83,581 @@ h2 {
     margin:0;
     font-size:32px;
 }
+/* ==========================================
+   ECRÃ PRINCIPAL DA AVENTURA
+   ========================================== */
+
+.escondido {
+    display: none;
+}
+
+
+/* Área de boas-vindas */
+
+.boas-vindas {
+    text-align: center;
+    margin-top: 30px;
+}
+
+
+.avatar-grande {
+    width: 120px;
+    height: 120px;
+}
+
+
+/* Painel */
+
+.painel {
+    background: #f5f5f5;
+    border-radius: 18px;
+    padding: 25px;
+    margin: 30px 0;
+    text-align: center;
+}
+
+
+.painel h3 {
+    font-size: 22px;
+    margin-top: 0;
+}
+
+
+.painel p {
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+
+/* Botão principal */
+
+.botao-principal {
+    width: 100%;
+    padding: 18px;
+
+    border: none;
+    border-radius: 30px;
+
+    background: #2e9f3f;
+    color: white;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.botao-reset-teste {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 72px;
+    height: auto;
+    padding: 12px;
+    font-size: 16px;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+}
+
+.regras-terceiraquest {
+    margin: 16px 0 0;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.regras-terceiraquest li {
+    margin: 8px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.copyright-terceiraquest {
+    display: block;
+    margin: 22px 0 4px;
+    color: #777;
+    font-size: 11px;
+    text-align: center;
+}
+/* Botão voltar */
+
+.botao-voltar {
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 5px;
+    float: left;
+}
+/* ==========================================
+   ECRÃ PRINCIPAL — TERCEIRA QUEST
+   ========================================== */
+
+#ecran-principal {
+    text-align: left;
+}
+
+
+/* TOPO */
+
+.topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.topo .botao-voltar {
+    float: none;
+    font-size: 28px;
+    margin-right: 8px;
+}
+
+.perfil {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.avatar-pequeno {
+    width: 55px;
+    height: 55px;
+}
+
+.saudacao {
+    margin: 0;
+    font-size: 14px;
+}
+
+.perfil h2 {
+    margin: 2px 0 0;
+    font-size: 22px;
+}
+
+.sino {
+    font-size: 22px;
+}
+
+
+/* ESTATÍSTICAS */
+
+.estatisticas {
+    display: flex;
+    background: white;
+    border-radius: 18px;
+    padding: 15px 5px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.estatistica {
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid #eeeeee;
+}
+
+.estatistica:last-child {
+    border-right: none;
+}
+
+.estatistica span {
+    font-size: 17px;
+}
+
+.estatistica strong {
+    display: block;
+    font-size: 20px;
+}
+
+.estatistica small {
+    font-size: 12px;
+}
+
+
+/* PROGRESSO */
+
+.progresso {
+    margin-bottom: 25px;
+}
+
+.progresso-titulo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.barra {
+    height: 12px;
+    background: #e7e7e7;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.barra-preenchida {
+    width: 0%;
+    height: 100%;
+    background: #36a83e;
+    border-radius: 10px;
+}
+
+
+/* TÍTULOS */
+
+.titulo-seccao {
+    font-size: 18px;
+    margin: 20px 0 10px;
+}
+
+
+/* MISSÃO */
+
+.missao-destaque {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.icone-missao {
+    height: 90px;
+    background: #dceff5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 55px;
+}
+
+.missao-conteudo {
+    padding: 15px;
+}
+
+.missao-conteudo h3 {
+    margin: 0 0 8px;
+    font-size: 19px;
+}
+
+.missao-conteudo p {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.missao-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.missao-rodape span {
+    font-weight: bold;
+}
+
+.missao-rodape button {
+    background: #36a83e;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 22px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+/* ATALHOS */
+
+.atalhos {
+    display: flex;
+    gap: 10px;
+}
+
+.atalhos button {
+    flex: 1;
+    height: 75px;
+    border: none;
+    border-radius: 15px;
+    background: #f2f2f2;
+    cursor: pointer;
+}
+
+.atalhos span {
+    display: block;
+    font-size: 25px;
+}
+
+.atalhos small {
+    font-size: 12px;
+}
+
+
+/* NAVEGAÇÃO INFERIOR */
+
+.navegacao {
+    display: flex;
+    margin: 30px -20px -20px;
+    padding: 10px 5px;
+    background: #123b50;
+    border-radius: 0 0 18px 18px;
+}
+
+.navegacao button {
+    flex: 1;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.navegacao small {
+    display: block;
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.ecran-area {
+    text-align: left;
+}
+
+.cabecalho-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.cabecalho-area button {
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 5px;
+    background: none;
+    font-size: 28px;
+}
+
+.cabecalho-area h2 {
+    margin: 0;
+}
+
+/* DESAFIOS DE FÉRIAS */
+
+.resumo-desafios-ferias {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.estado-desafio {
+    display: block;
+    margin-top: 12px;
+    color: #666;
+}
+
+.estado-desafio.concluido {
+    color: #2e9f3f;
+}
+
+#conteudo-desafios-ferias .painel {
+    margin: 15px 0;
+}
+
+#conteudo-desafios-ferias .painel .botao-principal {
+    margin: 12px 0 0;
+    white-space: nowrap;
+}
+
+.botao-secundario {
+    width: auto;
+    height: auto;
+    margin: 10px 0 0;
+    padding: 0;
+    background: none;
+    color: #666;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.controlos-fotografia {
+    margin-top: 10px;
+}
+
+.indicador-fotografias {
+    display: block;
+    margin-bottom: 4px;
+    color: #666;
+    font-size: 12px;
+}
+
+.controlos-fotografia .botao-secundario {
+    margin-right: 12px;
+}
+
+/* Botões dos cartões de desafios locais. */
+#conteudo-mapa .botao-desafio-local {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 50px;
+    margin: 12px 0 0;
+    padding: 12px 14px;
+    white-space: nowrap;
+    font-size: 16px;
+}
+
+#conteudo-mapa .botao-desafio-local + .botao-secundario {
+    white-space: nowrap;
+}
+
+.conquista-desbloqueada {
+    background: #e7f6e9;
+    border: 2px solid #6fbe78;
+}
+
+/* PARA HOJE */
+
+.lista-para-hoje {
+    display: block;
+}
+
+.atividade-para-hoje {
+    padding: 14px 15px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.atividade-para-hoje:last-child {
+    border-bottom: none;
+}
+
+.tipo-atividade-hoje {
+    display: block;
+    color: #666;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.atividade-para-hoje h3 {
+    margin: 5px 0;
+    font-size: 17px;
+}
+
+.atividade-para-hoje span {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.atividade-para-hoje .botao-principal {
+    width: auto;
+    height: auto;
+    margin: 10px 0 0;
+    padding: 8px 14px;
+    font-size: 12px;
+}
+
+/* ÁLBUM DE FOTOGRAFIAS */
+
+.grelha-album {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.item-album {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #f5f5f5;
+    color: #444;
+    text-align: left;
+}
+
+.item-album img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.item-album strong,
+.item-album small {
+    display: block;
+    padding: 0 10px;
+}
+
+.item-album strong {
+    margin-top: 9px;
+    font-size: 13px;
+}
+
+.item-album small {
+    margin: 5px 0 10px;
+    font-size: 11px;
+}
+
+.fotografia-ampliada {
+    display: block;
+    width: 100%;
+    max-height: 420px;
+    margin-bottom: 15px;
+    border-radius: 16px;
+    object-fit: contain;
+    background: #f5f5f5;
+}
+/* IMAGEM DAS MISSÕES */
+/* IMAGENS DAS MISSÕES */
+
+.missao-imagem {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+    margin: 0 0 20px 0;
+    padding: 0;
+    background: #e8e8e8;
+}
+
+.missao-imagem img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 1;
+    visibility: visible;
+}
+/* =====================================================
+   FOTOGRAFIA DA MISSÃO DO DIA
+   ===================================================== */
+
+.missao-destaque {
+    overflow: hidden;
+}
+
+.icone-missao {
+    width: 100%;
+    height: 105px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+}
+
+.icone-missao img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Conteúdo da missão fica novamente sobre fundo branco */
+.missao-conteudo {
+    background: white;
+    position: relative;
+    z-index: 2;
+}
