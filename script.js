@@ -2655,3 +2655,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     atualizarEstadoJogo();
 });
+
+if ("serviceWorker" in navigator && window.isSecureContext) {
+    window.addEventListener("load", function() {
+        navigator.serviceWorker.register("./service-worker.js", {
+            scope: "./",
+            updateViaCache: "none"
+        }).catch(function(erro) {
+            console.warn("Não foi possível ativar o funcionamento offline.", erro);
+        });
+    });
+}
