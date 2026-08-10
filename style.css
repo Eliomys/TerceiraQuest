@@ -510,6 +510,53 @@ h2 {
     text-decoration: underline;
 }
 
+/* Componente funcional mínimo; a revisão visual global será feita separadamente. */
+.temporizador {
+    margin: 16px 0;
+    padding: 12px;
+    border: 1px solid #d8d8d8;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.temporizador-valor {
+    display: block;
+    font-size: 28px;
+    font-variant-numeric: tabular-nums;
+}
+
+.temporizador-controlos {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.botao-temporizador {
+    min-height: 40px;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 20px;
+    background: #2e9f3f;
+    color: white;
+    font-weight: bold;
+}
+
+.botao-temporizador-secundario {
+    background: #666;
+}
+
+.temporizador-terminado {
+    border-color: #d59b18;
+    background: #fff8e5;
+}
+
+.temporizador-aviso {
+    display: block;
+    margin-top: 4px;
+    color: #71520d;
+}
+
 .controlos-fotografia {
     margin-top: 10px;
 }

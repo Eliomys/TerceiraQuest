@@ -4,6 +4,7 @@
 
 const CHAVE_ESTADO_FAMILIA = "terceiraQuestEstadoFamilia";
 const CHAVE_JOGADOR_ATUAL = "terceiraQuestJogadorAtual";
+const CHAVE_TEMPORIZADORES = "terceiraQuestTemporizadores";
 const MISSOES_DIARIAS_POR_DIA = 3;
 const XP_DESAFIO_DIARIO = 30;
 const XP_DESAFIO_FERIAS = 20;
@@ -1014,6 +1015,8 @@ function renderDesafiosFerias(estado) {
             });
         }
 
+        const temporizador = criarComponenteTemporizador(desafio);
+        if (temporizador) cartao.appendChild(temporizador);
         cartao.appendChild(botao);
 
         const podeAnular = desafio.objetivo ? progresso.atual > 0 : concluido;
@@ -1062,6 +1065,7 @@ function renderDesafiosDiarios(estado) {
 
             botao.className = "botao-principal";
             botao.textContent = concluida ? "VER DESAFIO" : "ABRIR DESAFIO";
+            configurarBotaoCartaoTemporizado(missao, botao, concluida);
             botao.addEventListener("click", function() {
                 abrirMissao(missao.id);
             });
@@ -1125,6 +1129,7 @@ function renderJogos(estado) {
     const botao = document.createElement("button");
     botao.className = "botao-principal";
     botao.textContent = concluido ? "✓ JOGO CONCLUÍDO" : "ABRIR JOGO";
+    configurarBotaoCartaoTemporizado(jogo, botao, concluido);
     botao.disabled = concluido;
     botao.addEventListener("click", function() {
         abrirJogo(jogo.id, "jogos");
@@ -1181,6 +1186,8 @@ function renderJogoAberto() {
 
     const detalhe = jogo.duracao ? `${jogo.duracao} · ⭐ ${jogo.xp} XP` : `⭐ ${jogo.xp} XP`;
     const cartao = criarCartaoArea(`🎲 ${jogo.titulo}`, jogo.regras, detalhe);
+    const temporizador = criarComponenteTemporizador(jogo);
+    if (temporizador) cartao.appendChild(temporizador);
     const botao = document.createElement("button");
     botao.className = "botao-principal";
     botao.textContent = concluido ? "✓ JOGO CONCLUÍDO" : "CONCLUIR JOGO";
@@ -1308,6 +1315,8 @@ function renderDesafiosDoLocal(conteudo, local) {
             desafio.descricao,
             concluido ? "Concluído" : `⭐ ${desafio.xp} XP`
         );
+        const temporizador = criarComponenteTemporizador(desafio);
+        if (temporizador) cartao.appendChild(temporizador);
         const botao = document.createElement("button");
         botao.className = "botao-principal botao-desafio-local";
         botao.textContent = concluido ? "✓ CONCLUÍDO" : "MARCAR COMO CONCLUÍDO";
@@ -2254,6 +2263,14 @@ function preencherEcraMissao(missao, estadoMissao) {
     const botaoTirarFoto = document.getElementById("botao-tirar-foto-missao");
     const botaoEscolherFoto = document.getElementById("botao-escolher-foto-missao");
 
+    const temporizadorAnterior = document.getElementById("temporizador-missao");
+    if (temporizadorAnterior) temporizadorAnterior.remove();
+    const temporizador = criarComponenteTemporizador(missao);
+    if (temporizador && botao && botao.parentNode) {
+        temporizador.id = "temporizador-missao";
+        botao.parentNode.insertBefore(temporizador, botao);
+    }
+
     const areaImagem = imagem ? imagem.closest(".missao-imagem") : null;
     if (imagem && missao.imagem) {
         imagem.src = missao.imagem;
@@ -2346,6 +2363,7 @@ function renderMissaoDestaque(estado, data) {
         botao.textContent = concluida
             ? atividade.tipo === "missao" ? "VER DESAFIO" : "✓ CONCLUÍDO"
             : atividade.tipo === "jogo" ? "ABRIR JOGO" : "COMEÇAR";
+        configurarBotaoCartaoTemporizado(atividade, botao, concluida);
         botao.disabled = concluida && atividade.tipo === "jogo";
         botao.addEventListener("click", function() {
             if (atividade.tipo === "missao") {
@@ -2524,6 +2542,33 @@ catalogo.desafiosLocais = Object.keys(desafiosPorLocal).flatMap(function(localId
     return desafiosPorLocal[localId].map(function(t) { return criarDesafioLocal(localId, t); });
 });
 
+// Apenas estas 18 atividades do catálogo atual têm uma duração objetiva.
+const duracoesTemporizadas = [
+    [desafiosPorAqui[0], 60],
+    [desafiosPorAqui[10], 120],
+    [desafiosPorAqui[14], 60],
+    [desafiosPorAqui[23], 1800],
+    [desafiosPorAqui[24], 3600],
+    [desafiosPorAqui[26], 15],
+    [desafiosPorAqui[29], 900],
+    [desafiosVamosSair[41], 120],
+    [desafiosVamosSair[43], 600],
+    [ferias[7], 1200],
+    [catalogo.desafiosLocais.find(function(item) { return item.localId === "prainha" && item.titulo === desafiosPorLocal["prainha"][3]; }), 120],
+    [catalogo.desafiosLocais.find(function(item) { return item.localId === "lagoa-das-patas" && item.titulo === desafiosPorLocal["lagoa-das-patas"][4]; }), 60],
+    [catalogo.desafiosLocais.find(function(item) { return item.localId === "lagoa-do-negro-gruta-do-natal" && item.titulo === desafiosPorLocal["lagoa-do-negro-gruta-do-natal"][3]; }), 60],
+    [catalogo.desafiosLocais.find(function(item) { return item.localId === "serreta" && item.titulo === desafiosPorLocal["serreta"][4]; }), 300],
+    [catalogo.jogos[0], 600],
+    [catalogo.jogos[1], 900],
+    [catalogo.jogos[12], 30],
+    [catalogo.jogos[18], 120]
+];
+
+duracoesTemporizadas.forEach(function(definicao) {
+    const atividade = definicao[0];
+    if (atividade) atividade.duracaoSegundos = definicao[1];
+});
+
 // Agendas anteriores continuam a conseguir abrir desafios entretanto retirados do catálogo visível.
 const obterAtividadePorIdBase = obterAtividadePorId;
 obterAtividadePorId = function(id) {
@@ -2642,6 +2687,192 @@ function renderBonus(estado) {
     if(ver){ver.classList.toggle("escondido",desafiosBonus.length<=3);ver.textContent=mostrarTodosBonus?"Mostrar menos":"Ver todos";}
 }
 function alternarTodosBonus(){mostrarTodosBonus=!mostrarTodosBonus;renderBonus(obterEstadoFamilia());}
+
+let intervaloTemporizadores = null;
+const temporizadoresAvisados = new Set();
+
+function obterDuracaoTemporizador(atividadeId) {
+    const atividade = obterAtividadesCatalogadas().find(function(item) { return item.id === atividadeId; });
+    return atividade && Number.isFinite(atividade.duracaoSegundos) ? atividade.duracaoSegundos : 0;
+}
+
+function lerTemporizadores() {
+    try {
+        const valor = JSON.parse(localStorage.getItem(CHAVE_TEMPORIZADORES) || "{}");
+        return valor && typeof valor === "object" && !Array.isArray(valor) ? valor : {};
+    } catch (erro) {
+        console.warn("Não foi possível ler os temporizadores guardados.", erro);
+        return {};
+    }
+}
+
+function guardarTemporizadores(temporizadores) {
+    try {
+        localStorage.setItem(CHAVE_TEMPORIZADORES, JSON.stringify(temporizadores));
+    } catch (erro) {
+        console.warn("Não foi possível guardar os temporizadores.", erro);
+    }
+}
+
+function obterEstadoTemporizador(atividadeId, atualizarFim) {
+    const duracao = obterDuracaoTemporizador(atividadeId);
+    if (!duracao) return null;
+    const todos = lerTemporizadores();
+    let estado = todos[atividadeId];
+    if (!estado || estado.duracaoSegundos !== duracao || !["a_correr", "pausado", "terminado"].includes(estado.estado)) {
+        return { estado: "pronto", duracaoSegundos: duracao, restanteSegundos: duracao };
+    }
+    if (estado.estado === "a_correr") {
+        const restante = Math.max(0, Math.ceil((Number(estado.fimEm) - Date.now()) / 1000));
+        if (restante === 0) {
+            estado = { estado: "terminado", duracaoSegundos: duracao, restanteSegundos: 0 };
+            if (atualizarFim) {
+                todos[atividadeId] = estado;
+                guardarTemporizadores(todos);
+            }
+        } else {
+            estado = { ...estado, restanteSegundos: restante };
+        }
+    }
+    return estado;
+}
+
+function formatarTempo(segundos) {
+    const total = Math.max(0, Math.ceil(Number(segundos) || 0));
+    return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+}
+
+function iniciarTemporizador(atividadeId) {
+    const duracao = obterDuracaoTemporizador(atividadeId);
+    if (!duracao) return;
+    temporizadoresAvisados.delete(atividadeId);
+    const todos = lerTemporizadores();
+    todos[atividadeId] = { estado: "a_correr", duracaoSegundos: duracao, fimEm: Date.now() + duracao * 1000 };
+    guardarTemporizadores(todos);
+    atualizarComponentesTemporizador();
+}
+
+function pausarTemporizador(atividadeId) {
+    const estado = obterEstadoTemporizador(atividadeId, true);
+    if (!estado || estado.estado !== "a_correr") return;
+    const todos = lerTemporizadores();
+    todos[atividadeId] = { estado: "pausado", duracaoSegundos: estado.duracaoSegundos, restanteSegundos: estado.restanteSegundos };
+    guardarTemporizadores(todos);
+    atualizarComponentesTemporizador();
+}
+
+function continuarTemporizador(atividadeId) {
+    const estado = obterEstadoTemporizador(atividadeId, true);
+    if (!estado || estado.estado !== "pausado" || estado.restanteSegundos <= 0) return;
+    const todos = lerTemporizadores();
+    todos[atividadeId] = { estado: "a_correr", duracaoSegundos: estado.duracaoSegundos, fimEm: Date.now() + estado.restanteSegundos * 1000 };
+    guardarTemporizadores(todos);
+    atualizarComponentesTemporizador();
+}
+
+function reiniciarTemporizador(atividadeId) {
+    const todos = lerTemporizadores();
+    delete todos[atividadeId];
+    temporizadoresAvisados.delete(atividadeId);
+    guardarTemporizadores(todos);
+    atualizarComponentesTemporizador();
+}
+
+function criarBotaoTemporizador(texto, acao, classe) {
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.className = classe || "botao-temporizador";
+    botao.textContent = texto;
+    botao.addEventListener("click", acao);
+    return botao;
+}
+
+function criarComponenteTemporizador(atividade) {
+    if (!atividade || !atividade.duracaoSegundos) return null;
+    const componente = document.createElement("section");
+    componente.className = "temporizador";
+    componente.dataset.temporizadorId = atividade.id;
+    componente.setAttribute("aria-label", "Temporizador da atividade");
+    atualizarComponenteTemporizador(componente);
+    garantirIntervaloTemporizadores();
+    return componente;
+}
+
+function configurarBotaoCartaoTemporizado(atividade, botao, concluida) {
+    if (!atividade || !atividade.duracaoSegundos || !botao || concluida) return;
+    botao.dataset.temporizadorCartaoId = atividade.id;
+    atualizarBotaoCartaoTemporizado(botao);
+    garantirIntervaloTemporizadores();
+}
+
+function atualizarBotaoCartaoTemporizado(botao) {
+    const estado = obterEstadoTemporizador(botao.dataset.temporizadorCartaoId, true);
+    if (!estado) return;
+    if (estado.estado === "pronto") {
+        botao.textContent = "INICIAR";
+    } else if (estado.estado === "terminado") {
+        botao.textContent = "TEMPO ATINGIDO ✓";
+    } else {
+        botao.textContent = `CONTINUAR · ${formatarTempo(estado.restanteSegundos)}`;
+    }
+}
+
+function atualizarComponenteTemporizador(componente) {
+    const atividadeId = componente.dataset.temporizadorId;
+    const estadoAnterior = componente.dataset.estadoTemporizador;
+    const estado = obterEstadoTemporizador(atividadeId, true);
+    if (!estado) return;
+    componente.textContent = "";
+    componente.classList.toggle("temporizador-terminado", estado.estado === "terminado");
+    componente.dataset.estadoTemporizador = estado.estado;
+
+    const mostrador = document.createElement("strong");
+    mostrador.className = "temporizador-valor";
+    mostrador.textContent = formatarTempo(estado.restanteSegundos);
+    mostrador.setAttribute("aria-live", estado.estado === "terminado" ? "polite" : "off");
+    componente.appendChild(mostrador);
+
+    if (estado.estado === "terminado") {
+        const aviso = document.createElement("small");
+        aviso.className = "temporizador-aviso";
+        aviso.textContent = "Tempo atingido — conclui a atividade quando estiver pronta.";
+        componente.appendChild(aviso);
+        if (estadoAnterior === "a_correr" && !temporizadoresAvisados.has(atividadeId)) {
+            temporizadoresAvisados.add(atividadeId);
+            if (navigator.vibrate) navigator.vibrate([120, 80, 120]);
+        }
+    }
+
+    const controlos = document.createElement("div");
+    controlos.className = "temporizador-controlos";
+    if (estado.estado === "pronto") {
+        controlos.appendChild(criarBotaoTemporizador("INICIAR", function() { iniciarTemporizador(atividadeId); }));
+    } else if (estado.estado === "a_correr") {
+        controlos.appendChild(criarBotaoTemporizador("PAUSAR", function() { pausarTemporizador(atividadeId); }));
+    } else if (estado.estado === "pausado") {
+        controlos.appendChild(criarBotaoTemporizador("CONTINUAR", function() { continuarTemporizador(atividadeId); }));
+    }
+    if (estado.estado !== "pronto") {
+        controlos.appendChild(criarBotaoTemporizador("REINICIAR", function() { reiniciarTemporizador(atividadeId); }, "botao-temporizador botao-temporizador-secundario"));
+    }
+    componente.appendChild(controlos);
+}
+
+function atualizarComponentesTemporizador() {
+    document.querySelectorAll("[data-temporizador-id]").forEach(atualizarComponenteTemporizador);
+    document.querySelectorAll("[data-temporizador-cartao-id]").forEach(atualizarBotaoCartaoTemporizado);
+}
+
+function garantirIntervaloTemporizadores() {
+    if (intervaloTemporizadores !== null) return;
+    intervaloTemporizadores = window.setInterval(atualizarComponentesTemporizador, 500);
+}
+
+document.addEventListener("visibilitychange", function() {
+    if (!document.hidden) atualizarComponentesTemporizador();
+});
+window.addEventListener("pageshow", atualizarComponentesTemporizador);
+
 const atualizarEstadoJogoBase = atualizarEstadoJogo;
 atualizarEstadoJogo = function() { let estado=obterEstadoFamilia(); migrarRevisaoFinal(estado); atualizarEstadoJogoBase(); estado=obterEstadoFamilia(); const data=dataLocalAtual(); renderEscolhaTipoDia(estado,data); renderBonus(estado); };
 const renderMaisBase = renderMais;
