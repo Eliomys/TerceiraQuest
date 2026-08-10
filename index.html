@@ -136,6 +136,8 @@
 
     <h3 id="titulo-seccao-missao" class="titulo-seccao">Para hoje</h3>
 
+    <div id="escolha-tipo-dia" class="escolha-tipo-dia escondido" aria-live="polite"></div>
+
     <div id="missao-destaque" class="missao-destaque">
 
         <div class="icone-missao">
@@ -179,22 +181,20 @@
             <small>Desafios de férias</small>
         </button>
 
-        <button onclick="abrirArea('ecran-desafios-diarios')">
-            <span>🎯</span>
-            <small>Desafios diários</small>
-        </button>
-
-        <button onclick="abrirArea('ecran-jogos')">
-            <span>🎲</span>
-            <small>Jogos</small>
-        </button>
-
         <button onclick="abrirArea('ecran-mapa')">
             <span>🗺️</span>
-            <small>Mapa</small>
+            <small>Lugares</small>
         </button>
 
     </div>
+
+    <section class="bonus-discretos" aria-labelledby="titulo-bonus">
+        <div class="cabecalho-bonus">
+            <h3 id="titulo-bonus" class="titulo-seccao">⭐ Se acontecer...</h3>
+            <button id="botao-ver-bonus" class="botao-link" onclick="alternarTodosBonus()">Ver todos</button>
+        </div>
+        <div id="conteudo-bonus"></div>
+    </section>
 
 
     <!-- NAVEGAÇÃO -->
@@ -307,7 +307,7 @@
 
 <div id="ecran-jogo" class="container escondido ecran-area">
     <div class="cabecalho-area">
-        <button onclick="abrirArea('ecran-jogos')">←</button>
+        <button onclick="voltarDoJogo()">←</button>
         <h2>Jogo</h2>
     </div>
     <div id="conteudo-jogo"></div>
@@ -316,7 +316,7 @@
 <div id="ecran-mapa" class="container escondido ecran-area">
     <div class="cabecalho-area">
         <button onclick="abrirInicio()">←</button>
-        <h2>Mapa</h2>
+        <h2>Lugares</h2>
     </div>
     <div id="conteudo-mapa"></div>
 </div>

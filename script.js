@@ -259,6 +259,12 @@ function adicionarFotografiaAtividade(atividadeId, origem) {
             return;
         }
 
+        const tipoFicheiro = String(ficheiro.type || "").toLowerCase();
+        if (tipoFicheiro === "image/svg+xml" || (tipoFicheiro && !tipoFicheiro.startsWith("image/"))) {
+            window.alert("Escolhe uma fotografia num formato de imagem válido.");
+            return;
+        }
+
         try {
             const estadoAtual = obterEstadoFamilia();
             if (obterFotografiasDaAtividade(estadoAtual, atividadeId).length >= MAX_FOTOGRAFIAS_POR_ATIVIDADE) {
@@ -712,6 +718,7 @@ const niveis = [
 
 let missaoAbertaId = null;
 let jogoAbertoId = null;
+let jogoAbertoOrigem = "jogos";
 
 function criarEstadoInicial() {
     return {
@@ -966,7 +973,10 @@ function preencherArea(idConteudo, elementos, mensagemVazia, criarElemento) {
 function renderDesafiosFerias(estado) {
     const conteudo = document.getElementById("conteudo-desafios-ferias");
     const desafios = obterDesafiosGerais(estado)
-        .filter(function(desafio) { return desafio.tipo === "desafio-ferias"; });
+        .filter(function(desafio) { return desafio.tipo === "desafio-ferias"; })
+        .sort(function(a, b) {
+            return Number(a.estado === "concluida") - Number(b.estado === "concluida");
+        });
 
     if (!conteudo) {
         return;
@@ -985,6 +995,8 @@ function renderDesafiosFerias(estado) {
         const detalhe = desafio.objetivo
             ? `${progresso.atual} / ${progresso.objetivo} ${desafio.unidade}` : null;
         const cartao = criarCartaoArea(desafio.titulo, null, detalhe);
+        cartao.dataset.atividadeId = desafio.id;
+        cartao.classList.toggle("atividade-concluida-esbatida", concluido);
 
         const botao = document.createElement("button");
         botao.className = "botao-principal";
@@ -1049,8 +1061,7 @@ function renderDesafiosDiarios(estado) {
             const concluida = missao.estado === "concluida";
 
             botao.className = "botao-principal";
-            botao.textContent = concluida ? "✓ CONCLUÍDO" : "ABRIR DESAFIO";
-            botao.disabled = concluida;
+            botao.textContent = concluida ? "VER DESAFIO" : "ABRIR DESAFIO";
             botao.addEventListener("click", function() {
                 abrirMissao(missao.id);
             });
@@ -1116,7 +1127,7 @@ function renderJogos(estado) {
     botao.textContent = concluido ? "✓ JOGO CONCLUÍDO" : "ABRIR JOGO";
     botao.disabled = concluido;
     botao.addEventListener("click", function() {
-        abrirJogo(jogo.id);
+        abrirJogo(jogo.id, "jogos");
     });
     cartao.appendChild(botao);
 
@@ -1137,15 +1148,24 @@ function renderJogos(estado) {
     conteudo.appendChild(cartao);
 }
 
-function abrirJogo(id) {
+function abrirJogo(id, origem) {
     const jogo = obterAtividadePorId(id);
     if (!jogo || jogo.tipo !== "jogo") {
         return;
     }
 
     jogoAbertoId = id;
+    jogoAbertoOrigem = origem || "jogos";
     renderJogoAberto();
     mostrarEcra("ecran-jogo");
+}
+
+function voltarDoJogo() {
+    if (jogoAbertoOrigem === "inicio") {
+        abrirInicio();
+        return;
+    }
+    abrirArea("ecran-jogos");
 }
 
 function renderJogoAberto() {
@@ -1243,7 +1263,9 @@ function renderMapa(localAbertoId) {
     }
 
     catalogo.locais.forEach(function(local) {
-        const cartao = criarCartaoArea(local.nome, local.descricao || local.categoria || "Local a explorar");
+        const desafios = obterDesafiosLocais(obterEstadoFamilia(), local.id);
+        const concluidos = desafios.filter(function(desafio) { return desafio.estado === "concluida"; }).length;
+        const cartao = criarCartaoArea(local.nome, local.descricao || local.categoria || "Local a explorar", `${concluidos}/${desafios.length} desafios`);
         const botao = document.createElement("button");
         botao.className = "botao-principal";
         botao.textContent = "VER DESAFIOS";
@@ -1532,30 +1554,55 @@ function renderConquistas(estado) {
     );
 }
 
-function renderDiario(estado) {
+async function renderDiario(estado) {
     const entradas = [...estado.diario].sort(function(a, b) {
         return new Date(b.criadoEm) - new Date(a.criadoEm);
     });
 
-    preencherArea(
-        "conteudo-diario",
-        entradas,
-        "O diário familiar ainda não tem entradas.",
-        function(entrada) {
+    const conteudo = document.getElementById("conteudo-diario");
+    if (!conteudo) return;
+    libertarUrlsAlbum();
+    conteudo.textContent = "";
+    if (!entradas.length) {
+        conteudo.appendChild(criarPainelVazio("O diário familiar ainda não tem entradas."));
+        return;
+    }
+    for (const entrada of entradas) {
             const jogador = jogadores.find(function(item) {
                 return item.id === entrada.jogadorId;
             });
             const autor = jogador ? jogador.nome : "Família";
-            const temFotografia = Object.values(estado.fotografias || {}).some(function(fotografia) {
+            const fotografia = Object.values(estado.fotografias || {}).find(function(fotografia) {
                 return fotografia.atividadeId === entrada.atividadeId;
             });
-            return criarCartaoArea(
-                `${entrada.data || "Hoje"} · ${entrada.titulo || "Atividade"}${temFotografia ? " 📷" : ""}`,
+            const cartao = criarCartaoArea(
+                `${entrada.data || "Hoje"} · ${entrada.titulo || "Atividade"}${fotografia ? " 📷" : ""}`,
                 entrada.texto,
                 autor
             );
-        }
-    );
+            if (fotografia) {
+                try {
+                    const guardada = await obterBlobFotografia(fotografia.id);
+                    if (guardada && guardada.blob) {
+                        const url = URL.createObjectURL(guardada.blob);
+                        urlsAlbum.push(url);
+                        const botaoFoto = document.createElement("button");
+                        botaoFoto.className = "miniatura-diario";
+                        botaoFoto.type = "button";
+                        botaoFoto.setAttribute("aria-label", `Abrir fotografia de ${entrada.titulo || "atividade"}`);
+                        const imagem = document.createElement("img");
+                        imagem.src = url;
+                        imagem.alt = fotografia.tituloAtividade || entrada.titulo || "Fotografia";
+                        botaoFoto.appendChild(imagem);
+                        botaoFoto.addEventListener("click", function() { abrirFotografia(fotografia.id); });
+                        cartao.appendChild(botaoFoto);
+                    }
+                } catch (erro) {
+                    console.warn("Não foi possível carregar a miniatura do Diário.", erro);
+                }
+            }
+            conteudo.appendChild(cartao);
+    }
 }
 
 function renderMais() {
@@ -1654,6 +1701,9 @@ function abrirArea(id) {
 
     renderizador();
     mostrarEcra(id);
+    if (["ecran-desafios-ferias", "ecran-mapa", "ecran-conquistas", "ecran-diario"].includes(id)) {
+        window.requestAnimationFrame(function() { window.scrollTo({ top: 0, left: 0, behavior: "auto" }); });
+    }
 }
 
 function dataLocalAtual() {
@@ -2293,13 +2343,15 @@ function renderMissaoDestaque(estado, data) {
 
         const botao = document.createElement("button");
         botao.className = "botao-principal";
-        botao.textContent = concluida ? "✓ CONCLUÍDA" : atividade.tipo === "jogo" ? "ABRIR JOGO" : "COMEÇAR";
-        botao.disabled = concluida;
+        botao.textContent = concluida
+            ? atividade.tipo === "missao" ? "VER DESAFIO" : "✓ CONCLUÍDO"
+            : atividade.tipo === "jogo" ? "ABRIR JOGO" : "COMEÇAR";
+        botao.disabled = concluida && atividade.tipo === "jogo";
         botao.addEventListener("click", function() {
             if (atividade.tipo === "missao") {
                 abrirMissao(atividade.id);
             } else {
-                abrirJogo(atividade.id);
+                abrirJogo(atividade.id, "inicio");
             }
         });
 
@@ -2354,6 +2406,246 @@ function atualizarEstadoJogo() {
 
     renderMissaoDestaque(estado, data);
 }
+
+// Revisão final 2026: catálogo separado por contexto, preservando os IDs e o estado existentes.
+const titulosPorAqui = [
+    "Ouvir uma ave durante 1 minuto sem ninguém falar", "Ouvir os cagarros à noite",
+    "Encontrar uma aranha no quintal e observá-la sem lhe tocar", "Tirar uma fotografia onde não apareça nenhuma pessoa",
+    "Fotografar um reflexo interessante", "Fazer uma fotografia onde predomine o verde", "Fotografar uma sombra curiosa",
+    "Fazer uma fotografia macro de uma flor", "Inventar uma lenda sobre a Vila Nova ou sobre a casa",
+    "Dar um nome absurdo a uma pedra do quintal", "Desenhar uma paisagem em 2 minutos", "Escrever um haiku sobre a Terceira",
+    "Inventar uma bandeira para a TerceiraQuest", "Desenhar de memória um mapa da Vila Nova ou das redondezas",
+    "Ficar 1 minuto em silêncio e identificar três sons diferentes", "Cozinhar alguma coisa em família que nunca tenham feito juntos",
+    "Aprender/fazer malha com a avó", "Aprender um ponto de costura com a avó",
+    "Cada um escolher uma frase ou passagem do livro que está a ler e lê-la aos outros",
+    "Inventar uma regra nova para um jogo que já conhecem", "Fazer a fotografia oficial das férias", "Escolher o “tesouro do dia”",
+    "Ensinar uma coisa nova a outro membro da família", "Durante 30 minutos só podem comunicar por gestos",
+    "Durante uma hora ninguém pode dizer a palavra “vaca”", "Fazer uma fotografia onde os três estejam no ar ao mesmo tempo",
+    "Fazer um vídeo de 15 segundos sem ninguém dizer uma palavra", "Inventar um animal dos Açores que não existe",
+    "Escrever uma mensagem para abrir nas férias do próximo ano", "Fazer um passeio de 15 minutos sem ninguém olhar para o telemóvel"
+];
+const titulosVamosSair = [
+    "Comer uma Dona Amélia", "Beber uma Kima", "Provar um gelado de queijo", "Comer bolo lêvedo", "Comer lapas", "Comer cracas",
+    "Ir a um restaurante onde nenhum dos três tenha estado", "Comer um gelado junto ao mar", "Comer um esbá", "Comer uma donete",
+    "Comer uma bifana", "Comer batatas fritas dos Touros", "Escolher a árvore que pareça mais velha e tirar uma fotografia junto dela",
+    "Encontrar uma pedra que pareça outra coisa e decidir a que se parece", "Encontrar uma pedra vulcânica cheia de pequenos buracos",
+    "Encontrar uma pedra coberta de líquenes", "Encontrar um muro tradicional de pedra", "Encontrar uma porta antiga com um pormenor curioso",
+    "Descobrir uma rua onde nunca tenham passado", "Encontrar uma pedra com uma data gravada", "Encontrar um brasão em pedra",
+    "Encontrar um relógio de sol", "Entrar num forte", "Entrar numa igreja que encontrem aberta e escolher o pormenor mais curioso",
+    "Escolher a igreja mais bonita que virem nesse dia e explicar porquê", "Encontrar uma placa ou inscrição curiosa",
+    "Encontrar uma formação vulcânica curiosa e inventar-lhe um nome", "Durante o snorkeling, identificar três seres vivos diferentes",
+    "Entrar numa gruta vulcânica", "Caminhar 200 metros descalços numa praia", "Fazer a entrada na água mais teatral da família, numa zona segura",
+    "Explorar uma poça de maré e distinguir pelo menos cinco tipos de seres vivos", "Ver o nascer do Sol junto ao mar",
+    "Ver o pôr do Sol junto ao mar", "Dar 10 mergulhos seguidos", "Fazer uma fotografia onde os três pareçam gigantes",
+    "Fotografar um animal sem o assustar", "Ir a um local da Terceira onde nenhum dos três tenha estado",
+    "Descobrir um miradouro onde nunca tenham parado", "Encontrar um vestígio curioso do passado e tentar perceber para que servia",
+    "Encontrar uma ruína e inventar a sua história", "Ouvir o mar durante 2 minutos sem ninguém falar",
+    "Um dos três escolhe o destino e os outros só descobrem onde vão quando chegarem",
+    "Dar nomes às vacas que forem encontrando durante 10 minutos", "Encontrar um local com eco e fazer o teste",
+    "Cumprimentar solenemente uma vaca sem a incomodar"
+];
+const desafiosPorAqui = titulosPorAqui.map(function(t) { return criarDesafioDiario(t, "por-aqui"); });
+const desafiosVamosSair = titulosVamosSair.map(function(t) { return criarDesafioDiario(t, "vamos-sair"); });
+const titulosBonus = [
+    "Caçar um arco-íris", "Ver um cardume tão grande que seja impossível contar os peixes", "Encontrar uma hortênsia branca",
+    "Encontrar uma vaca deitada", "Ver uma vaca com o seu bezerro", "Observar uma ave de rapina", "Encontrar uma joaninha",
+    "Ver uma borboleta particularmente bonita", "Encontrar uma libélula", "Sentir uma nuvem ou nevoeiro passar por vocês",
+    "Encontrar o Atlântico tão calmo que pareça um espelho", "Encontrar um caranguejo", "Encontrar uma estrela-do-mar",
+    "Encontrar um ouriço-do-mar", "Encontrar uma anémona", "Ver a primeira estrela da noite", "Conseguir ver a Via Láctea",
+    "Ver um satélite atravessar o céu", "Ver um morcego", "Apanhar sol, chuva e vento no mesmo dia", "Ver uma cortina de chuva a aproximar-se"
+];
+const desafiosBonus = titulosBonus.map(function(titulo, indice) {
+    return { id: indice === 0 ? "missao-cacar-arco-iris" : criarIdConteudo("bonus", titulo), titulo: titulo,
+        descricao: "Um bónus para aproveitar apenas se acontecer.", categoria: "se-acontecer", tipo: "missao", xp: 30,
+        imagem: indice === 0 ? "images/missoes/arco-iris.jpg" : null };
+});
+catalogo.missoes = [...desafiosPorAqui, ...desafiosVamosSair, ...desafiosBonus];
+const regrasJogosRevistas = [
+ "Durante 10 minutos, façam perguntas uns aos outros. Quem disser “sim” ou “não” perde a ronda. Vale tentar enganar os outros.",
+ "Escolham uma palavra comum. Durante 15 minutos ninguém a pode dizer. Quem apanhar outro a dizê-la ganha um ponto.",
+ "Escolham algo para procurar: uma vaca, carro amarelo, igreja, hortênsia... O primeiro a encontrar ganha a ronda. Façam cinco rondas.",
+ "Uma pessoa pensa numa pessoa, animal, objeto ou lugar. Os outros têm apenas 10 perguntas de resposta sim/não para adivinhar.",
+ "Cada um diz três afirmações sobre si: duas verdadeiras e uma falsa. Os outros tentam descobrir a mentira.",
+ "Um começa uma história com uma frase. Cada jogador acrescenta uma frase até conseguirem chegar a um final.",
+ "Procurem uma palavra relacionada com a Terceira para cada letra do alfabeto, alternando entre jogadores.",
+ "Um escolhe uma categoria. O seguinte tem poucos segundos para dizer cinco coisas dessa categoria sem repetir.",
+ "Uma pessoa escolhe algo que esteja à vista e dá apenas uma pista. Os outros tentam descobrir o objeto.",
+ "Uma pessoa descreve algo sem dizer o nome. Outra tenta desenhá-lo apenas através da descrição.",
+ "Imitar uma pessoa, animal ou personagem sem falar. Os outros têm de adivinhar.",
+ "Produzir um som usando algo que esteja por perto. Os outros, sem olhar, tentam perceber o que produziu o som.",
+ "Observem um local durante 30 segundos. Depois virem-se e tentem recordar o maior número possível de coisas.",
+ "Dizer quatro coisas, três com algo em comum e uma diferente. Os outros descobrem o intruso e explicam porquê.",
+ "Cada palavra começa pela última letra da anterior. Não vale repetir.",
+ "Uma pessoa pensa num número entre 1 e 100. As únicas pistas são “mais alto” e “mais baixo”.",
+ "Tentem criar uma fotografia absurda usando perspetiva: alguém a segurar uma montanha, a voar, a ser minúsculo...",
+ "Escolham cinco cores e encontrem algo de cada cor. Não vale usar o mesmo objeto duas vezes.",
+ "Durante 2 minutos, uma pessoa apresenta o local onde estão misturando factos verdadeiros e disparates. Os outros descobrem os disparates.",
+ "Todos contra todos, três rondas por duelo. Quem vencer mais duelos é campeão do dia."
+];
+catalogo.jogos.forEach(function(jogo, indice) { jogo.regras = regrasJogosRevistas[indice]; jogo.descricao = regrasJogosRevistas[indice]; jogo.duracao = ""; });
+
+catalogo.desafiosGerais.forEach(function(d) { delete d.jogadorAlvo; });
+const ferias = catalogo.desafiosGerais;
+ferias[0].titulo = "🥾 Completar 3 trilhos"; ferias[0].unidade = "trilhos";
+ferias[0].unidadesNomeadas = ["Relheiras de São Brás", "Lagoa do Cerro", "Baías da Agualva"];
+ferias[1].titulo = "Fazer um piquenique";
+ferias[4].titulo = "Assistir a uma tourada à corda";
+ferias[5].titulo = "Descobrir um local onde nenhum dos três tenha estado";
+ferias[11].titulo = "Ler 50 páginas de um livro"; ferias[11].objetivo = 3; ferias[11].xpPorUnidade = 20;
+ferias[11].unidade = "pessoas"; ferias[11].unidadesNomeadas = ["Jorge — Li 50 páginas", "Olinda — Li 50 páginas", "Ema — Li 50 páginas"];
+ferias[12].titulo = "Encontrar 10 caches de geocaching";
+
+const locaisRevistos = [
+ ["angra-do-heroismo","Angra do Heroísmo"],["praia-da-vitoria","Praia da Vitória"],["prainha","Prainha"],["biscoitos","Biscoitos"],
+ ["escaleiras","Escaleiras"],["furnas-do-enxofre","Furnas do Enxofre"],["serra-do-cume","Serra do Cume"],["monte-brasil","Monte Brasil"],
+ ["lagoa-das-patas","Lagoa das Patas"],["lagoa-do-negro-gruta-do-natal","Lagoa do Negro / Gruta do Natal"],["serreta","Serreta"],
+ ["fortes-de-sao-sebastiao","Fortes de São Sebastião"],["baias-da-agualva","Baías da Agualva"],
+ ["relheiras-de-sao-bras","Relheiras de São Brás"],["quatro-ribeiras","Quatro Ribeiras"]
+];
+catalogo.locais = locaisRevistos.map(function(l) { return { id: l[0], nome: l[1], categoria: "lugar" }; });
+const desafiosPorLocal = {
+ "angra-do-heroismo":["Encontrar a Sé e contar quantas torres tem","Chegar ao Alto da Memória e escolher a melhor vista sobre Angra","Encontrar a Câmara Municipal","No Jardim Duque da Terceira, escolher a planta ou árvore mais curiosa","Encontrar o Forte de São Sebastião — o Castelinho"],
+ "praia-da-vitoria":["Caminhar 200 metros descalços na Praia Grande","Na marina, cada um escolher o barco em que gostaria de partir numa viagem","No Paúl, conseguir fotografar um reflexo interessante","No Facho, tentar pôr praia, marina e cidade na mesma fotografia","Cada um escolher o seu sítio preferido da Praia da Vitória; ganha o mais votado"],
+ "prainha":["Dar um mergulho na Prainha","Os três entrarem na água ao mesmo tempo","Fazer uma fotografia a partir da água virados para a cidade","Ficar 2 minutos dentro de água sem ninguém dizer “está fria!”","Encontrar primeiro três coisas diferentes na zona entre areia e mar"],
+ "biscoitos":["Entrar numa piscina natural, se as condições forem seguras","Fazer uma fotografia com a rocha vulcânica negra e o azul do mar","Encontrar o Museu do Vinho","Encontrar uma vinha","Escolher a formação de lava mais estranha e dar-lhe um nome"],
+ "escaleiras":["Ir às Escaleiras ao nascer do Sol","Fotografar o primeiro dos três a entrar na água","Fazer uma fotografia subaquática","Tirar uma fotografia dos três com o nascer do Sol","Escolher o vosso lugar favorito das Escaleiras e fazer a fotografia oficial desse lugar"],
+ "furnas-do-enxofre":["Encontrar uma fumarola","Sentir o cheiro a enxofre","Encontrar a zona com o solo mais avermelhado","Encontrar o contraste mais forte entre verde e terreno vulcânico","Tentar fotografar vapor, verde e vermelho na mesma imagem"],
+ "serra-do-cume":["Conseguir contar pelo menos 20 parcelas no “patchwork”","Escolher a parcela com a forma mais estranha","Identificar a baía da Praia da Vitória lá em baixo","Fazer a melhor fotografia do “patchwork”","Encontrar na paisagem os muros de pedra que dividem as pastagens"],
+ "monte-brasil":["Encontrar a Fortaleza de São João Baptista","Encontrar a Ermida de Santo António","Encontrar o antigo posto de vigia da baleia","Encontrar uma antiga peça de artilharia antiaérea","Encontrar o monumento ao V Centenário do Povoamento da Terceira"],
+ "lagoa-das-patas":["Escolher o pato mais engraçado e dar-lhe um nome","Fotografar um reflexo na lagoa","Fazer um pequeno lanche na reserva","Fotografar água, patos e vegetação na mesma imagem","Ficar 1 minuto sem falar e contar quantos sons diferentes conseguem ouvir"],
+ "lagoa-do-negro-gruta-do-natal":["Chegar à Lagoa do Negro","Encontrar a entrada da Gruta do Natal","Se estiver aberta, entrar e escolher a formação mais estranha","Ficar 1 minuto em silêncio e identificar três sons diferentes","Inventar uma explicação completamente falsa para o nome “Mistérios Negros”; ganha a mais convincente"],
+ "serreta":["Chegar ao Farol da Ponta da Serreta","Fazer uma fotografia em perspetiva onde alguém pareça maior do que o farol","Ir à Mata da Serreta","Cada um escolher a árvore mais impressionante e votar na vencedora","Passar 5 minutos na mata sem telemóveis e identificar três sons"],
+ "fortes-de-sao-sebastiao":["Encontrar o Forte da Greta","Encontrar o Forte de Santa Catarina das Mós","Encontrar o Forte do Bom Jesus","Encontrar o Forte do Pesqueiro dos Meninos","Encontrar a antiga azenha do Arrabalde"],
+ "baias-da-agualva":["Chegar à Alagoa da Fajãzinha","Encontrar a praia de calhaus rolados","Encontrar uma arriba onde se vejam as colunas da rocha","Tirar a melhor fotografia das baías","Escolher uma baía e inventar o nome da vossa casa secreta naquele lugar"],
+ "relheiras-de-sao-bras":["Encontrar as marcas das antigas rodas dos carros de bois na rocha","Encontrar o monumento ao carro-de-bois","Encontrar a Fonte do Cão","Encontrar a escultura em basalto que representa a Terceira","No viveiro, descobrir uma espécie açoriana que nenhum dos três conhecia"],
+ "quatro-ribeiras":["Entrar numa piscina natural, se as condições forem seguras","Escolher a piscina natural com a forma mais estranha","Encontrar a formação vulcânica mais curiosa","Fazer uma fotografia onde predominem preto, azul e verde","Dar um nome à vossa piscina favorita das Quatro Ribeiras"]
+};
+catalogo.desafiosLocais = Object.keys(desafiosPorLocal).flatMap(function(localId) {
+    return desafiosPorLocal[localId].map(function(t) { return criarDesafioLocal(localId, t); });
+});
+
+// Agendas anteriores continuam a conseguir abrir desafios entretanto retirados do catálogo visível.
+const obterAtividadePorIdBase = obterAtividadePorId;
+obterAtividadePorId = function(id) {
+    const atual = obterAtividadePorIdBase(id);
+    if (atual) return atual;
+    const legado = desafiosDiarios.find(function(item) { return item.id === id; });
+    return legado ? { ...legado, tipo: "missao" } : null;
+};
+const obterAtividadesConcluidasBase = obterAtividadesConcluidas;
+obterAtividadesConcluidas = function(estado) {
+    const totalAtual = obterAtividadesConcluidasBase(estado);
+    const idsAtuais = new Set(obterAtividadesCatalogadas().map(function(a) { return a.id; }));
+    const historicas = Object.keys(estado.conclusoes).reduce(function(total, id) {
+        if (idsAtuais.has(id)) return total;
+        const c = estado.conclusoes[id];
+        if (!c || (c.estado !== "concluida" && c.estado !== "em_progresso")) return total;
+        return total + Math.max(1, numeroSeguro(c.progresso));
+    }, 0);
+    return totalAtual + historicas;
+};
+
+function migrarRevisaoFinal(estado) {
+    if (estado.migracaoRevisaoFinal) return false;
+    const leitura = estado.conclusoes["ferias-ler-50-paginas"];
+    if (leitura && leitura.estado === "concluida" && !Array.isArray(leitura.unidadesConcluidas)) {
+        estado.conclusoes["ferias-ler-50-paginas"] = { ...leitura, estado: "em_progresso", progresso: 1,
+            objetivo: 3, unidadesConcluidas: [1], xpAtribuido: 20 };
+    }
+    estado.migracaoRevisaoFinal = { realizadaEm: new Date().toISOString(), versao: 1 };
+    guardarEstadoFamilia(estado); return true;
+}
+
+let mostrarTodosBonus = false;
+function definirUnidadeNomeada(atividadeId, indice, concluir) {
+    const atividade = obterAtividadePorId(atividadeId); const estado = obterEstadoFamilia();
+    if (!atividade || !atividade.unidadesNomeadas) return;
+    const anterior = estado.conclusoes[atividadeId] || { tipo: "desafio-ferias", estado: "em_progresso", progresso: 0, objetivo: atividade.objetivo, xpAtribuido: 0, unidadesConcluidas: [] };
+    let unidades = Array.isArray(anterior.unidadesConcluidas) ? [...anterior.unidadesConcluidas] : [];
+    if (!unidades.length && numeroSeguro(anterior.progresso)) unidades = Array.from({length: numeroSeguro(anterior.progresso)}, function(_,i){return i;});
+    if (concluir && !unidades.includes(indice)) unidades.push(indice);
+    if (!concluir) unidades = unidades.filter(function(i){return i!==indice;});
+    unidades.sort(function(a,b){return a-b;});
+    if (!unidades.length) delete estado.conclusoes[atividadeId];
+    else estado.conclusoes[atividadeId] = { ...anterior, estado: unidades.length >= atividade.objetivo ? "concluida" : "em_progresso", progresso: unidades.length,
+        objetivo: atividade.objetivo, unidadesConcluidas: unidades, xpAtribuido: unidades.length * atividade.xpPorUnidade, atualizadaEm: new Date().toISOString() };
+    removerEntradaDiario(estado, `diario-${atividadeId}-unidade-${indice + 1}`);
+    if (concluir) registarEntradaDiario(estado, atividade, obterJogadorAtual(), new Date().toISOString(), indice + 1);
+    verificarConquistas(estado); guardarEstadoFamilia(estado); renderDesafiosFerias(estado); atualizarEstadoJogo();
+}
+const renderDesafiosFeriasBase = renderDesafiosFerias;
+renderDesafiosFerias = function(estado) {
+    renderDesafiosFeriasBase(estado);
+    const cartoes = document.querySelectorAll("#conteudo-desafios-ferias .painel");
+    catalogo.desafiosGerais.forEach(function(desafio, posicao) {
+        const cartao = document.querySelector(`#conteudo-desafios-ferias [data-atividade-id="${desafio.id}"]`);
+        if (!desafio.unidadesNomeadas || !cartao) return;
+        cartao.querySelectorAll("button").forEach(function(b){b.remove();});
+        cartao.querySelectorAll(".controlos-fotografia").forEach(function(controlos){controlos.remove();});
+        const conclusao = estado.conclusoes[desafio.id] || {}; let feitas = Array.isArray(conclusao.unidadesConcluidas) ? conclusao.unidadesConcluidas : Array.from({length: numeroSeguro(conclusao.progresso)},function(_,i){return i;});
+        desafio.unidadesNomeadas.forEach(function(nome, indice){const b=document.createElement("button");const feita=feitas.includes(indice);b.className=feita?"botao-secundario":"botao-principal";b.textContent=`${feita?"☑":"☐"} ${nome}`;b.addEventListener("click",function(){definirUnidadeNomeada(desafio.id,indice,!feita);});cartao.appendChild(b);});
+        if (obterEstadoAtividade(desafio.id,estado)==="concluida") cartao.appendChild(criarControlosFotografia(desafio.id));
+    });
+};
+function escolherTipoDia(tipo) {
+    const estado = obterEstadoFamilia(); const data = dataLocalAtual();
+    if (!estado.agendaDiaria[data]) estado.agendaDiaria[data] = { criadaEm: new Date().toISOString(), missoesIds: [], jogoId: null };
+    if (estado.agendaDiaria[data].tipoDia) return;
+    estado.agendaDiaria[data].tipoDia = tipo; guardarEstadoFamilia(estado); atualizarEstadoJogo();
+}
+function alterarEscolhaDia() {
+    const estado = obterEstadoFamilia(); const data = dataLocalAtual(); const agenda = estado.agendaDiaria[data];
+    if (!agenda || !agenda.tipoDia) return;
+    // A agenda visual é refeita, mas as conclusões permanecem intocadas no estado familiar.
+    agenda.missoesIds = [];
+    agenda.tipoDia = null;
+    guardarEstadoFamilia(estado);
+    atualizarEstadoJogo();
+}
+function garantirAgendaDiaria(estado, data) {
+    let agenda = estado.agendaDiaria[data]; let alterou = false;
+    if (!agenda) { agenda = { criadaEm: new Date().toISOString(), missoesIds: [], jogoId: null, tipoDia: null }; estado.agendaDiaria[data] = agenda; alterou = true; }
+    if (!Array.isArray(agenda.missoesIds)) { agenda.missoesIds = []; alterou = true; }
+    // Agendas antigas são mantidas intactas; a escolha só é exigida em agendas novas vazias.
+    if (agenda.tipoDia && agenda.missoesIds.length < MISSOES_DIARIAS_POR_DIA) {
+        const origem = agenda.tipoDia === "por-aqui" ? desafiosPorAqui : desafiosVamosSair;
+        const usados = new Set(Object.values(estado.agendaDiaria).flatMap(function(a) { return a.missoesIds || []; }));
+        const disponiveis = origem.filter(function(m) { return !usados.has(m.id) && obterEstadoAtividade(m.id, estado) !== "concluida"; });
+        agenda.missoesIds.push(...escolherAleatoriamente(disponiveis, MISSOES_DIARIAS_POR_DIA - agenda.missoesIds.length).map(function(m) { return m.id; })); alterou = true;
+    }
+    if (!agenda.jogoId) {
+        const disponiveis = catalogo.jogos.filter(function(j) { return !estado.jogosUtilizados.includes(j.id); });
+        const jogo = escolherAleatoriamente(disponiveis, 1)[0];
+        if (jogo) { agenda.jogoId = jogo.id; estado.jogosUtilizados.push(jogo.id); alterou = true; }
+    }
+    if (alterou) guardarEstadoFamilia(estado); return agenda;
+}
+function renderEscolhaTipoDia(estado, data) {
+    const area = document.getElementById("escolha-tipo-dia"); if (!area) return;
+    const agenda = estado.agendaDiaria[data]; const mostrar = agenda && !agenda.tipoDia;
+    area.classList.remove("escondido"); area.textContent = "";
+    if (!mostrar) {
+        if (!agenda || !agenda.tipoDia) { area.classList.add("escondido"); return; }
+        const resumo = document.createElement("small"); resumo.textContent = agenda.tipoDia === "por-aqui" ? "Hoje: 🏡 Por aqui" : "Hoje: 🚗 Vamos sair"; area.appendChild(resumo);
+        const alterar = document.createElement("button"); alterar.className = "botao-link"; alterar.textContent = "Alterar escolha"; alterar.addEventListener("click", alterarEscolhaDia); area.appendChild(alterar); return;
+    }
+    const h = document.createElement("h3"); h.textContent = "Como vai ser hoje?"; area.appendChild(h);
+    const p = document.createElement("p"); p.textContent = "Escolham só o ritmo do dia. Nós tratamos dos desafios."; area.appendChild(p);
+    const opcoes = document.createElement("div"); opcoes.className = "opcoes-tipo-dia";
+    [["🏡 Por aqui","por-aqui"],["🚗 Vamos sair","vamos-sair"]].forEach(function(o) { const b=document.createElement("button"); b.textContent=o[0]; b.addEventListener("click",function(){escolherTipoDia(o[1]);}); opcoes.appendChild(b); }); area.appendChild(opcoes);
+}
+function renderBonus(estado) {
+    const area=document.getElementById("conteudo-bonus"); const ver=document.getElementById("botao-ver-bonus"); if(!area)return;
+    const pendentes=desafiosBonus.filter(function(b){return obterEstadoAtividade(b.id,estado)!=="concluida";});
+    const lista=mostrarTodosBonus?desafiosBonus:pendentes.slice(0,3); area.textContent="";
+    lista.forEach(function(b){const item=document.createElement("div");item.className="bonus-item";const concluido=obterEstadoAtividade(b.id,estado)==="concluida";const h=document.createElement("h4");h.textContent=b.titulo;item.appendChild(h);if(concluido){const estadoBonus=document.createElement("small");estadoBonus.className="estado-desafio concluido";estadoBonus.textContent="✓ CONCLUÍDO";item.appendChild(estadoBonus);}const bt=document.createElement("button");bt.textContent=concluido?"VER BÓNUS":"ABRIR BÓNUS";bt.addEventListener("click",function(){abrirMissao(b.id);});item.appendChild(bt);area.appendChild(item);});
+    if(ver){ver.classList.toggle("escondido",desafiosBonus.length<=3);ver.textContent=mostrarTodosBonus?"Mostrar menos":"Ver todos";}
+}
+function alternarTodosBonus(){mostrarTodosBonus=!mostrarTodosBonus;renderBonus(obterEstadoFamilia());}
+const atualizarEstadoJogoBase = atualizarEstadoJogo;
+atualizarEstadoJogo = function() { let estado=obterEstadoFamilia(); migrarRevisaoFinal(estado); atualizarEstadoJogoBase(); estado=obterEstadoFamilia(); const data=dataLocalAtual(); renderEscolhaTipoDia(estado,data); renderBonus(estado); };
+const renderMaisBase = renderMais;
+renderMais = function(){renderMaisBase();const area=document.getElementById("conteudo-mais");if(!area)return;const aviso=criarCartaoArea("🌊 Segurança primeiro","Nenhum desafio vale um risco. Só realizem atividades no mar, trilhos ou outros locais quando as condições forem seguras.");aviso.classList.add("aviso-seguranca");area.insertBefore(aviso,area.children[1]||null);};
 
 document.addEventListener("DOMContentLoaded", function() {
     const jogador = obterJogadorAtual();

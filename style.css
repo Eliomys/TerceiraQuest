@@ -3,6 +3,7 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     padding-top: 100px;
+    overflow-x: hidden;
 }
 
 button {
@@ -15,7 +16,8 @@ button {
     cursor: pointer;
 }
 .container {
-    width: 340px;
+    box-sizing: border-box;
+    width: min(400px, calc(100% - 24px));
     margin: auto;
 
     background: white;
@@ -23,6 +25,36 @@ button {
     border-radius: 25px;
 
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.escolha-tipo-dia, .bonus-discretos { margin: 12px 0; padding: 14px; border-radius: 16px; background: #fff9df; }
+.escolha-tipo-dia h3 { margin: 0 0 8px; }
+.escolha-tipo-dia p { margin: 0 0 10px; color: #555; font-size: 14px; }
+.opcoes-tipo-dia { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opcoes-tipo-dia button { box-sizing: border-box; width: 100%; min-height: 48px; height: auto; margin: 0; padding: 10px 6px; font-size: 15px; }
+.cabecalho-bonus { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.cabecalho-bonus .titulo-seccao { margin: 0; }
+.botao-link { width: auto; height: auto; min-height: 44px; margin: 0; padding: 8px; background: none; color: #345; font-size: 13px; text-decoration: underline; }
+.bonus-item { padding: 10px 0; border-top: 1px solid #eadfaa; }
+.bonus-item:first-child { border-top: 0; }
+.bonus-item h4 { margin: 0 0 6px; font-size: 15px; }
+.bonus-item button { box-sizing: border-box; width: 100%; min-height: 44px; height: auto; margin: 4px 0; font-size: 13px; }
+.aviso-seguranca { border-left: 5px solid #123b50; }
+.atividade-concluida-esbatida { opacity: .68; }
+.atividade-concluida-esbatida h3, .atividade-concluida-esbatida p, .atividade-concluida-esbatida small { opacity: 1; }
+.controlos-fotografia button:first-of-type,
+#botao-tirar-foto-missao { box-sizing: border-box; min-height: 44px; padding: 10px 14px; border-radius: 22px; background: #123b50; color: white; font-weight: bold; text-decoration: none; }
+.miniatura-diario { width: 72px; height: 72px; min-height: 72px; margin: 10px 0 0; padding: 0; overflow: hidden; border: 2px solid #fff; box-shadow: 0 2px 7px rgba(0,0,0,.2); }
+.miniatura-diario img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+@media (max-width: 420px) {
+    body { padding-top: 12px; }
+    .container { padding: 20px; border-radius: 18px; }
+    button { max-width: 100%; min-height: 44px; height: auto; white-space: normal; }
+    .atalhos button { min-width: 0; }
+    .atividade-para-hoje .botao-principal, #conteudo-mapa .botao-desafio-local { white-space: normal; }
+    #ecran-fotografia { max-height: calc(100dvh - 24px); overflow-y: auto; overscroll-behavior: contain; }
+    #ecran-fotografia .fotografia-ampliada { max-height: 45dvh; }
 }
 h2 {
     color: #444;
