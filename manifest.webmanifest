@@ -8,8 +8,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#FFD54F",
-  "background_color": "#FFD54F",
+  "theme_color": "#123B50",
+  "background_color": "#FFFDF8",
   "icons": [
     {
       "src": "icons/terceiraquest-192.png",
