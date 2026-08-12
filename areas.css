@@ -1,0 +1,294 @@
+/* ==================================================
+   TERCEIRAQUEST — ÁREAS INTERNAS
+   Apenas aparência; sem alterações de estrutura ou lógica.
+   ================================================== */
+
+.ecran-area,
+#ecran-missao {
+    position: relative;
+    overflow: hidden;
+    background: #fffdf8;
+    text-align: left;
+}
+
+.ecran-area::after,
+#ecran-missao::after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 64px;
+    height: 64px;
+    background: url("images/inicio/marca-terceira.svg") center / contain no-repeat;
+    opacity: .045;
+    pointer-events: none;
+}
+
+.ecran-area > *,
+#ecran-missao > * {
+    position: relative;
+    z-index: 1;
+}
+
+.ecran-area .cabecalho-area,
+#ecran-missao .cabecalho-missao {
+    min-height: 48px;
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e6e9e5;
+}
+
+.ecran-area .cabecalho-area h2,
+#ecran-missao .cabecalho-missao h2 {
+    color: #123b50;
+    font-size: 22px;
+    line-height: 1.2;
+}
+
+.ecran-area .cabecalho-area button,
+#ecran-missao .cabecalho-missao button {
+    width: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    height: 42px;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background: #f3f5f2;
+    color: #123b50;
+    font-size: 24px;
+    line-height: 42px;
+}
+
+.ecran-area .painel,
+#ecran-missao .painel {
+    margin: 14px 0;
+    padding: 18px;
+    border: 1px solid #dfe6e1;
+    border-radius: 18px;
+    background: #fff;
+    text-align: left;
+    box-shadow: 0 4px 14px rgba(18,59,80,.07);
+}
+
+.ecran-area .painel h3,
+#ecran-missao .painel h3 {
+    margin: 0 0 8px;
+    color: #243b40;
+    font-size: 18px;
+    line-height: 1.25;
+}
+
+.ecran-area .painel p,
+#ecran-missao .painel p {
+    color: #56635f;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.ecran-area .painel small,
+#ecran-missao .painel small {
+    color: #75601f;
+    font-weight: 700;
+}
+
+.ecran-area .botao-principal,
+#ecran-missao .botao-principal {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 46px;
+    height: auto;
+    margin: 12px 0 0;
+    padding: 11px 16px;
+    border-radius: 24px;
+    background: #2f7651;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.08);
+}
+
+.ecran-area .botao-principal:hover,
+.ecran-area .botao-principal:focus-visible,
+#ecran-missao .botao-principal:hover,
+#ecran-missao .botao-principal:focus-visible {
+    background: #285f45;
+}
+
+.ecran-area .botao-principal:disabled,
+#ecran-missao .botao-principal:disabled {
+    background: #9aa9a1;
+    color: #f7f8f7;
+    opacity: .75;
+}
+
+.ecran-area .botao-secundario,
+#ecran-missao .botao-secundario {
+    min-height: 38px;
+    height: auto;
+    margin: 8px 0 0;
+    padding: 8px 10px;
+    border-radius: 10px;
+    color: #52625d;
+    font-size: 12px;
+}
+
+.ecran-area button:focus-visible,
+#ecran-missao button:focus-visible {
+    outline: 3px solid rgba(211,164,59,.45);
+    outline-offset: 2px;
+}
+
+.ecran-area .resumo-desafios-ferias,
+.ecran-area .resumo-jogos {
+    margin: 0 0 16px;
+    padding: 11px 14px;
+    border: 1px solid #e8dbb2;
+    border-radius: 14px;
+    background: #fbf6e8;
+    color: #123b50;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.ecran-area .estado-desafio.concluido {
+    color: #2f7651;
+    font-weight: 800;
+}
+
+.ecran-area .atividade-concluida-esbatida {
+    background: #f4f6f3;
+    opacity: .78;
+}
+
+.ecran-area .temporizador,
+#ecran-missao .temporizador {
+    border: 1px solid #d8e2dc;
+    background: #f7faf7;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+.ecran-area .temporizador-valor,
+#ecran-missao .temporizador-valor {
+    color: #123b50;
+}
+
+.ecran-area .temporizador-terminado,
+#ecran-missao .temporizador-terminado {
+    border-color: #d8b45a;
+    background: #fff8df;
+}
+
+.ecran-area .controlos-fotografia,
+#ecran-missao .controlos-fotografia {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #edf0ed;
+}
+
+.ecran-area .indicador-fotografias,
+#ecran-missao .indicador-fotografias {
+    color: #64716d;
+    font-weight: 700;
+}
+
+#ecran-missao .missao-imagem {
+    border-radius: 18px !important;
+    box-shadow: 0 6px 18px rgba(18,59,80,.12);
+}
+
+#ecran-missao > h1 {
+    margin: 6px 0 8px;
+    color: #123b50;
+    font-size: 25px;
+    line-height: 1.2;
+}
+
+#ecran-missao .xp-missao {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #fff4cf;
+    color: #8a6114;
+    font-weight: 800;
+}
+
+#ecran-missao > #descricao-missao {
+    color: #4f605a;
+    line-height: 1.5;
+}
+
+#ecran-missao .prova {
+    margin: 16px 0;
+    padding: 14px;
+    border: 1px solid #dfe6e1;
+    border-radius: 16px;
+    background: #f7faf7;
+}
+
+#ecran-missao .prova p {
+    color: #42534e;
+}
+
+.ecran-area .grelha-album {
+    gap: 12px;
+}
+
+.ecran-area .item-album {
+    overflow: hidden;
+    border: 1px solid #e0e6e2;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(18,59,80,.07);
+}
+
+.ecran-area .item-album img {
+    border-radius: 12px;
+}
+
+#ecran-fotografia .fotografia-ampliada {
+    border-radius: 18px;
+    box-shadow: 0 6px 20px rgba(18,59,80,.14);
+}
+
+#ecran-conquistas .painel.conquista-desbloqueada {
+    border-color: #d8b45a;
+    background: linear-gradient(135deg, #fffdf5, #fff4cf);
+    box-shadow: 0 5px 16px rgba(147,103,18,.1);
+}
+
+#ecran-diario .painel {
+    border-left: 4px solid #3f7861;
+}
+
+#ecran-mais .painel:first-child {
+    border-top: 4px solid #123b50;
+}
+
+#ecran-mais .regras-terceiraquest li {
+    color: #52615c;
+    line-height: 1.45;
+}
+
+#ecran-mais .copyright-terceiraquest {
+    color: #7a8581;
+}
+
+@media (max-width: 420px) {
+    .ecran-area,
+    #ecran-missao {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .ecran-area .painel,
+    #ecran-missao .painel {
+        padding: 15px;
+    }
+
+    #ecran-missao > h1 {
+        font-size: 23px;
+    }
+}
