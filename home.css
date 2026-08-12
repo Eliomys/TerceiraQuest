@@ -3,6 +3,32 @@
    Estas regras só afetam #ecran-principal.
    ================================================== */
 
+#ecran-principal {
+    background: #fffdf8;
+}
+
+#ecran-principal .topo {
+    margin-bottom: 18px;
+}
+
+#ecran-principal .estatisticas {
+    border: 1px solid #eef0ec;
+    box-shadow: 0 5px 15px rgba(18, 59, 80, 0.08);
+}
+
+#ecran-principal .progresso {
+    margin-bottom: 22px;
+}
+
+#ecran-principal .barra {
+    height: 10px;
+    background: #e4e7e4;
+}
+
+#ecran-principal .barra-preenchida {
+    background: #3f7861;
+}
+
 #ecran-principal .escolha-tipo-dia {
     margin: 12px 0 20px;
     padding: 14px;
@@ -73,10 +99,14 @@
     color: #356b58;
 }
 
-#ecran-principal #titulo-seccao-missao {
-    margin-top: 22px;
+#ecran-principal #titulo-seccao-missao,
+#ecran-principal > .titulo-seccao {
     color: #123b50;
     letter-spacing: 0.01em;
+}
+
+#ecran-principal #titulo-seccao-missao {
+    margin-top: 22px;
 }
 
 #ecran-principal #missao-destaque {
@@ -158,6 +188,72 @@
     border-radius: 14px;
     background: #fbf6e8;
     color: #58645f;
+}
+
+#ecran-principal .atalhos {
+    gap: 12px;
+}
+
+#ecran-principal .atalhos button {
+    min-height: 82px;
+    height: auto;
+    margin: 0;
+    border: 1px solid #e6e9e5;
+    border-radius: 16px;
+    background: #f5f6f3;
+    box-shadow: 0 3px 10px rgba(18, 59, 80, 0.05);
+}
+
+#ecran-principal .atalhos span {
+    margin-bottom: 4px;
+    font-size: 27px;
+}
+
+#ecran-principal .atalhos small {
+    color: #243b40;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+#ecran-principal .bonus-discretos {
+    margin-top: 20px;
+    padding: 16px 14px;
+    border: 1px solid #ead9a8;
+    border-radius: 18px;
+    background: #fff8dd;
+    box-shadow: 0 4px 12px rgba(147, 103, 18, 0.06);
+}
+
+#ecran-principal .cabecalho-bonus {
+    margin-bottom: 6px;
+}
+
+#ecran-principal .cabecalho-bonus .titulo-seccao {
+    color: #123b50;
+    font-size: 18px;
+}
+
+#ecran-principal .bonus-item {
+    padding: 12px 0;
+    border-top-color: #e8d7a2;
+}
+
+#ecran-principal .bonus-item h4 {
+    margin-bottom: 8px;
+    color: #263c40;
+    line-height: 1.25;
+}
+
+#ecran-principal .bonus-item button {
+    border-radius: 12px;
+    background: #f1f1ed;
+    color: #263c40;
+}
+
+#ecran-principal .navegacao {
+    margin-top: 30px;
+    background: #123f54;
+    box-shadow: 0 -2px 10px rgba(18, 59, 80, 0.08);
 }
 
 @media (max-width: 360px) {
