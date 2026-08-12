@@ -1,5 +1,155 @@
-/* Imagens finais do pacote TerceiraQuest, aplicadas sem alterar lógica. */
+@import url("assets-data-01.css");
+@import url("assets-data-02.css");
+@import url("assets-data-03.css");
+@import url("assets-data-04.css");
+@import url("assets-data-05.css");
+@import url("assets-data-06.css");
+@import url("assets-data-07.css");
+@import url("assets-data-08.css");
+@import url("assets-data-09.css");
+@import url("assets-data-10.css");
+@import url("assets-data-11.css");
+
+/* ==================================================
+   TERCEIRAQUEST — BIBLIOTECA VISUAL FINAL
+   Imagens do pacote aprovado ligadas à interface.
+   Sem alterações à lógica.
+   ================================================== */
+
+/* ESCOLHA DO DIA */
+#ecran-principal .opcoes-tipo-dia button:first-child {
+    background-image: var(--tq-por_aqui) !important;
+    background-position: center 56% !important;
+}
+
+#ecran-principal .opcoes-tipo-dia button:nth-child(2) {
+    background-image: var(--tq-vamos_sair) !important;
+    background-position: center 54% !important;
+}
+
+/* JOGO DO DIA */
+#ecran-principal .atividade-para-hoje:last-child {
+    background-image:
+        linear-gradient(90deg, rgba(255,250,240,.97) 0 58%, rgba(255,250,240,.80) 76%, rgba(255,250,240,.42)),
+        var(--tq-jogo_do_dia) !important;
+    background-position: center, right center !important;
+    background-size: auto, 48% auto !important;
+    background-repeat: no-repeat !important;
+}
+
+/* EXPLORAR */
 #ecran-principal .atalhos button:first-child {
-    background-image: url("images/cartoes/ferias.webp") !important;
+    background-image: var(--tq-ferias) !important;
+    background-position: center 54% !important;
+}
+
+#ecran-principal .atalhos button:nth-child(2) {
+    background-image: var(--tq-aventura) !important;
     background-position: center 52% !important;
+}
+
+/* SE ACONTECER */
+#ecran-principal .cabecalho-bonus {
+    min-height: 104px !important;
+    padding: 18px 16px !important;
+    background-image:
+        linear-gradient(90deg, rgba(255,248,221,.97) 0 52%, rgba(255,248,221,.72) 72%, rgba(255,248,221,.20)),
+        var(--tq-se_acontecer) !important;
+    background-position: center, right center !important;
+    background-size: auto, 58% auto !important;
+    background-repeat: no-repeat !important;
+}
+
+#ecran-principal .cabecalho-bonus .titulo-seccao {
+    max-width: 62%;
+    line-height: 1.15;
+}
+
+#ecran-principal #botao-ver-bonus {
+    align-self: flex-end;
+    margin-left: auto;
+    background: rgba(255,255,255,.80);
+    border-radius: 999px;
+    padding: 6px 10px;
+    text-decoration: none;
+}
+
+/* CABEÇALHOS DAS ÁREAS */
+.ecran-area .cabecalho-area,
+#ecran-missao .cabecalho-missao {
+    position: relative;
+    overflow: hidden;
+    min-height: 88px;
+    padding: 12px 12px;
+    border-radius: 16px;
+    background-color: #f5f2e9;
+    background-position: right center;
+    background-size: 55% auto;
+    background-repeat: no-repeat;
+}
+
+.ecran-area .cabecalho-area::after,
+#ecran-missao .cabecalho-missao::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(255,253,248,.98) 0 43%, rgba(255,253,248,.78) 66%, rgba(255,253,248,.18));
+}
+
+.ecran-area .cabecalho-area > *,
+#ecran-missao .cabecalho-missao > * {
+    position: relative;
+    z-index: 1;
+}
+
+#ecran-desafios-ferias .cabecalho-area { background-image: var(--tq-ferias); }
+#ecran-desafios-diarios .cabecalho-area { background-image: var(--tq-desafios_diarios); }
+#ecran-jogos .cabecalho-area,
+#ecran-jogo .cabecalho-area { background-image: var(--tq-jogo_do_dia); }
+#ecran-mapa .cabecalho-area { background-image: var(--tq-natureza); }
+#ecran-album .cabecalho-area,
+#ecran-fotografia .cabecalho-area { background-image: var(--tq-fotografia); }
+#ecran-conquistas .cabecalho-area { background-image: var(--tq-conquistas); }
+#ecran-diario .cabecalho-area { background-image: var(--tq-diario); }
+#ecran-mais .cabecalho-area { background-image: var(--tq-mais); }
+#ecran-missao .cabecalho-missao { background-image: var(--tq-para_hoje); }
+
+/* Pequenos acentos de categoria sem transformar cartões em fotografias pesadas */
+#ecran-desafios-ferias #conteudo-desafios-ferias,
+#ecran-desafios-diarios #conteudo-desafios-diarios {
+    position: relative;
+}
+
+#ecran-desafios-ferias #conteudo-desafios-ferias::before,
+#ecran-desafios-diarios #conteudo-desafios-diarios::before {
+    content: "";
+    display: block;
+    height: 72px;
+    margin: 4px 0 14px;
+    border-radius: 15px;
+    background-color: #edf3ee;
+    background-repeat: no-repeat;
+    background-size: 25% 100%, 25% 100%, 25% 100%, 25% 100%;
+    background-position: 0 50%, 33.33% 50%, 66.66% 50%, 100% 50%;
+    box-shadow: inset 0 0 0 1px rgba(18,59,80,.08);
+}
+
+#ecran-desafios-ferias #conteudo-desafios-ferias::before {
+    background-image: var(--tq-trilhos), var(--tq-snorkeling), var(--tq-geocaching), var(--tq-gastronomia);
+}
+
+#ecran-desafios-diarios #conteudo-desafios-diarios::before {
+    background-image: var(--tq-natureza), var(--tq-observacao), var(--tq-criatividade), var(--tq-aventura);
+}
+
+@media (max-width: 360px) {
+    #ecran-principal .atividade-para-hoje:last-child {
+        background-size: auto, 56% auto !important;
+    }
+
+    .ecran-area .cabecalho-area,
+    #ecran-missao .cabecalho-missao {
+        background-size: 64% auto;
+    }
 }
