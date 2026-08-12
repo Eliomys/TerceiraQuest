@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Símbolo gráfico da TerceiraQuest">
+  <circle cx="120" cy="120" r="112" fill="#fbf3d7" stroke="#d3a43b" stroke-width="5"/>
+  <circle cx="174" cy="68" r="25" fill="#e0b54f" opacity=".92"/>
+  <path d="M29 128c23-17 44-18 66-2 20 15 40 14 60-1 20-15 39-14 56 0v27c-18-14-37-14-57 1-20 15-40 16-61 1-22-16-43-15-64 2z" fill="#2e7992"/>
+  <path d="M28 152c22-12 43-11 64 4 22 16 43 15 64 0 19-14 38-14 56-2v21c-19-10-38-8-58 6-20 14-40 14-62-2-21-15-42-16-64-5z" fill="#174f67" opacity=".92"/>
+  <g fill="#35443d">
+    <path d="M45 111h30v18H45z"/><path d="M78 105h32v24H78z"/><path d="M113 111h31v18h-31z"/><path d="M147 103h31v26h-31z"/><path d="M181 110h18v19h-18z"/>
+  </g>
+  <g fill="#557663">
+    <path d="M55 92l14-16 13 16z"/><path d="M89 88l15-20 15 20z"/><path d="M132 91l16-22 16 22z"/>
+  </g>
+</svg>
