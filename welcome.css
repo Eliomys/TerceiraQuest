@@ -3,25 +3,33 @@
 
 /* ==================================================
    TERCEIRAQUEST — ECRÃ DE ENTRADA
-   Regras isoladas apenas em #ecran-jogadores.
+   Escolha visual dos três jogadores, sem cartões pesados.
    ================================================== */
 
 #ecran-jogadores {
     position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: start;
+    gap: 0 8px;
+    min-height: 760px;
     overflow: hidden;
-    padding-top: 26px;
-    background: linear-gradient(180deg, rgba(255,253,248,.96), rgba(255,250,236,.98));
+    padding: 0 18px 32px;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.03) 0 34%, rgba(255,251,239,.94) 50%, #fffaf0 100%),
+        url("images/inicio/vamos-sair.webp") center top / auto 390px no-repeat,
+        #fffaf0;
 }
 
-#ecran-jogadores::before {
+#ecran-jogadores::after {
     content: "";
     position: absolute;
-    inset: 0 0 auto;
-    height: 128px;
+    inset: auto -60px -55px;
+    height: 235px;
     background:
-        linear-gradient(180deg, rgba(18,59,80,.08), rgba(18,59,80,0)),
-        url("images/inicio/por-aqui.webp") center 47% / cover no-repeat;
-    opacity: .3;
+        linear-gradient(0deg, rgba(255,250,240,.58), rgba(255,250,240,.05)),
+        url("images/inicio/por-aqui.webp") center 58% / cover no-repeat;
+    opacity: .44;
     pointer-events: none;
 }
 
@@ -31,76 +39,141 @@
 }
 
 #ecran-jogadores > h1 {
-    margin: 4px 0 6px;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 32px 0 6px;
     color: #123b50;
-    font-size: 25px;
-    letter-spacing: .02em;
-    text-shadow: 0 1px 0 rgba(255,255,255,.9);
+    font-size: 31px;
+    font-weight: 800;
+    letter-spacing: -.025em;
+    text-align: center;
+    text-shadow: 0 1px 0 #fff;
+}
+
+#ecran-jogadores > h1::first-letter {
+    font-size: .72em;
 }
 
 #ecran-jogadores > h2 {
-    margin: 0 0 24px;
-    color: #53625d;
-    font-size: 17px;
-    font-weight: 700;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin: 0 0 18px;
+    color: #6a7370;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
 }
 
 #ecran-jogadores .jogador {
-    min-height: 88px;
-    margin: 0 0 13px;
-    padding: 14px 16px;
-    gap: 16px;
-    border: 1px solid #dce6df;
-    border-left: 4px solid #3f7861;
-    border-radius: 18px;
-    background: rgba(255,255,255,.93);
-    box-shadow: 0 5px 15px rgba(18,59,80,.08);
-    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+    min-height: 318px;
+    margin: 0;
+    padding: 150px 0 12px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    transform: none;
 }
 
-#ecran-jogadores .jogador:hover {
-    transform: translateY(-1px);
-    border-color: #b9d0c3;
-    background: #fff;
-    box-shadow: 0 7px 18px rgba(18,59,80,.12);
+#ecran-jogadores .jogador:hover,
+#ecran-jogadores .jogador:focus-within {
+    background: transparent;
+    box-shadow: none;
+    transform: translateY(-2px);
 }
 
 #ecran-jogadores .avatar {
-    width: 70px;
-    height: 70px;
-    border: 3px solid #fff;
-    box-shadow: 0 3px 10px rgba(18,59,80,.2);
+    width: 94px;
+    height: 94px;
+    margin: 0 auto 9px;
+    border: 4px solid rgba(255,255,255,.96);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow:
+        0 0 0 2px rgba(214,178,83,.46),
+        0 8px 22px rgba(11,48,65,.3);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+#ecran-jogadores .jogador:hover .avatar {
+    transform: scale(1.035);
+    box-shadow:
+        0 0 0 3px rgba(214,178,83,.62),
+        0 10px 25px rgba(11,48,65,.34);
 }
 
 #ecran-jogadores .info {
-    text-align: left;
+    width: 100%;
+    text-align: center;
 }
 
 #ecran-jogadores .info h3 {
-    color: #243b40;
-    font-size: 25px;
+    margin: 0;
+    color: #153c50;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-shadow: 0 1px 0 rgba(255,255,255,.95);
 }
 
 #ecran-jogadores .jogador::after {
-    content: "›";
-    margin-left: auto;
-    color: #b7831d;
-    font-size: 30px;
-    line-height: 1;
+    content: "TOCAR";
+    margin-top: 7px;
+    color: #8a6a22;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+
+#ecran-jogadores .jogador:hover::after {
+    opacity: .75;
 }
 
 @media (max-width: 420px) {
     #ecran-jogadores {
-        padding-top: 22px;
+        min-height: calc(100vh - 16px);
+        padding: 0 12px 28px;
+        gap: 0 4px;
+        background-size: auto 340px, auto 340px, auto;
     }
 
     #ecran-jogadores .jogador {
-        min-height: 80px;
-        padding: 12px 14px;
+        min-height: 286px;
+        padding-top: 132px;
     }
 
     #ecran-jogadores .avatar {
-        width: 62px;
-        height: 62px;
+        width: 82px;
+        height: 82px;
+    }
+
+    #ecran-jogadores .info h3 {
+        font-size: 18px;
+    }
+
+    #ecran-jogadores > h1 {
+        margin-top: 26px;
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 350px) {
+    #ecran-jogadores .avatar {
+        width: 72px;
+        height: 72px;
+    }
+
+    #ecran-jogadores .info h3 {
+        font-size: 16px;
     }
 }
