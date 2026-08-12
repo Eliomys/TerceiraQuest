@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "terceiraquest-app-v6";
+const CACHE_NAME = "terceiraquest-app-v7";
 const APP_SHELL = [
     "./",
     "./index.html",
@@ -10,6 +10,7 @@ const APP_SHELL = [
     "./areas.css",
     "./shell.css",
     "./polish.css",
+    "./assets.css",
     "./script.js",
     "./manifest.webmanifest",
     "./icons/terceiraquest-192.png",
@@ -20,7 +21,8 @@ const APP_SHELL = [
     "./images/missoes/arco-iris.jpg",
     "./images/inicio/por-aqui.webp",
     "./images/inicio/vamos-sair.webp",
-    "./images/inicio/marca-terceira.svg"
+    "./images/inicio/marca-terceira.svg",
+    "./images/cartoes/ferias.webp"
 ];
 
 const RECURSOS_ESSENCIAIS = new Set(APP_SHELL.map(function(caminho) {
