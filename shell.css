@@ -1,0 +1,27 @@
+/* ==================================================
+   TERCEIRAQUEST — MOLDURA GLOBAL VISUAL
+   Apenas fundo exterior e tipografia; não altera lógica.
+   ================================================== */
+
+html {
+    background: #164c62;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 85% 8%, rgba(236,205,111,.42), transparent 27rem),
+        linear-gradient(155deg, #0f4058 0%, #1d6477 50%, #e2bf61 145%);
+    background-attachment: fixed;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.container {
+    border: 1px solid rgba(255,255,255,.7);
+}
+
+@media (max-width: 420px) {
+    body {
+        padding-top: 8px;
+    }
+}
