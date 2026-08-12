@@ -7,11 +7,6 @@
    Escolha visual dos três jogadores, sem cartões pesados.
    ================================================== */
 
-/* A classe funcional .escondido tem de prevalecer sobre o display:grid deste ecrã. */
-#ecran-jogadores.escondido {
-    display: none !important;
-}
-
 #ecran-jogadores {
     position: relative;
     display: grid;
@@ -25,6 +20,11 @@
         linear-gradient(180deg, rgba(255,255,255,.03) 0 34%, rgba(255,251,239,.94) 50%, #fffaf0 100%),
         url("images/inicio/vamos-sair.webp") center top / auto 390px no-repeat,
         #fffaf0;
+}
+
+/* A classe funcional escondido tem de prevalecer sobre o display:grid acima. */
+#ecran-jogadores.escondido {
+    display: none !important;
 }
 
 #ecran-jogadores::after {
