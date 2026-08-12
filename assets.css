@@ -9,6 +9,7 @@
 @import url("assets-data-09.css");
 @import url("assets-data-10.css");
 @import url("assets-data-11.css");
+@import url("assets-data-12.css");
 
 /* ==================================================
    TERCEIRAQUEST — BIBLIOTECA VISUAL FINAL
@@ -143,6 +144,28 @@
     background-image: var(--tq-natureza), var(--tq-observacao), var(--tq-criatividade), var(--tq-aventura);
 }
 
+/* CONQUISTAS — coleção de medalhas do pacote visual */
+#ecran-conquistas #conteudo-conquistas::before {
+    content: "";
+    display: block;
+    height: 68px;
+    margin: 4px 0 14px;
+    border: 1px solid #ead9a9;
+    border-radius: 16px;
+    background-color: #fff8df;
+    background-image:
+        var(--tq-medalha_cagarro),
+        var(--tq-medalha_golfinho),
+        var(--tq-medalha_turista),
+        var(--tq-medalha_terceirense),
+        var(--tq-medalha_touro_bravo),
+        var(--tq-medalha_trilhos);
+    background-repeat: no-repeat;
+    background-size: 54px 54px, 54px 54px, 54px 54px, 54px 54px, 54px 54px, 54px 54px;
+    background-position: 4% center, 22% center, 40% center, 60% center, 78% center, 96% center;
+    box-shadow: 0 4px 12px rgba(18,59,80,.05);
+}
+
 @media (max-width: 360px) {
     #ecran-principal .atividade-para-hoje:last-child {
         background-size: auto, 56% auto !important;
@@ -151,5 +174,10 @@
     .ecran-area .cabecalho-area,
     #ecran-missao .cabecalho-missao {
         background-size: 64% auto;
+    }
+
+    #ecran-conquistas #conteudo-conquistas::before {
+        height: 58px;
+        background-size: 44px 44px, 44px 44px, 44px 44px, 44px 44px, 44px 44px, 44px 44px;
     }
 }
