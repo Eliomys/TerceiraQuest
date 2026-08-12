@@ -1,0 +1,103 @@
+/* ==================================================
+   TERCEIRAQUEST — ECRÃ DE ENTRADA
+   Regras isoladas apenas em #ecran-jogadores.
+   ================================================== */
+
+#ecran-jogadores {
+    position: relative;
+    overflow: hidden;
+    padding-top: 26px;
+    background: linear-gradient(180deg, rgba(255,253,248,.96), rgba(255,250,236,.98));
+}
+
+#ecran-jogadores::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 128px;
+    background:
+        linear-gradient(180deg, rgba(18,59,80,.08), rgba(18,59,80,0)),
+        url("images/inicio/por-aqui.webp") center 47% / cover no-repeat;
+    opacity: .3;
+    pointer-events: none;
+}
+
+#ecran-jogadores > * {
+    position: relative;
+    z-index: 1;
+}
+
+#ecran-jogadores > h1 {
+    margin: 4px 0 6px;
+    color: #123b50;
+    font-size: 25px;
+    letter-spacing: .02em;
+    text-shadow: 0 1px 0 rgba(255,255,255,.9);
+}
+
+#ecran-jogadores > h2 {
+    margin: 0 0 24px;
+    color: #53625d;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+#ecran-jogadores .jogador {
+    min-height: 88px;
+    margin: 0 0 13px;
+    padding: 14px 16px;
+    gap: 16px;
+    border: 1px solid #dce6df;
+    border-left: 4px solid #3f7861;
+    border-radius: 18px;
+    background: rgba(255,255,255,.93);
+    box-shadow: 0 5px 15px rgba(18,59,80,.08);
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+#ecran-jogadores .jogador:hover {
+    transform: translateY(-1px);
+    border-color: #b9d0c3;
+    background: #fff;
+    box-shadow: 0 7px 18px rgba(18,59,80,.12);
+}
+
+#ecran-jogadores .avatar {
+    width: 70px;
+    height: 70px;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 10px rgba(18,59,80,.2);
+}
+
+#ecran-jogadores .info {
+    text-align: left;
+}
+
+#ecran-jogadores .info h3 {
+    color: #243b40;
+    font-size: 25px;
+}
+
+#ecran-jogadores .jogador::after {
+    content: "›";
+    margin-left: auto;
+    color: #b7831d;
+    font-size: 30px;
+    line-height: 1;
+}
+
+@media (max-width: 420px) {
+    #ecran-jogadores {
+        padding-top: 22px;
+    }
+
+    #ecran-jogadores .jogador {
+        min-height: 80px;
+        padding: 12px 14px;
+    }
+
+    #ecran-jogadores .avatar {
+        width: 62px;
+        height: 62px;
+    }
+}
