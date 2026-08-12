@@ -1,5 +1,5 @@
 /* Imagens finais do pacote TerceiraQuest, aplicadas sem alterar lógica. */
 #ecran-principal .atalhos button:first-child {
-    background-image: url("images/cartoes/ferias.webp");
-    background-position: center 52%;
+    background-image: url("images/cartoes/ferias.webp") !important;
+    background-position: center 52% !important;
 }
