@@ -7,6 +7,11 @@
    Escolha visual dos três jogadores, sem cartões pesados.
    ================================================== */
 
+/* A classe funcional .escondido tem de prevalecer sobre o display:grid deste ecrã. */
+#ecran-jogadores.escondido {
+    display: none !important;
+}
+
 #ecran-jogadores {
     position: relative;
     display: grid;
