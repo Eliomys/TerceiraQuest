@@ -1,10 +1,120 @@
+/* TERCEIRAQUEST — afinação final sem novas camadas */
+
+/* HOME — métricas e medalha real */
 #ecran-principal .estatistica{align-items:center!important}
-.medalha-mini-final{width:36px!important;height:36px!important;display:block!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important}
+.medalha-mini-final{
+  width:36px!important;height:36px!important;display:block!important;
+  background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important
+}
 #ecran-principal .estatistica:nth-child(2)>span:not(.medalha-mini-final){display:none!important}
-.medalha-final{width:90px!important;height:90px!important;display:block!important;justify-self:center!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important}
+.medalha-final{
+  width:90px!important;height:90px!important;display:block!important;justify-self:center!important;
+  background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important
+}
 .conquista-cartao-tq:not(.conquistada) .medalha-final{filter:grayscale(1)!important;opacity:.32!important}
-#ecran-principal .atividade-para-hoje:last-child{background-image:linear-gradient(90deg,rgba(255,251,242,.98) 0%,rgba(255,251,242,.92) 45%,rgba(255,251,242,.66) 63%,rgba(255,251,242,.12) 100%),var(--tq-jogo_do_dia)!important;background-size:auto,54% 100%!important;background-position:center,right center!important}
-#ecran-principal .cabecalho-bonus{background-image:linear-gradient(90deg,#fff8dd 0%,rgba(255,248,221,.98) 30%,rgba(255,248,221,.82) 50%,rgba(255,248,221,.40) 70%,rgba(255,248,221,.02) 100%),var(--tq-se_acontecer)!important;background-size:auto,68% 100%!important;background-position:center,right center!important}
-#ecran-principal .cabecalho-bonus .titulo-seccao{color:#123f54!important;text-shadow:none!important}
-#ecran-album .cabecalho-area,#ecran-conquistas .cabecalho-area,#ecran-diario .cabecalho-area,#ecran-mais .cabecalho-area,#ecran-jogos .cabecalho-area,#ecran-jogo .cabecalho-area,#ecran-missao .cabecalho-missao{background-size:cover!important;background-position:center!important}
-#ecran-album .cabecalho-area::after,#ecran-conquistas .cabecalho-area::after,#ecran-diario .cabecalho-area::after,#ecran-mais .cabecalho-area::after,#ecran-jogos .cabecalho-area::after,#ecran-jogo .cabecalho-area::after,#ecran-missao .cabecalho-missao::after{background:linear-gradient(90deg,rgba(255,253,248,.98),rgba(255,253,248,.72) 32%,rgba(255,253,248,.28) 62%,rgba(255,253,248,0) 100%),linear-gradient(180deg,rgba(255,253,248,0) 38%,rgba(255,253,248,.16) 68%,rgba(255,253,248,.96) 100%)!important}
+.medalha-fallback-final{
+  display:grid!important;place-items:center!important;background-image:none!important;
+  border-radius:50%!important;border:2px solid #d9d4c4!important;
+  background:#f2efe5!important;color:#9d8f69!important;font-size:25px!important;font-weight:800!important
+}
+.medalha-mini-final.medalha-fallback-final{font-size:16px!important;border-width:1px!important}
+.conquista-cartao-tq.conquistada .medalha-fallback-final{
+  border-color:#d5b45b!important;background:#fff7dc!important;color:#a67a19!important
+}
+
+/* JOGO DO DIA — imagem inteira, sem a esticar nem cortar */
+#ecran-principal .atividade-para-hoje:last-child{
+  min-height:150px!important;
+  padding-right:47%!important;
+  background-image:
+    linear-gradient(90deg,rgba(255,251,242,.99) 0%,rgba(255,251,242,.96) 43%,rgba(255,251,242,.72) 57%,rgba(255,251,242,.10) 78%,rgba(255,251,242,0) 100%),
+    var(--tq-jogo_do_dia)!important;
+  background-size:auto,43% auto!important;
+  background-position:center,right 12px center!important;
+  background-repeat:no-repeat!important
+}
+#ecran-principal .atividade-para-hoje:last-child .botao-principal{width:100%!important}
+
+/* SE ACONTECER — fotografia à direita a dissolver-se suavemente no creme para a esquerda */
+#ecran-principal .cabecalho-bonus{
+  min-height:126px!important;
+  background-image:
+    linear-gradient(90deg,#fff8dd 0%,rgba(255,248,221,.98) 34%,rgba(255,248,221,.82) 48%,rgba(255,248,221,.46) 61%,rgba(255,248,221,.10) 75%,rgba(255,248,221,0) 84%),
+    var(--tq-se_acontecer)!important;
+  background-size:auto,64% auto!important;
+  background-position:center,right center!important;
+  background-repeat:no-repeat!important;
+  background-color:#fff8dd!important
+}
+#ecran-principal .cabecalho-bonus::after{display:none!important}
+#ecran-principal .cabecalho-bonus .titulo-seccao{
+  color:#123f54!important;text-shadow:none!important;max-width:58%!important
+}
+#ecran-principal #botao-ver-bonus{
+  color:#123f54!important;background:rgba(255,255,255,.78)!important;
+  border:1px solid rgba(18,63,84,.16)!important;text-shadow:none!important
+}
+
+/* CABEÇALHOS — mostrar a imagem inteira e dissolver no creme */
+#ecran-album .cabecalho-area,
+#ecran-conquistas .cabecalho-area,
+#ecran-diario .cabecalho-area,
+#ecran-mais .cabecalho-area,
+#ecran-jogos .cabecalho-area,
+#ecran-jogo .cabecalho-area,
+#ecran-desafios-ferias .cabecalho-area,
+#ecran-desafios-diarios .cabecalho-area,
+#ecran-mapa .cabecalho-area,
+#ecran-missao .cabecalho-missao{
+  background-size:contain!important;
+  background-position:right center!important;
+  background-repeat:no-repeat!important;
+  background-color:#fffdf8!important
+}
+#ecran-album .cabecalho-area::after,
+#ecran-conquistas .cabecalho-area::after,
+#ecran-diario .cabecalho-area::after,
+#ecran-mais .cabecalho-area::after,
+#ecran-jogos .cabecalho-area::after,
+#ecran-jogo .cabecalho-area::after,
+#ecran-desafios-ferias .cabecalho-area::after,
+#ecran-desafios-diarios .cabecalho-area::after,
+#ecran-mapa .cabecalho-area::after,
+#ecran-missao .cabecalho-missao::after{
+  background:
+    linear-gradient(90deg,rgba(255,253,248,1) 0%,rgba(255,253,248,.92) 30%,rgba(255,253,248,.58) 52%,rgba(255,253,248,.14) 73%,rgba(255,253,248,0) 88%),
+    linear-gradient(180deg,rgba(255,253,248,0) 54%,rgba(255,253,248,.18) 72%,rgba(255,253,248,.92) 100%)!important
+}
+
+/* REGRA GLOBAL DE IMAGENS IMPORTANTES — não cortar */
+#ecran-missao .missao-imagem{height:auto!important;min-height:180px!important;background:#f4f0e5!important}
+#ecran-missao .missao-imagem img{
+  width:100%!important;height:auto!important;max-height:360px!important;object-fit:contain!important;background:#f4f0e5!important
+}
+#conteudo-album .item-album img,
+#conteudo-diario .miniatura-diario img{
+  object-fit:contain!important;background:#f4f0e5!important
+}
+#conteudo-mapa .foto-lugar-tq{
+  background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important;
+  background-color:#f1eee5!important
+}
+
+/* RODA — garantir uma única roda e movimento visível de ~4 s */
+#conteudo-mapa .roda-visual{display:none!important}
+#conteudo-mapa .roda-visual-tq~.roda-visual-tq,
+#conteudo-mapa .ponteiro-roda-tq~.ponteiro-roda-tq{display:none!important}
+#conteudo-mapa .roda-visual-tq{transition:transform 3.8s cubic-bezier(.08,.72,.12,1)!important}
+
+@media(max-width:420px){
+  #ecran-principal .atividade-para-hoje:last-child{
+    min-height:158px!important;padding-right:44%!important;background-size:auto,40% auto!important
+  }
+  #ecran-principal .cabecalho-bonus{background-size:auto,68% auto!important}
+}
+@media(max-width:360px){
+  .medalha-final{width:76px!important;height:76px!important}
+  #ecran-principal .atividade-para-hoje:last-child{
+    padding-right:41%!important;background-size:auto,37% auto!important
+  }
+}
