@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "terceiraquest-app-v21";
+const CACHE_NAME = "terceiraquest-app-v22";
 const APP_SHELL = [
     "./",
     "./index.html",
@@ -43,7 +43,16 @@ const APP_SHELL = [
     "./images/inicio/por-aqui.webp",
     "./images/inicio/vamos-sair.webp",
     "./images/inicio/marca-terceira.svg",
-    "./images/cartoes/ferias.webp"
+    "./images/cartoes/ferias.webp",
+    "./images/medalhas/medalha-cagarro.webp",
+    "./images/medalhas/medalha-golfinho.webp",
+    "./images/medalhas/medalha-touro-bravo.webp",
+    "./images/medalhas/medalha-turista.webp",
+    "./images/medalhas/medalha-terceirense.webp",
+    "./images/medalhas/medalha-lenda-terceiraquest.webp",
+    "./images/medalhas/medalha-pes-na-terra.webp",
+    "./images/medalhas/medalha-cacadores-tesouros.webp",
+    "./images/medalhas/medalha-ferias-em-grande.webp"
 ];
 
 const RECURSOS_ESSENCIAIS = new Set(APP_SHELL.map(function(caminho) {
