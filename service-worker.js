@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "terceiraquest-app-v28";
+const CACHE_NAME = "terceiraquest-app-v29";
 const APP_SHELL = [
     "./",
     "./index.html",
