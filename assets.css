@@ -28,16 +28,6 @@
     background-position: center 54% !important;
 }
 
-/* JOGO DO DIA */
-#ecran-principal .atividade-para-hoje:last-child {
-    background-image:
-        linear-gradient(90deg, rgba(255,250,240,.97) 0 58%, rgba(255,250,240,.80) 76%, rgba(255,250,240,.42)),
-        var(--tq-jogo_do_dia) !important;
-    background-position: center, right center !important;
-    background-size: auto, 48% auto !important;
-    background-repeat: no-repeat !important;
-}
-
 /* EXPLORAR */
 #ecran-principal .atalhos button:first-child {
     background-image: var(--tq-ferias) !important;
@@ -104,11 +94,9 @@
     z-index: 1;
 }
 
-#ecran-desafios-ferias .cabecalho-area { background-image: var(--tq-ferias); }
 #ecran-desafios-diarios .cabecalho-area { background-image: var(--tq-desafios_diarios); }
 #ecran-jogos .cabecalho-area,
 #ecran-jogo .cabecalho-area { background-image: var(--tq-jogo_do_dia); }
-#ecran-mapa .cabecalho-area { background-image: var(--tq-natureza); }
 #ecran-album .cabecalho-area,
 #ecran-fotografia .cabecalho-area { background-image: var(--tq-fotografia); }
 #ecran-conquistas .cabecalho-area { background-image: var(--tq-conquistas); }
@@ -167,10 +155,6 @@
 }
 
 @media (max-width: 360px) {
-    #ecran-principal .atividade-para-hoje:last-child {
-        background-size: auto, 56% auto !important;
-    }
-
     .ecran-area .cabecalho-area,
     #ecran-missao .cabecalho-missao {
         background-size: 64% auto;

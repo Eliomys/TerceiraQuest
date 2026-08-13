@@ -5,12 +5,6 @@
 #ecran-principal .medalha-mini-tq6{grid-row:1!important;width:34px!important;height:34px!important;margin:0 auto!important;display:block!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important;filter:drop-shadow(0 2px 3px rgba(101,70,10,.22))}
 #ecran-principal .estatistica:nth-child(2)>span:not(.medalha-mini-tq6){display:none!important}
 
-/* Jogo do dia: menos desvanecimento, fotografia mais presente */
-#ecran-principal .atividade-para-hoje:last-child{
- background-image:linear-gradient(90deg,rgba(255,250,240,.90) 0 48%,rgba(255,250,240,.58) 68%,rgba(255,250,240,.18)),var(--tq-jogo_do_dia)!important;
- background-size:auto,56% auto!important;background-position:center,right center!important;background-repeat:no-repeat!important
-}
-
 /* Se acontecer: um pouco mais desvanecido que na ronda anterior */
 #ecran-principal .cabecalho-bonus{
  background-image:
@@ -58,5 +52,4 @@
 
 @media(max-width:360px){
  .medalha-bg-tq6,.medalha-nova-tq6{width:76px!important;height:76px!important}
- #ecran-principal .atividade-para-hoje:last-child{background-size:auto,62% auto!important}
 }

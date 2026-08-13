@@ -18,17 +18,17 @@ function formatarDatas(root){
 /* ---------- MEDALHAS ----------
    As nove medalhas usam exclusivamente o novo pack aprovado, guardado
    localmente para funcionar também offline. */
-const medalhas=[
-  {nome:"Cagarro",ficheiro:"images/medalhas/medalha-cagarro.webp"},
-  {nome:"Golfinho",ficheiro:"images/medalhas/medalha-golfinho.webp"},
-  {nome:"Touro Bravo",ficheiro:"images/medalhas/medalha-touro-bravo.webp"},
-  {nome:"Turista",ficheiro:"images/medalhas/medalha-turista.webp"},
-  {nome:"Terceirense",ficheiro:"images/medalhas/medalha-terceirense.webp"},
-  {nome:"Lenda da TerceiraQuest",ficheiro:"images/medalhas/medalha-lenda-terceiraquest.webp"},
-  {nome:"Pés na Terra",ficheiro:"images/medalhas/medalha-pes-na-terra.webp"},
-  {nome:"Caçadores de Tesouros",ficheiro:"images/medalhas/medalha-cacadores-tesouros.webp"},
-  {nome:"Férias em Grande",ficheiro:"images/medalhas/medalha-ferias-em-grande.webp"}
-];
+const medalhasPorConquista={
+  "primeira-atividade":{nome:"Cagarro",ficheiro:"images/medalhas/medalha-cagarro.webp"},
+  "dez-atividades":{nome:"Golfinho",ficheiro:"images/medalhas/medalha-golfinho.webp"},
+  "quarenta-atividades":{nome:"Touro Bravo",ficheiro:"images/medalhas/medalha-touro-bravo.webp"},
+  "sessenta-cinco-atividades":{nome:"Turista",ficheiro:"images/medalhas/medalha-turista.webp"},
+  "oitenta-atividades":{nome:"Terceirense",ficheiro:"images/medalhas/medalha-terceirense.webp"},
+  "cem-atividades":{nome:"Lenda da TerceiraQuest",ficheiro:"images/medalhas/medalha-lenda-terceiraquest.webp"},
+  "trilhos-completos":{nome:"Pés na Terra",ficheiro:"images/medalhas/medalha-pes-na-terra.webp"},
+  "geocaching-completo":{nome:"Caçadores de Tesouros",ficheiro:"images/medalhas/medalha-cacadores-tesouros.webp"},
+  "desafios-ferias-completos":{nome:"Férias em Grande",ficheiro:"images/medalhas/medalha-ferias-em-grande.webp"}
+};
 function medalhaEl(cfg){
   const el=document.createElement("span");
   el.className="medalha-final medalha-pack-novo";
@@ -39,10 +39,12 @@ function medalhaEl(cfg){
 }
 window.renderConquistas=renderConquistas=function(estado){
   const area=document.getElementById("conteudo-conquistas");if(!area)return;area.innerHTML="";
-  catalogo.conquistas.forEach(function(c,i){
-    const cfg=medalhas[i]||{nome:c.titulo,ficheiro:"images/medalhas/medalha-cagarro.webp"};
+  catalogo.conquistas.forEach(function(c){
+    const cfg=medalhasPorConquista[c.id];
+    if(!cfg)return;
     const ganha=ganhaConquista(c,estado),card=document.createElement("section");
     card.className="conquista-cartao-tq"+(ganha?" conquistada":"");
+    card.dataset.conquistaId=c.id;
     const info=document.createElement("div");info.className="conquista-info-tq";
     const h=document.createElement("h3");h.textContent=c.titulo;
     const nome=document.createElement("small");nome.className="nome-medalha-tq3";nome.textContent="Medalha: "+cfg.nome;
@@ -57,7 +59,37 @@ function atualizarMedalhaHome(){
   catalogo.conquistas.forEach(function(c){if(ganhaConquista(c,estado))total++;});
   const n=document.getElementById("medalhas-jogador");if(n)n.textContent=String(total);
   const caixa=document.querySelector("#ecran-principal .estatistica:nth-child(2)");
-  if(caixa)caixa.querySelectorAll(".medalha-mini-final,.medalha-mini-tq,.medalha-mini-tq6").forEach(e=>e.remove());
+  if(caixa){
+    caixa.querySelectorAll(".medalha-mini-final,.medalha-mini-tq,.medalha-mini-tq6").forEach(e=>e.remove());
+    const icone=caixa.querySelector(":scope > span");if(icone)icone.textContent="🏅";
+  }
+}
+function urlRecursoCss(nome){
+  const valor=getComputedStyle(document.documentElement).getPropertyValue(nome).trim();
+  const resultado=valor.match(/^url\(["']?(.*?)["']?\)$/);
+  return resultado?resultado[1]:"";
+}
+function garantirImagemCabecalho(ecraId,variavelCss,alt){
+  const cabecalho=document.querySelector(`#${ecraId} .cabecalho-area`);if(!cabecalho)return;
+  let imagem=cabecalho.querySelector(":scope > img.imagem-cabecalho-tq");
+  if(!imagem){
+    imagem=document.createElement("img");imagem.className="imagem-cabecalho-tq";
+    imagem.alt=alt;imagem.setAttribute("aria-hidden","true");cabecalho.appendChild(imagem);
+  }
+  const src=urlRecursoCss(variavelCss);if(src&&imagem.src!==src)imagem.src=src;
+}
+function garantirImagensEstruturais(){
+  garantirImagemCabecalho("ecran-desafios-ferias","--tq-ferias","");
+  garantirImagemCabecalho("ecran-mapa","--tq-natureza","");
+  document.querySelectorAll("#ecran-principal .atividade-para-hoje").forEach(function(cartao){
+    const tipo=cartao.querySelector(".tipo-atividade-hoje");if(!tipo||!/JOGO/i.test(tipo.textContent))return;
+    let imagem=cartao.querySelector(":scope > img.imagem-jogo-dia-tq");
+    if(!imagem){
+      imagem=document.createElement("img");imagem.className="imagem-jogo-dia-tq";
+      imagem.alt="";imagem.setAttribute("aria-hidden","true");cartao.appendChild(imagem);
+    }
+    const src=urlRecursoCss("--tq-jogo_do_dia");if(src&&imagem.src!==src)imagem.src=src;
+  });
 }
 
 /* ---------- LUGARES + RODA ÚNICOS ----------
@@ -176,10 +208,10 @@ window.abrirArea=function(id){
 const atualizarOriginal=window.atualizarEstadoJogo;
 window.atualizarEstadoJogo=function(){
   const r=atualizarOriginal.apply(this,arguments);
-  setTimeout(()=>{atualizarMedalhaHome();formatarDatas(document.body);},20);
+  setTimeout(()=>{atualizarMedalhaHome();garantirImagensEstruturais();formatarDatas(document.body);},20);
   return r;
 };
 document.addEventListener("DOMContentLoaded",function(){
-  setTimeout(function(){atualizarMedalhaHome();formatarDatas(document.body);},100);
+  setTimeout(function(){atualizarMedalhaHome();garantirImagensEstruturais();formatarDatas(document.body);},100);
 });
 })();
