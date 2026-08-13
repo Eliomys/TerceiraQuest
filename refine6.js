@@ -16,36 +16,31 @@ function formatarDatas(root){
 }
 
 /* ---------- MEDALHAS ----------
-   Reutiliza as classes já estáveis da afinação 3 para as seis medalhas
-   oficiais. As três ainda sem imagem oficial mantêm um fallback simples. */
+   As nove medalhas usam exclusivamente o novo pack aprovado, guardado
+   localmente para funcionar também offline. */
 const medalhas=[
-  {nome:"Cagarro",classe:"medalha-cagarro-tq"},
-  {nome:"Golfinho",classe:"medalha-golfinho-tq"},
-  {nome:"Touro Bravo",classe:"medalha-touro-tq"},
-  {nome:"Turista",classe:"medalha-turista-tq"},
-  {nome:"Terceirense",classe:"medalha-terceirense-tq"},
-  {nome:"Lenda da TerceiraQuest",fallback:true},
-  {nome:"Pés na Terra",classe:"medalha-trilhos-tq"},
-  {nome:"Caçadores de Tesouros",fallback:true},
-  {nome:"Férias em Grande",fallback:true}
+  {nome:"Cagarro",ficheiro:"images/medalhas/medalha-cagarro.webp"},
+  {nome:"Golfinho",ficheiro:"images/medalhas/medalha-golfinho.webp"},
+  {nome:"Touro Bravo",ficheiro:"images/medalhas/medalha-touro-bravo.webp"},
+  {nome:"Turista",ficheiro:"images/medalhas/medalha-turista.webp"},
+  {nome:"Terceirense",ficheiro:"images/medalhas/medalha-terceirense.webp"},
+  {nome:"Lenda da TerceiraQuest",ficheiro:"images/medalhas/medalha-lenda-terceiraquest.webp"},
+  {nome:"Pés na Terra",ficheiro:"images/medalhas/medalha-pes-na-terra.webp"},
+  {nome:"Caçadores de Tesouros",ficheiro:"images/medalhas/medalha-cacadores-tesouros.webp"},
+  {nome:"Férias em Grande",ficheiro:"images/medalhas/medalha-ferias-em-grande.webp"}
 ];
-function medalhaEl(cfg,classeBase){
+function medalhaEl(cfg){
   const el=document.createElement("span");
-  el.className=classeBase||"medalha-final";
+  el.className="medalha-final medalha-pack-novo";
   el.title=cfg.nome;
   el.setAttribute("aria-label","Medalha "+cfg.nome);
-  if(cfg.classe){
-    el.classList.add("medalha-real-tq",cfg.classe);
-  }else{
-    el.classList.add("medalha-fallback-final");
-    el.textContent="★";
-  }
+  el.style.backgroundImage=`url("${cfg.ficheiro}")`;
   return el;
 }
 window.renderConquistas=renderConquistas=function(estado){
   const area=document.getElementById("conteudo-conquistas");if(!area)return;area.innerHTML="";
   catalogo.conquistas.forEach(function(c,i){
-    const cfg=medalhas[i]||{nome:c.titulo,fallback:true};
+    const cfg=medalhas[i]||{nome:c.titulo,ficheiro:"images/medalhas/medalha-cagarro.webp"};
     const ganha=ganhaConquista(c,estado),card=document.createElement("section");
     card.className="conquista-cartao-tq"+(ganha?" conquistada":"");
     const info=document.createElement("div");info.className="conquista-info-tq";
@@ -58,15 +53,11 @@ window.renderConquistas=renderConquistas=function(estado){
   atualizarMedalhaHome();
 };
 function atualizarMedalhaHome(){
-  const estado=obterEstadoFamilia();let total=0,ultima=-1;
-  catalogo.conquistas.forEach((c,i)=>{if(ganhaConquista(c,estado)){total++;ultima=i;}});
+  const estado=obterEstadoFamilia();let total=0;
+  catalogo.conquistas.forEach(function(c){if(ganhaConquista(c,estado))total++;});
   const n=document.getElementById("medalhas-jogador");if(n)n.textContent=String(total);
-  const caixa=document.querySelector("#ecran-principal .estatistica:nth-child(2)");if(!caixa)return;
-  caixa.querySelectorAll(".medalha-mini-final,.medalha-mini-tq,.medalha-mini-tq6").forEach(e=>e.remove());
-  const indice=ultima>=0?ultima:0;
-  const mini=medalhaEl(medalhas[indice]||{nome:"Conquista",fallback:true},"medalha-mini-final");
-  if(ultima<0)mini.classList.add("medalha-mini-por-conquistar");
-  caixa.insertBefore(mini,caixa.firstChild);
+  const caixa=document.querySelector("#ecran-principal .estatistica:nth-child(2)");
+  if(caixa)caixa.querySelectorAll(".medalha-mini-final,.medalha-mini-tq,.medalha-mini-tq6").forEach(e=>e.remove());
 }
 
 /* ---------- LUGARES + RODA ÚNICOS ----------
@@ -142,7 +133,6 @@ function garantirRoda(){
     let i=0;
     const intervalo=setInterval(()=>{resultado.textContent=disponiveis[i++%disponiveis.length].nome;},115);
 
-    /* força um frame inicial antes da transformação para garantir animação */
     roda.style.transition="none";
     roda.getBoundingClientRect();
     roda.style.transition="";
