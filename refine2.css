@@ -1,0 +1,184 @@
+/* TERCEIRAQUEST — segunda afinação visual */
+
+/* ===== TOPO / PERFIL / PROGRESSO ===== */
+#ecran-principal .topo {
+  margin: -4px -2px 0;
+  padding: 14px 14px 12px;
+  border: 1px solid rgba(18,63,84,.10);
+  border-radius: 22px 22px 0 0;
+  background: linear-gradient(135deg,#fffdf8 0%,#f3f8f6 100%);
+  box-shadow: 0 10px 24px rgba(18,63,84,.07);
+}
+#ecran-principal .perfil { gap: 11px; }
+#ecran-principal .perfil .avatar-pequeno {
+  width: 58px; height: 58px;
+  border: 4px solid #fff;
+  box-shadow: 0 5px 14px rgba(18,63,84,.22);
+}
+#ecran-principal .perfil .saudacao { color:#64756f; font-size:12px; margin-bottom:1px; }
+#ecran-principal .perfil h2 { color:#123f54; font-size:22px; }
+#ecran-principal .sino {
+  width:42px; height:42px; display:grid; place-items:center;
+  border-radius:50%; background:#fff8df; border:1px solid #efdca2;
+  box-shadow:0 4px 12px rgba(161,112,17,.10);
+}
+#ecran-principal .estatisticas {
+  margin: 0 -2px;
+  padding: 14px 8px 12px;
+  border-radius: 0 0 22px 22px;
+  border-top:0;
+  background:#fff;
+  box-shadow:0 10px 24px rgba(18,63,84,.07);
+}
+#ecran-principal .estatistica span { font-size:18px; opacity:.9; }
+#ecran-principal .estatistica strong { color:#123f54; font-size:22px; margin-top:2px; }
+#ecran-principal .estatistica small { color:#66746f; font-size:11px; }
+#ecran-principal .progresso {
+  margin: 14px 0 22px;
+  padding: 13px 14px 14px;
+  border-radius:16px;
+  background:linear-gradient(90deg,#f5f8f6,#fffaf0);
+  border:1px solid #e1e8e4;
+}
+#ecran-principal .progresso-titulo { font-size:13px; color:#294b56; }
+#ecran-principal .barra { height:11px; margin-top:9px; background:#e4e9e6; border-radius:999px; overflow:hidden; }
+#ecran-principal .barra-preenchida { min-width:3px; border-radius:999px; background:linear-gradient(90deg,#2d6b7c,#4d8c73); }
+
+/* ===== BOTÕES ===== */
+.botao-principal,
+#ecran-principal .atividade-para-hoje .botao-principal,
+.ecran-area .botao-principal,
+#ecran-missao .botao-principal {
+  background:linear-gradient(135deg,#174f67,#236c7b) !important;
+  color:#fff !important;
+  border:0 !important;
+  box-shadow:0 5px 12px rgba(18,63,84,.16) !important;
+}
+.botao-secundario,
+.ecran-area .botao-secundario {
+  background:#f5f7f5 !important;
+  color:#174f67 !important;
+  border:1px solid #d7e0dc !important;
+}
+
+/* ===== CONQUISTAS ===== */
+#conteudo-conquistas { display:grid; gap:14px; }
+#conteudo-conquistas .conquista-cartao {
+  position:relative;
+  display:grid;
+  grid-template-columns:86px 1fr;
+  column-gap:15px;
+  min-height:122px;
+  padding:16px;
+  border-radius:20px;
+  overflow:hidden;
+}
+#conteudo-conquistas .medalha-conquista {
+  grid-column:1;
+  grid-row:1 / span 5;
+  align-self:center;
+  width:76px; height:76px;
+  border-radius:50%;
+  background-color:#f1f2ef;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:cover;
+  border:4px solid #fff;
+  box-shadow:0 5px 15px rgba(18,63,84,.16);
+}
+#conteudo-conquistas .conquista-cartao > *:not(.medalha-conquista) { grid-column:2; }
+#conteudo-conquistas .conquista-cartao h3 { margin:0 0 4px; font-size:18px; line-height:1.15; }
+#conteudo-conquistas .nome-medalha-tq {
+  display:inline-flex; align-items:center; gap:5px;
+  width:max-content; margin:0 0 7px; padding:4px 8px;
+  border-radius:999px; background:#edf4f2; color:#315e5d;
+  font-size:11px; font-weight:800; letter-spacing:.02em;
+}
+#conteudo-conquistas .conquista-bloqueada .medalha-conquista { filter:grayscale(1); opacity:.38; }
+#conteudo-conquistas .conquista-desbloqueada {
+  border-color:#e6c76f !important;
+  background:linear-gradient(135deg,#fffdf7,#fff7da) !important;
+}
+#conteudo-conquistas .conquista-desbloqueada .medalha-conquista {
+  filter:none; opacity:1; border-color:#f0d486; box-shadow:0 0 0 3px rgba(240,212,134,.32),0 7px 18px rgba(145,99,12,.18);
+}
+#conteudo-conquistas .estado-medalha-tq { color:#8b6414; font-weight:800; font-size:13px; }
+
+/* medalhas CSS exclusivas quando não existe imagem do pacote */
+.medalha-css-tq { display:grid !important; place-items:center; font-size:32px; background-image:none !important; }
+.medalha-css-tq::after { content:attr(data-simbolo); }
+
+/* ===== ÍCONES DOS DESAFIOS: UM SISTEMA DISCRETO, NÃO UM SOL REPETIDO ===== */
+.icone-categoria-tq { display:none !important; }
+.painel h3 .icone-desafio-tq {
+  display:inline-grid; place-items:center; width:27px; height:27px; margin-right:7px;
+  border-radius:9px; background:#eef4f2; color:#174f67; font-size:15px; vertical-align:middle;
+}
+
+/* ===== TEMPORIZADOR ===== */
+[data-temporizador-id] {
+  position:relative;
+  padding:18px 16px 14px !important;
+  margin:14px 0 !important;
+  border:1px solid #d7e2de !important;
+  border-radius:22px !important;
+  background:radial-gradient(circle at 50% 32%,#fff 0 37%,#f1f6f4 38% 100%) !important;
+  box-shadow:0 8px 20px rgba(18,63,84,.09) !important;
+  text-align:center;
+}
+.temporizador-valor {
+  display:grid !important; place-items:center;
+  width:116px; height:116px; margin:0 auto 13px !important;
+  border-radius:50%;
+  border:8px solid #dfe9e5;
+  outline:2px solid #fff;
+  background:#fff;
+  color:#123f54 !important;
+  font-size:30px !important; font-variant-numeric:tabular-nums;
+  box-shadow:0 5px 16px rgba(18,63,84,.12), inset 0 0 0 1px #edf1ef;
+}
+.temporizador-terminado .temporizador-valor { border-color:#e9ca68; color:#8a6114 !important; }
+.temporizador-controlos { display:flex !important; gap:8px; justify-content:center; flex-wrap:wrap; }
+.temporizador-controlos button { min-width:112px !important; border-radius:999px !important; }
+.temporizador-aviso { display:block; margin:-2px 0 12px; color:#697872; line-height:1.35; }
+
+/* ===== RODA ===== */
+.roda-visual-tq {
+  position:relative; width:190px; height:190px; margin:12px auto 17px;
+  border-radius:50%;
+  background:conic-gradient(#174f67 0 45deg,#e0b449 45deg 90deg,#4d8c73 90deg 135deg,#f2e4b9 135deg 180deg,#236c7b 180deg 225deg,#d99a45 225deg 270deg,#79a891 270deg 315deg,#f7f1df 315deg 360deg);
+  border:8px solid #fff;
+  box-shadow:0 0 0 2px #d9e2de,0 10px 24px rgba(18,63,84,.16);
+  transition:transform 1.9s cubic-bezier(.13,.67,.13,1);
+}
+.roda-visual-tq::before { content:""; position:absolute; inset:30px; border-radius:50%; background:#fffdf8; box-shadow:inset 0 0 0 1px #e5e8e4; }
+.roda-visual-tq::after { content:"TERCEIRA"; position:absolute; inset:0; display:grid; place-items:center; color:#123f54; font-size:13px; font-weight:900; letter-spacing:.12em; }
+.ponteiro-roda-tq { width:0; height:0; margin:0 auto -5px; border-left:13px solid transparent; border-right:13px solid transparent; border-top:22px solid #b77b16; position:relative; z-index:2; }
+#resultado-roda-mapa { min-height:28px; text-align:center; font-weight:800; color:#174f67; }
+
+/* ===== LUGARES ===== */
+#conteudo-mapa .cartao-lugar-tq { padding:0 !important; overflow:hidden; border-radius:20px !important; }
+.foto-lugar-tq { height:132px; background:#e7eeea center/cover no-repeat; position:relative; }
+.foto-lugar-tq::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.25)); }
+.corpo-lugar-tq { padding:14px 15px 15px; }
+.corpo-lugar-tq h3 { margin:0 0 5px; font-size:18px; color:#123f54; }
+.corpo-lugar-tq p { margin:0 0 9px; color:#69766f; font-size:13px; }
+
+/* ===== DIÁRIO ===== */
+#conteudo-diario { display:grid; gap:13px; }
+#conteudo-diario > * { border-radius:18px !important; }
+#conteudo-diario h3 { font-size:17px !important; line-height:1.22; color:#123f54; }
+#conteudo-diario p, #conteudo-diario small { font-size:13px !important; line-height:1.45; color:#64726d; }
+#conteudo-diario img { max-height:150px !important; width:100% !important; object-fit:cover !important; border-radius:14px !important; }
+
+/* ===== ÁLBUM ===== */
+#conteudo-album { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+#conteudo-album > p, #conteudo-album > h3, #conteudo-album > .painel { grid-column:1/-1; }
+#conteudo-album img { width:100% !important; aspect-ratio:1/1 !important; height:auto !important; object-fit:cover !important; border-radius:15px !important; box-shadow:0 5px 13px rgba(18,63,84,.12); }
+#conteudo-album button { border-radius:16px !important; overflow:hidden; }
+
+@media(max-width:360px){
+  #conteudo-conquistas .conquista-cartao{grid-template-columns:70px 1fr;padding:13px;column-gap:11px}
+  #conteudo-conquistas .medalha-conquista{width:62px;height:62px}
+  .roda-visual-tq{width:168px;height:168px}
+}
