@@ -16,30 +16,26 @@ function formatarDatas(root){
 }
 
 /* ---------- MEDALHAS ----------
-   As seis medalhas aprovadas usam diretamente as variáveis da biblioteca
-   visual oficial. As três ainda sem imagem oficial mantêm um fallback simples. */
+   Reutiliza as classes já estáveis da afinação 3 para as seis medalhas
+   oficiais. As três ainda sem imagem oficial mantêm um fallback simples. */
 const medalhas=[
-  {nome:"Cagarro",css:"--tq-medalha_cagarro"},
-  {nome:"Golfinho",css:"--tq-medalha_golfinho"},
-  {nome:"Touro Bravo",css:"--tq-medalha_touro_bravo"},
-  {nome:"Turista",css:"--tq-medalha_turista"},
-  {nome:"Terceirense",css:"--tq-medalha_terceirense"},
+  {nome:"Cagarro",classe:"medalha-cagarro-tq"},
+  {nome:"Golfinho",classe:"medalha-golfinho-tq"},
+  {nome:"Touro Bravo",classe:"medalha-touro-tq"},
+  {nome:"Turista",classe:"medalha-turista-tq"},
+  {nome:"Terceirense",classe:"medalha-terceirense-tq"},
   {nome:"Lenda da TerceiraQuest",fallback:true},
-  {nome:"Pés na Terra",css:"--tq-medalha_trilhos"},
+  {nome:"Pés na Terra",classe:"medalha-trilhos-tq"},
   {nome:"Caçadores de Tesouros",fallback:true},
   {nome:"Férias em Grande",fallback:true}
 ];
-function imagemMedalha(cfg){
-  return cfg&&cfg.css?`var(${cfg.css})`:"";
-}
-function medalhaEl(cfg,classe){
+function medalhaEl(cfg,classeBase){
   const el=document.createElement("span");
-  const imagem=imagemMedalha(cfg);
-  el.className=classe||"medalha-final";
+  el.className=classeBase||"medalha-final";
   el.title=cfg.nome;
   el.setAttribute("aria-label","Medalha "+cfg.nome);
-  if(imagem){
-    el.style.backgroundImage=imagem;
+  if(cfg.classe){
+    el.classList.add("medalha-real-tq",cfg.classe);
   }else{
     el.classList.add("medalha-fallback-final");
     el.textContent="★";
@@ -119,7 +115,14 @@ function garantirRoda(){
   const area=document.getElementById("conteudo-mapa"),resultado=document.getElementById("resultado-roda-mapa");if(!area||!resultado)return null;
   const painel=resultado.closest(".painel");if(!painel)return null;
   painel.querySelectorAll(".roda-visual,.roda-visual-tq,.ponteiro-roda-tq").forEach(e=>e.remove());
-  const botao=Array.from(painel.querySelectorAll("button")).find(b=>/RODAR/i.test(b.textContent));
+
+  const botaoAntigo=Array.from(painel.querySelectorAll("button")).find(b=>/RODAR/i.test(b.textContent));
+  let botao=botaoAntigo;
+  if(botaoAntigo){
+    botao=botaoAntigo.cloneNode(true);
+    botaoAntigo.replaceWith(botao);
+  }
+
   const ponteiro=document.createElement("div");ponteiro.className="ponteiro-roda-tq";
   const roda=document.createElement("div");roda.className="roda-visual-tq";
   if(botao){painel.insertBefore(ponteiro,botao);painel.insertBefore(roda,botao);}else{painel.append(ponteiro,roda);}
@@ -128,16 +131,35 @@ function garantirRoda(){
     const a=(i/12)*Math.PI*2-Math.PI/2,r=94;
     ponto.style.left=`calc(50% + ${Math.cos(a)*r}px)`;ponto.style.top=`calc(50% + ${Math.sin(a)*r}px)`;roda.appendChild(ponto);
   }
-  window.rodarRodaMapa=function(){
+
+  function rodar(){
     const estado=obterEstadoFamilia();
     const disponiveis=catalogo.locais.filter(l=>!estado.locaisConcluidos||!estado.locaisConcluidos[l.id]);
     if(!disponiveis.length){resultado.textContent="Todos os locais já foram concluídos.";return;}
     const destino=disponiveis[Math.floor(Math.random()*disponiveis.length)];
-    if(botao)botao.disabled=true;resultado.textContent="A roda está a escolher…";
-    let i=0;const intervalo=setInterval(()=>{resultado.textContent=disponiveis[i++%disponiveis.length].nome;},115);
-    rotacao+=2160+Math.floor(Math.random()*900);roda.style.transform=`rotate(${rotacao}deg)`;
-    setTimeout(()=>{clearInterval(intervalo);resultado.textContent="Hoje vamos a: "+destino.nome;if(botao)botao.disabled=false;},4000);
-  };
+    if(botao)botao.disabled=true;
+    resultado.textContent="A roda está a escolher…";
+    let i=0;
+    const intervalo=setInterval(()=>{resultado.textContent=disponiveis[i++%disponiveis.length].nome;},115);
+
+    /* força um frame inicial antes da transformação para garantir animação */
+    roda.style.transition="none";
+    roda.getBoundingClientRect();
+    roda.style.transition="";
+    requestAnimationFrame(function(){
+      rotacao+=2160+Math.floor(Math.random()*900);
+      roda.style.transform=`rotate(${rotacao}deg)`;
+    });
+
+    setTimeout(()=>{
+      clearInterval(intervalo);
+      resultado.textContent="Hoje vamos a: "+destino.nome;
+      if(botao)botao.disabled=false;
+    },4000);
+  }
+
+  window.rodarRodaMapa=rodar;
+  if(botao)botao.addEventListener("click",rodar);
   return roda;
 }
 
