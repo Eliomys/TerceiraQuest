@@ -1228,6 +1228,30 @@ function desfazerJogoAtual() {
     }
 }
 
+let rotacaoRodaMapa = 0;
+
+function criarRodaVisualMapa() {
+    const fragmento = document.createDocumentFragment();
+    const ponteiro = document.createElement("div");
+    ponteiro.className = "ponteiro-roda-tq";
+    const roda = document.createElement("div");
+    roda.className = "roda-visual-tq";
+
+    for (let indice = 0; indice < 12; indice += 1) {
+        const ponto = document.createElement("span");
+        ponto.className = "roda-ponto-tq";
+        const angulo = (indice / 12) * Math.PI * 2 - Math.PI / 2;
+        const raio = 94;
+        ponto.style.left = `calc(50% + ${Math.cos(angulo) * raio}px)`;
+        ponto.style.top = `calc(50% + ${Math.sin(angulo) * raio}px)`;
+        roda.appendChild(ponto);
+    }
+
+    fragmento.appendChild(ponteiro);
+    fragmento.appendChild(roda);
+    return fragmento;
+}
+
 function renderMapa(localAbertoId) {
     const conteudo = document.getElementById("conteudo-mapa");
     if (!conteudo) {
@@ -1257,6 +1281,7 @@ function renderMapa(localAbertoId) {
         botao.className = "botao-principal";
         botao.textContent = "RODAR A RODA";
         botao.addEventListener("click", rodarRodaMapa);
+        roda.appendChild(criarRodaVisualMapa());
         roda.appendChild(botao);
     } else {
         resultado.textContent = "A roda estará disponível quando existirem locais no mapa.";
@@ -1282,6 +1307,10 @@ function renderMapa(localAbertoId) {
         cartao.appendChild(botao);
         conteudo.appendChild(cartao);
     });
+
+    if (typeof window.decorarLocaisTQ === "function") {
+        window.decorarLocaisTQ();
+    }
 }
 
 function abrirLocal(localId) {
@@ -1346,14 +1375,47 @@ function renderDesafiosDoLocal(conteudo, local) {
 }
 
 function rodarRodaMapa() {
-    const destino = escolherAleatoriamente(catalogo.locais, 1)[0];
+    const estado = obterEstadoFamilia();
+    const disponiveis = catalogo.locais.filter(function(local) {
+        return !estado.locaisConcluidos || !estado.locaisConcluidos[local.id];
+    });
     const resultado = document.getElementById("resultado-roda-mapa");
+    const roda = document.querySelector("#conteudo-mapa .roda-visual-tq");
+    const botao = Array.from(document.querySelectorAll("#conteudo-mapa button")).find(function(item) {
+        return /RODAR/i.test(item.textContent);
+    });
 
-    if (!resultado || !destino) {
+    if (!resultado || !roda) {
         return;
     }
 
-    resultado.textContent = `Hoje vamos a: ${destino.nome}`;
+    if (!disponiveis.length) {
+        resultado.textContent = "Todos os locais já foram concluídos.";
+        return;
+    }
+
+    const destino = disponiveis[Math.floor(Math.random() * disponiveis.length)];
+    if (botao) botao.disabled = true;
+    resultado.textContent = "A roda está a escolher…";
+    let indice = 0;
+    const intervalo = window.setInterval(function() {
+        resultado.textContent = disponiveis[indice % disponiveis.length].nome;
+        indice += 1;
+    }, 115);
+
+    roda.style.transition = "none";
+    roda.getBoundingClientRect();
+    roda.style.transition = "";
+    window.requestAnimationFrame(function() {
+        rotacaoRodaMapa += 2160 + Math.floor(Math.random() * 900);
+        roda.style.transform = `rotate(${rotacaoRodaMapa}deg)`;
+    });
+
+    window.setTimeout(function() {
+        window.clearInterval(intervalo);
+        resultado.textContent = `Hoje vamos a: ${destino.nome}`;
+        if (botao) botao.disabled = false;
+    }, 4000);
 }
 
 function libertarUrlsAlbum() {
@@ -1535,32 +1597,65 @@ async function apagarFotografia(id) {
     }
 }
 
+const medalhasPorConquista = {
+    "primeira-atividade": { nome: "Cagarro", ficheiro: "images/medalhas/medalha-cagarro.webp" },
+    "dez-atividades": { nome: "Golfinho", ficheiro: "images/medalhas/medalha-golfinho.webp" },
+    "quarenta-atividades": { nome: "Touro Bravo", ficheiro: "images/medalhas/medalha-touro-bravo.webp" },
+    "sessenta-cinco-atividades": { nome: "Turista", ficheiro: "images/medalhas/medalha-turista.webp" },
+    "oitenta-atividades": { nome: "Terceirense", ficheiro: "images/medalhas/medalha-terceirense.webp" },
+    "cem-atividades": { nome: "Lenda da TerceiraQuest", ficheiro: "images/medalhas/medalha-lenda-terceiraquest.webp" },
+    "trilhos-completos": { nome: "Pés na Terra", ficheiro: "images/medalhas/medalha-pes-na-terra.webp" },
+    "geocaching-completo": { nome: "Caçadores de Tesouros", ficheiro: "images/medalhas/medalha-cacadores-tesouros.webp" },
+    "desafios-ferias-completos": { nome: "Férias em Grande", ficheiro: "images/medalhas/medalha-ferias-em-grande.webp" }
+};
+
+function conquistaEstaDesbloqueada(conquista, estado) {
+    try {
+        return Boolean(condicaoConquistaCumprida(conquista.condicao, estado));
+    } catch (erro) {
+        return Boolean(estado.conquistasDesbloqueadas && estado.conquistasDesbloqueadas[conquista.id]);
+    }
+}
+
+function criarMedalhaConquista(configuracao) {
+    const medalha = document.createElement("span");
+    medalha.className = "medalha-final medalha-pack-novo";
+    medalha.title = configuracao.nome;
+    medalha.setAttribute("aria-label", `Medalha ${configuracao.nome}`);
+    medalha.style.backgroundImage = `url("${configuracao.ficheiro}")`;
+    return medalha;
+}
+
 function renderConquistas(estado) {
-    const conquistas = catalogo.conquistas.map(function(conquista) {
-        return {
-            ...conquista,
-            desbloqueada: Boolean(estado.conquistasDesbloqueadas[conquista.id])
-        };
+    const conteudo = document.getElementById("conteudo-conquistas");
+    if (!conteudo) return;
+    conteudo.textContent = "";
+
+    catalogo.conquistas.forEach(function(conquista) {
+        const configuracao = medalhasPorConquista[conquista.id];
+        if (!configuracao) return;
+        const desbloqueada = conquistaEstaDesbloqueada(conquista, estado);
+        const cartao = document.createElement("section");
+        cartao.className = `conquista-cartao-tq${desbloqueada ? " conquistada" : ""}`;
+        cartao.dataset.conquistaId = conquista.id;
+
+        const informacao = document.createElement("div");
+        informacao.className = "conquista-info-tq";
+        const titulo = document.createElement("h3");
+        titulo.textContent = conquista.titulo;
+        const nome = document.createElement("small");
+        nome.className = "nome-medalha-tq3";
+        nome.textContent = `Medalha: ${configuracao.nome}`;
+        const descricao = document.createElement("p");
+        descricao.textContent = conquista.descricao;
+        const situacao = document.createElement("strong");
+        situacao.className = "estado-medalha-tq3";
+        situacao.textContent = desbloqueada ? "✓ Conquistada" : "Por conquistar";
+
+        informacao.append(titulo, nome, descricao, situacao);
+        cartao.append(criarMedalhaConquista(configuracao), informacao);
+        conteudo.appendChild(cartao);
     });
-
-    preencherArea(
-        "conteudo-conquistas",
-        conquistas,
-        "As conquistas desbloqueadas pela família aparecerão aqui.",
-        function(conquista) {
-            const cartao = criarCartaoArea(
-                `${conquista.icone || "🏆"} ${conquista.titulo}`,
-                conquista.descricao,
-                conquista.desbloqueada ? "Desbloqueada" : "Por desbloquear"
-            );
-
-            if (conquista.desbloqueada) {
-                cartao.classList.add("conquista-desbloqueada");
-            }
-
-            return cartao;
-        }
-    );
 }
 
 async function renderDiario(estado) {
@@ -1710,6 +1805,9 @@ function abrirArea(id) {
 
     renderizador();
     mostrarEcra(id);
+    if (typeof window.finalizarAberturaAreaTQ === "function") {
+        window.finalizarAberturaAreaTQ(id);
+    }
     if (["ecran-desafios-ferias", "ecran-mapa", "ecran-conquistas", "ecran-diario"].includes(id)) {
         window.requestAnimationFrame(function() { window.scrollTo({ top: 0, left: 0, behavior: "auto" }); });
     }
@@ -2394,8 +2492,27 @@ function renderMissaoDestaque(estado, data) {
     cartao.appendChild(lista);
 }
 
+function atualizarMedalhaHome(estado) {
+    const elementoMedalhas = document.getElementById("medalhas-jogador");
+    if (elementoMedalhas) {
+        const total = catalogo.conquistas.filter(function(conquista) {
+            return conquistaEstaDesbloqueada(conquista, estado);
+        }).length;
+        elementoMedalhas.textContent = String(total);
+    }
+
+    const caixa = document.querySelector("#ecran-principal .estatistica:nth-child(2)");
+    if (!caixa) return;
+    caixa.querySelectorAll(".medalha-mini-final,.medalha-mini-tq,.medalha-mini-tq6").forEach(function(elemento) {
+        elemento.remove();
+    });
+    const icone = caixa.querySelector(":scope > span");
+    if (icone) icone.textContent = "🏅";
+}
+
 function atualizarEstadoJogo() {
     const estado = obterEstadoFamilia();
+    migrarRevisaoFinal(estado);
     const data = dataLocalAtual();
     garantirAgendaDiaria(estado, data);
 
@@ -2423,6 +2540,12 @@ function atualizarEstadoJogo() {
     if (barra) barra.style.width = `${percentagem}%`;
 
     renderMissaoDestaque(estado, data);
+    renderEscolhaTipoDia(estado, data);
+    renderBonus(estado);
+    atualizarMedalhaHome(estado);
+    if (typeof window.finalizarAtualizacaoVisualTQ === "function") {
+        window.finalizarAtualizacaoVisualTQ();
+    }
 }
 
 // Revisão final 2026: catálogo separado por contexto, preservando os IDs e o estado existentes.
@@ -2873,8 +2996,6 @@ document.addEventListener("visibilitychange", function() {
 });
 window.addEventListener("pageshow", atualizarComponentesTemporizador);
 
-const atualizarEstadoJogoBase = atualizarEstadoJogo;
-atualizarEstadoJogo = function() { let estado=obterEstadoFamilia(); migrarRevisaoFinal(estado); atualizarEstadoJogoBase(); estado=obterEstadoFamilia(); const data=dataLocalAtual(); renderEscolhaTipoDia(estado,data); renderBonus(estado); };
 const renderMaisBase = renderMais;
 renderMais = function(){renderMaisBase();const area=document.getElementById("conteudo-mais");if(!area)return;const aviso=criarCartaoArea("🌊 Segurança primeiro","Nenhum desafio vale um risco. Só realizem atividades no mar, trilhos ou outros locais quando as condições forem seguras.");aviso.classList.add("aviso-seguranca");area.insertBefore(aviso,area.children[1]||null);};
 

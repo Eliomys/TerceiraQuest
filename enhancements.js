@@ -4,65 +4,6 @@
 
     const CHAVE_UNDO_RECOMECAR = "terceiraQuestUndoRecomecar";
 
-    function temEmojiInicial(texto) {
-        return /^[\p{Extended_Pictographic}\u2600-\u27BF]/u.test(String(texto || "").trim());
-    }
-
-    function iconeDoEcra(id) {
-        const mapa = {
-            "ecran-desafios-ferias": "🌞",
-            "ecran-desafios-diarios": "🎯",
-            "ecran-jogos": "🎲",
-            "ecran-mapa": "📍",
-            "ecran-album": "📷",
-            "ecran-diario": "📖",
-            "ecran-mais": "🌊"
-        };
-        return mapa[id] || "⭐";
-    }
-
-    function uniformizarIconesNoEcra(id) {
-        const ecra = document.getElementById(id);
-        if (!ecra) return;
-        const icone = iconeDoEcra(id);
-        ecra.querySelectorAll(".painel h3").forEach(function (h3) {
-            if (h3.querySelector(".icone-categoria-tq") || temEmojiInicial(h3.textContent)) return;
-            const span = document.createElement("span");
-            span.className = "icone-categoria-tq";
-            span.textContent = icone;
-            h3.insertBefore(span, h3.firstChild);
-        });
-    }
-
-    /* ---------- CONQUISTAS / MEDALHAS ---------- */
-    const medalhas = [
-        "var(--tq-medalha_cagarro, var(--tq-conquistas))",
-        "var(--tq-medalha_golfinho, var(--tq-conquistas))",
-        "var(--tq-medalha_touro_bravo, var(--tq-conquistas))",
-        "var(--tq-medalha_trilhos, var(--tq-conquistas))",
-        "var(--tq-medalha_terceirense, var(--tq-conquistas))",
-        "var(--tq-conquistas)"
-    ];
-
-    window.renderConquistas = renderConquistas = function (estado) {
-        const conteudo = document.getElementById("conteudo-conquistas");
-        if (!conteudo) return;
-        conteudo.innerHTML = "";
-        catalogo.conquistas.forEach(function (conquista, indice) {
-            const desbloqueada = Boolean(estado.conquistasDesbloqueadas[conquista.id]);
-            const cartao = criarCartaoArea(conquista.titulo, conquista.descricao,
-                desbloqueada ? "✓ Medalha conquistada" : "Por desbloquear");
-            cartao.classList.add("conquista-cartao");
-            cartao.classList.add(desbloqueada ? "conquista-desbloqueada" : "conquista-bloqueada");
-            const medalha = document.createElement("div");
-            medalha.className = "medalha-conquista";
-            medalha.setAttribute("aria-label", desbloqueada ? "Medalha conquistada" : "Medalha por conquistar");
-            medalha.style.backgroundImage = medalhas[indice % medalhas.length];
-            cartao.insertBefore(medalha, cartao.firstChild);
-            conteudo.appendChild(cartao);
-        });
-    };
-
     /* ---------- RECOMEÇAR COM CONFIRMAÇÃO E ANULAR ---------- */
     function snapshotRecomeco() {
         const dados = {
@@ -152,31 +93,4 @@
         if (tituloFerramentas) tituloFerramentas.textContent = "Recomeçar aventura";
     };
 
-    /* A roda e as imagens de Lugares são agora tratadas exclusivamente pelas camadas refine2+.
-       As versões antigas foram removidas daqui para impedir duplicações. */
-    function limparElementosAntigosMapa() {
-        const conteudo = document.getElementById("conteudo-mapa");
-        if (!conteudo) return;
-        conteudo.querySelectorAll(".roda-visual, .imagem-local-tq").forEach(function (el) { el.remove(); });
-    }
-
-    const renderMapaOriginal = window.renderMapa || renderMapa;
-    window.renderMapa = renderMapa = function () {
-        renderMapaOriginal();
-        limparElementosAntigosMapa();
-        uniformizarIconesNoEcra("ecran-mapa");
-    };
-
-    const abrirAreaOriginal = window.abrirArea || abrirArea;
-    window.abrirArea = abrirArea = function (id) {
-        abrirAreaOriginal(id);
-        setTimeout(function () {
-            if (id === "ecran-mapa") limparElementosAntigosMapa();
-            uniformizarIconesNoEcra(id);
-        }, 0);
-    };
-
-    document.addEventListener("DOMContentLoaded", function () {
-        ["ecran-desafios-ferias", "ecran-desafios-diarios", "ecran-jogos", "ecran-mapa", "ecran-album", "ecran-diario", "ecran-mais"].forEach(uniformizarIconesNoEcra);
-    });
 })();
