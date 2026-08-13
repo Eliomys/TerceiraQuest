@@ -14,15 +14,10 @@ function formatarDatas(root){
   while(w.nextNode())lista.push(w.currentNode);
   lista.forEach(function(n){n.nodeValue=String(n.nodeValue).replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g,"$3/$2/$1");});
 }
-function valorImagemCSS(nome){
-  if(!nome)return "";
-  return getComputedStyle(document.documentElement).getPropertyValue(nome).trim();
-}
 
 /* ---------- MEDALHAS ----------
-   As seis medalhas aprovadas usam diretamente as imagens incorporadas
-   na biblioteca visual oficial. As três ainda sem imagem oficial usam
-   um fallback simples, sem fingir que são medalhas aprovadas. */
+   As seis medalhas aprovadas usam diretamente as variáveis da biblioteca
+   visual oficial. As três ainda sem imagem oficial mantêm um fallback simples. */
 const medalhas=[
   {nome:"Cagarro",css:"--tq-medalha_cagarro"},
   {nome:"Golfinho",css:"--tq-medalha_golfinho"},
@@ -35,8 +30,7 @@ const medalhas=[
   {nome:"Férias em Grande",fallback:true}
 ];
 function imagemMedalha(cfg){
-  const valor=cfg&&cfg.css?valorImagemCSS(cfg.css):"";
-  return valor&&valor!=="none"?valor:"";
+  return cfg&&cfg.css?`var(${cfg.css})`:"";
 }
 function medalhaEl(cfg,classe){
   const el=document.createElement("span");
@@ -73,23 +67,31 @@ function atualizarMedalhaHome(){
   const n=document.getElementById("medalhas-jogador");if(n)n.textContent=String(total);
   const caixa=document.querySelector("#ecran-principal .estatistica:nth-child(2)");if(!caixa)return;
   caixa.querySelectorAll(".medalha-mini-final,.medalha-mini-tq,.medalha-mini-tq6").forEach(e=>e.remove());
-  if(ultima>=0)caixa.insertBefore(medalhaEl(medalhas[ultima]||{nome:"Conquista",fallback:true},"medalha-mini-final"),caixa.firstChild);
+  const indice=ultima>=0?ultima:0;
+  const mini=medalhaEl(medalhas[indice]||{nome:"Conquista",fallback:true},"medalha-mini-final");
+  if(ultima<0)mini.classList.add("medalha-mini-por-conquistar");
+  caixa.insertBefore(mini,caixa.firstChild);
 }
 
 /* ---------- LUGARES + RODA ÚNICOS ----------
-   As fotografias abaixo são a solução atualmente existente. Mantêm-se
-   até serem substituídas por ficheiros locais verificados para o offline. */
+   Fotografias reais verificadas. Permanecem remotas nesta fase de teste;
+   antes da versão final serão guardadas localmente para funcionar offline. */
 const fotosLocais={
   "angra do heroismo":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cidade%20de%20Angra%20do%20Hero%C3%ADsmo%2C%20ilha%20Terceira%2C%20A%C3%A7ores.jpg?width=900",
   "praia da vitoria":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Praia%20da%20Vit%C3%B3ria%2C%20ilha%20Terceira%2C%20A%C3%A7ores%2C%20Portugal.jpg?width=900",
   "prainha":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Ba%C3%ADa%20da%20Praia%20da%20Vit%C3%B3ria%2C%20Praia%20Grande%2C%20ilha%20Terceira%2C%20A%C3%A7ores%2C%20Portugal.jpg?width=900",
   "biscoitos":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Piscinas%20naturais%20dos%20Biscoitos.jpg?width=900",
+  "escaleiras":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Praia%20das%20Escaleiras%2C%20Vila%20Nova%2C%20Praia%20da%20Vit%C3%B3ria%2C%20ilha%20terceira%2C%20A%C3%A7ores.jpg?width=900",
   "furnas do enxofre":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Furnas%20do%20Enxofre%2C%20ilha%20Terceira%2C%20A%C3%A7ores%2C%203.JPG?width=900",
   "serra do cume":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Serra%20do%20Cume%2C%20Praia%20da%20Vit%C3%B3ria%2C%20ilha%20Terceira%2C%20A%C3%A7ores%2C%20Portugal.jpg?width=900",
   "monte brasil":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Monte%20Brasil%2C%20vista%20da%20cidade%20de%20Angra%20do%20Hero%C3%ADsmo%2C%20Ilha%20Terceira%2C%20A%C3%A7ores.jpg?width=900",
   "lagoa das patas":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Lagoa%20das%20patas1.jpg?width=900",
+  "lagoa do negro / gruta do natal":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Lagoa%20do%20Negro%2C%20Angra%20do%20Hero%C3%ADsmo%2C%20interior%20da%20ilha%20Terceira%2C%20A%C3%A7ores%2C%20Portugal1.jpg?width=900",
+  "serreta":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Farol%20da%20serreta%2C%20ilha%20Terceira%2C%20A%C3%A7ores%201.jpg?width=900",
   "fortes de sao sebastiao":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Forte%20de%20s%C3%A3o%20sebasti%C3%A3o%2C%20ilha%20Terceira%20A%C3%A7ores%2C%20guarita%20e%20ilh%C3%A9us%20das%20Cabras%20ao%20fundo.jpg?width=900",
   "forte de sao sebastiao":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Forte%20de%20s%C3%A3o%20sebasti%C3%A3o%2C%20ilha%20Terceira%20A%C3%A7ores%2C%20guarita%20e%20ilh%C3%A9us%20das%20Cabras%20ao%20fundo.jpg?width=900",
+  "baias da agualva":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Baias%20de%20Agualva%20desde%20el%20miradouro%20de%20Alagoa%2C%20isla%20de%20Terceira%2C%20Azores%2C%20Portugal%2C%202020-07-25%2C%20DD%2076.jpg?width=900",
+  "relheiras de sao bras":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Relheiras%20-%20S%C3%A3o%20Br%C3%A1s.jpg?width=900",
   "quatro ribeiras":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Costa%20das%20Quatro%20Ribeiras%2C%20Praia%20da%20Vit%C3%B3ria%2C%20ilha%20Terceira%2C%20A%C3%A7ores.JPG?width=900"
 };
 function decorarLocais(){
