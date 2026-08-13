@@ -1,0 +1,61 @@
+/* TERCEIRAQUEST — quinta afinação: coerência e remoção de duplicados */
+
+/* HOME — três métricas perfeitamente alinhadas */
+#ecran-principal .estatisticas{display:grid!important;grid-template-columns:repeat(3,1fr)!important;align-items:stretch!important}
+#ecran-principal .estatistica{display:grid!important;grid-template-rows:38px 30px 20px!important;place-items:center!important;align-content:center!important;padding:7px 4px!important;min-height:98px!important}
+#ecran-principal .estatistica>span:first-child{grid-row:1!important;display:grid!important;place-items:center!important;height:36px!important;margin:0!important;font-size:18px!important}
+#ecran-principal .estatistica strong{grid-row:2!important;align-self:center!important;margin:0!important;line-height:30px!important;font-size:22px!important}
+#ecran-principal .estatistica small{grid-row:3!important;align-self:start!important;margin:0!important;line-height:18px!important;font-size:11px!important}
+#ecran-principal .estatistica:nth-child(2)>span:not(.medalha-mini-tq){display:none!important}
+.medalha-mini-tq{grid-row:1!important;width:34px!important;height:34px!important;display:grid!important;place-items:center!important;margin:0 auto!important}
+.medalha-mini-tq img{display:block!important;width:34px!important;height:34px!important;object-fit:contain!important;filter:drop-shadow(0 2px 3px rgba(101,70,10,.18))}
+
+/* Se acontecer — fotografia claramente visível, texto protegido por gradiente escuro */
+#ecran-principal .cabecalho-bonus{
+ min-height:132px!important;padding:18px 16px!important;
+ background-image:linear-gradient(180deg,rgba(9,39,50,.02) 18%,rgba(9,39,50,.12) 54%,rgba(9,39,50,.70) 100%),var(--tq-se_acontecer)!important;
+ background-size:cover!important;background-position:center!important
+}
+#ecran-principal .cabecalho-bonus .titulo-seccao{color:#fff!important;text-shadow:0 2px 5px rgba(0,0,0,.45)!important;max-width:70%!important;align-self:flex-end!important}
+#ecran-principal #botao-ver-bonus{color:#fff!important;background:rgba(12,51,63,.48)!important;border:1px solid rgba(255,255,255,.55)!important;text-shadow:0 1px 2px rgba(0,0,0,.28)!important}
+
+/* Cabeçalhos Álbum / Conquistas / Diário: fotografia não acaba a meio; dissolve-se */
+#ecran-album .cabecalho-area,#ecran-conquistas .cabecalho-area,#ecran-diario .cabecalho-area{
+ min-height:116px!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important
+}
+#ecran-album .cabecalho-area::after,#ecran-conquistas .cabecalho-area::after,#ecran-diario .cabecalho-area::after{
+ background:
+  linear-gradient(90deg,rgba(255,253,248,.98) 0%,rgba(255,253,248,.84) 31%,rgba(255,253,248,.43) 57%,rgba(255,253,248,.10) 82%,rgba(255,253,248,0) 100%),
+  linear-gradient(180deg,rgba(255,253,248,0) 42%,rgba(255,253,248,.20) 67%,rgba(255,253,248,.96) 100%)!important
+}
+
+/* Conquistas — imagens reais de medalha como IMG */
+.medalha-img-tq5{width:90px!important;height:90px!important;align-self:center!important;justify-self:center!important;object-fit:contain!important;display:block!important;filter:drop-shadow(0 4px 7px rgba(18,63,84,.14))}
+.conquista-cartao-tq:not(.conquistada) .medalha-img-tq5{filter:grayscale(1)!important;opacity:.30!important}
+.conquista-cartao-tq.conquistada .medalha-img-tq5{opacity:1!important;filter:drop-shadow(0 6px 10px rgba(126,88,17,.20))!important}
+
+/* medalhas novas: mesmo princípio de moeda dourada + campo azul/verde */
+.medalha-svg-tq5{width:90px!important;height:90px!important;display:block!important;align-self:center!important;justify-self:center!important;object-fit:contain!important}
+.conquista-cartao-tq:not(.conquistada) .medalha-svg-tq5{filter:grayscale(1)!important;opacity:.30!important}
+
+/* Lugares — apagar de vez os elementos antigos que possam sobreviver */
+#conteudo-mapa .roda-visual{display:none!important}
+#conteudo-mapa .imagem-local-tq{display:none!important}
+#conteudo-mapa .cartao-local-tq>.imagem-local-tq{display:none!important}
+#conteudo-mapa .cartao-lugar-tq>.foto-lugar-tq{display:block!important}
+#conteudo-mapa .roda-visual-tq{margin-top:8px!important}
+
+/* Diário — mais editorial; o autor não se repete como uma etiqueta solta */
+#conteudo-diario .painel{position:relative!important;padding:16px!important;border-radius:20px!important}
+#conteudo-diario .painel>small{font-weight:400!important;color:#738079!important}
+#conteudo-diario .painel>small.diario-autor-tq5{display:none!important}
+#conteudo-diario h3{font-size:16px!important;font-weight:750!important;line-height:1.30!important;color:#123f54!important}
+.data-diario-tq5{display:inline-block!important;margin:0 7px 4px 0!important;padding:4px 8px!important;border-radius:999px!important;background:#edf4f2!important;color:#35675f!important;font-size:11px!important;font-weight:800!important;vertical-align:middle!important}
+.titulo-diario-tq5{font-weight:750!important}
+#conteudo-diario .miniatura-diario{width:104px!important;height:88px!important;border-radius:15px!important;box-shadow:0 4px 10px rgba(18,63,84,.10)!important}
+
+@media(max-width:360px){
+ .medalha-img-tq5,.medalha-svg-tq5{width:76px!important;height:76px!important}
+ #ecran-principal .estatistica{grid-template-rows:34px 28px 18px!important;min-height:90px!important}
+ #ecran-principal .estatistica strong{font-size:20px!important}
+}
