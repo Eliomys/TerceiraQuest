@@ -1,0 +1,1 @@
+Novo pack de medalhas aprovado para TerceiraQuest.
