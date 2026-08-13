@@ -13,6 +13,7 @@ const XP_DESAFIO_LOCAL = 20;
 const XP_JOGO = 30;
 const META_ATIVIDADES_AVENTURA = 80;
 const MAX_FOTOGRAFIAS_POR_ATIVIDADE = 3;
+const TAMANHO_MAXIMO_FOTOGRAFIA = 20 * 1024 * 1024;
 const NOME_BASE_FOTOGRAFIAS = "terceiraQuestFotosDB";
 const STORE_FOTOGRAFIAS = "fotografias";
 
@@ -203,31 +204,61 @@ function atualizarIndicadoresFotografias(atividadeId) {
     });
 }
 
-function redimensionarFotografia(ficheiro) {
+async function validarFicheiroFotografia(ficheiro) {
+    if (!ficheiro || ficheiro.size > TAMANHO_MAXIMO_FOTOGRAFIA) {
+        const erro = new Error("A fotografia é demasiado grande");
+        erro.codigo = "ficheiro_demasiado_grande";
+        throw erro;
+    }
+
+    const bytes = new Uint8Array(await ficheiro.slice(0, 12).arrayBuffer());
+    const jpeg = bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+    const png = bytes.length >= 8 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e &&
+        bytes[3] === 0x47 && bytes[4] === 0x0d && bytes[5] === 0x0a && bytes[6] === 0x1a && bytes[7] === 0x0a;
+    const webp = bytes.length >= 12 && String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
+        String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
+
+    if (!jpeg && !png && !webp) {
+        const erro = new Error("Formato de fotografia inválido");
+        erro.codigo = "formato_invalido";
+        throw erro;
+    }
+}
+
+async function redimensionarFotografia(ficheiro) {
+    await validarFicheiroFotografia(ficheiro);
     return new Promise(function(resolve, reject) {
         const url = URL.createObjectURL(ficheiro);
         const imagem = new Image();
         imagem.onload = function() {
             const maiorLado = Math.max(imagem.naturalWidth, imagem.naturalHeight);
-            if (!maiorLado || maiorLado <= 1600) {
+            if (!maiorLado) {
                 URL.revokeObjectURL(url);
-                resolve({ blob: ficheiro, mimeType: ficheiro.type || "image/jpeg" });
+                reject(new Error("Não foi possível processar a fotografia"));
                 return;
             }
 
-            const escala = 1600 / maiorLado;
+            const escala = Math.min(1, 1600 / maiorLado);
             const canvas = document.createElement("canvas");
             canvas.width = Math.round(imagem.naturalWidth * escala);
             canvas.height = Math.round(imagem.naturalHeight * escala);
             const contexto = canvas.getContext("2d");
+            if (!contexto) {
+                URL.revokeObjectURL(url);
+                reject(new Error("Não foi possível processar a fotografia"));
+                return;
+            }
+            contexto.fillStyle = "#ffffff";
+            contexto.fillRect(0, 0, canvas.width, canvas.height);
             contexto.drawImage(imagem, 0, 0, canvas.width, canvas.height);
             URL.revokeObjectURL(url);
             canvas.toBlob(function(blob) {
-                resolve({
-                    blob: blob || ficheiro,
-                    mimeType: blob ? "image/jpeg" : (ficheiro.type || "image/jpeg")
-                });
-            }, "image/jpeg", 0.8);
+                if (!blob) {
+                    reject(new Error("Não foi possível processar a fotografia"));
+                    return;
+                }
+                resolve({ blob: blob, mimeType: "image/jpeg" });
+            }, "image/jpeg", 0.85);
         };
         imagem.onerror = function() {
             URL.revokeObjectURL(url);
@@ -251,7 +282,7 @@ function adicionarFotografiaAtividade(atividadeId, origem) {
 
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = "image/*";
+    input.accept = ".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp";
     if (origem === "camara") {
         input.setAttribute("capture", "environment");
     }
@@ -261,9 +292,8 @@ function adicionarFotografiaAtividade(atividadeId, origem) {
             return;
         }
 
-        const tipoFicheiro = String(ficheiro.type || "").toLowerCase();
-        if (tipoFicheiro === "image/svg+xml" || (tipoFicheiro && !tipoFicheiro.startsWith("image/"))) {
-            window.alert("Escolhe uma fotografia num formato de imagem válido.");
+        if (ficheiro.size > TAMANHO_MAXIMO_FOTOGRAFIA) {
+            window.alert("A fotografia é demasiado grande. Escolhe uma imagem até 20 MB.");
             return;
         }
 
@@ -310,6 +340,14 @@ function adicionarFotografiaAtividade(atividadeId, origem) {
                 renderJogoAberto();
             }
         } catch (erro) {
+            if (erro && erro.codigo === "formato_invalido") {
+                window.alert("Escolhe uma fotografia JPEG, PNG ou WebP válida.");
+                return;
+            }
+            if (erro && erro.codigo === "ficheiro_demasiado_grande") {
+                window.alert("A fotografia é demasiado grande. Escolhe uma imagem até 20 MB.");
+                return;
+            }
             console.warn("Não foi possível guardar a fotografia.", erro);
             window.alert("Não foi possível guardar a fotografia nesta instalação.");
         }
