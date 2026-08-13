@@ -1,0 +1,180 @@
+/* TERCEIRAQUEST — acabamento consolidado */
+
+:root {
+  --tq-azul: #123f54;
+  --tq-azul-2: #1f6174;
+  --tq-creme: #fffaf0;
+  --tq-dourado: #c58a18;
+  --tq-dourado-claro: #f3dfad;
+  --tq-tinta: #183943;
+  --tq-linha: #dfe7e4;
+}
+
+/* Botões: abandonar o verde genérico */
+.botao-principal,
+#ecran-principal .atividade-para-hoje .botao-principal,
+.ecran-area .botao-principal,
+#ecran-missao .botao-principal {
+  background: linear-gradient(180deg, #1f6174, #123f54) !important;
+  color: #fff !important;
+  border: 0 !important;
+  box-shadow: 0 5px 12px rgba(18,63,84,.18) !important;
+}
+
+.botao-principal:hover,
+.botao-principal:focus-visible {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.botao-secundario,
+.ecran-area .botao-secundario {
+  background: #fffdf8 !important;
+  color: var(--tq-azul) !important;
+  border: 1px solid #cfdcda !important;
+}
+
+/* Perfil + indicadores: um único painel de aventura */
+#ecran-principal .topo {
+  margin: 0 0 0 !important;
+  padding: 15px 16px 10px !important;
+  border: 1px solid #e4e8e3;
+  border-bottom: 0;
+  border-radius: 22px 22px 0 0;
+  background: linear-gradient(135deg, #fffdf8 0%, #f6f1df 100%);
+  box-shadow: 0 8px 24px rgba(18,63,84,.08);
+}
+
+#ecran-principal .perfil .avatar {
+  width: 58px !important;
+  height: 58px !important;
+  border: 3px solid #fff !important;
+  box-shadow: 0 3px 11px rgba(18,63,84,.22) !important;
+}
+
+#ecran-principal .saudacao { color: #687a7e !important; }
+#ecran-principal #nome-jogador { color: var(--tq-azul) !important; }
+#ecran-principal .sino {
+  width: 42px; height: 42px; display:grid; place-items:center;
+  border: 1px solid #eadfbd; border-radius: 50%; background:#fffaf0;
+}
+
+#ecran-principal .estatisticas {
+  margin: 0 !important;
+  padding: 8px 10px 13px !important;
+  border: 1px solid #e4e8e3 !important;
+  border-top: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 24px rgba(18,63,84,.08) !important;
+  background: linear-gradient(135deg, #fffdf8 0%, #f6f1df 100%) !important;
+}
+
+#ecran-principal .estatistica {
+  padding: 7px 5px !important;
+  border-radius: 12px;
+}
+#ecran-principal .estatistica strong { color: var(--tq-azul); font-size: 20px; }
+#ecran-principal .estatistica small { color:#617479; font-weight:700; }
+
+#ecran-principal .progresso {
+  margin: 0 0 22px !important;
+  padding: 12px 16px 15px !important;
+  border: 1px solid #e4e8e3;
+  border-top: 0;
+  border-radius: 0 0 22px 22px;
+  background: linear-gradient(135deg, #fffdf8 0%, #f6f1df 100%);
+  box-shadow: 0 8px 24px rgba(18,63,84,.08);
+}
+#ecran-principal .progresso-titulo { color: var(--tq-azul); }
+#ecran-principal .barra { height: 9px !important; background:#dfe6e3 !important; }
+#ecran-principal .barra-preenchida { background: linear-gradient(90deg,#2b7582,#d6a235) !important; }
+
+/* Explorar: texto sempre legível */
+#ecran-principal .atalhos button {
+  position: relative; overflow:hidden; min-height:112px !important;
+  border:1px solid rgba(18,63,84,.12) !important; border-radius:18px !important;
+  background-size: cover !important; background-position:center !important;
+}
+#ecran-principal .atalhos button::after {
+  content:""; position:absolute; inset:45% 0 0;
+  background: linear-gradient(transparent, rgba(7,32,43,.86)); pointer-events:none;
+}
+#ecran-principal .atalhos button span,
+#ecran-principal .atalhos button small { position:relative; z-index:2; color:#fff !important; text-shadow:0 2px 5px rgba(0,0,0,.55); }
+#ecran-principal .atalhos button span { font-size:26px; }
+#ecran-principal .atalhos button small { font-size:13px !important; font-weight:800 !important; }
+
+/* Se acontecer — cabeçalho estável */
+#ecran-principal .bonus-discretos { overflow:hidden; padding:0 14px 12px !important; }
+#ecran-principal .cabecalho-bonus {
+  margin:0 -14px 8px !important; min-height:116px !important; padding:18px 16px !important;
+  display:flex !important; align-items:flex-end !important; gap:8px;
+  border-radius:17px 17px 0 0;
+  background-size:cover !important; background-position:center !important;
+}
+#ecran-principal .cabecalho-bonus::after {
+  content:""; position:absolute; inset:0; background:linear-gradient(0deg,rgba(10,40,52,.83),rgba(10,40,52,.05) 75%); pointer-events:none;
+}
+#ecran-principal .cabecalho-bonus { position:relative; }
+#ecran-principal .cabecalho-bonus > * { position:relative; z-index:2; }
+#ecran-principal .cabecalho-bonus .titulo-seccao { color:#fff !important; max-width:none !important; text-shadow:0 2px 5px rgba(0,0,0,.5); }
+#ecran-principal #botao-ver-bonus { color:#fff !important; background:rgba(18,63,84,.78) !important; border:1px solid rgba(255,255,255,.4); }
+#ecran-principal .bonus-item button { min-height:34px !important; padding:7px 11px !important; background:#fffdf8 !important; color:var(--tq-azul) !important; border:1px solid #d7dfdb !important; }
+
+/* Conquistas: medalha pertence ao cartão, não a uma faixa solta */
+#ecran-conquistas #conteudo-conquistas::before { display:none !important; content:none !important; }
+#ecran-conquistas .painel.conquista-cartao {
+  position:relative; min-height:118px; padding:17px 18px 17px 112px !important;
+  overflow:hidden; border:1px solid #dce5e2 !important;
+}
+#ecran-conquistas .medalha-conquista {
+  position:absolute; left:18px; top:50%; width:72px; height:72px; transform:translateY(-50%);
+  border-radius:50%; background-size:cover; background-position:center;
+  box-shadow:0 5px 14px rgba(18,63,84,.16); border:3px solid #fff;
+}
+#ecran-conquistas .conquista-bloqueada .medalha-conquista { filter:grayscale(1); opacity:.28; }
+#ecran-conquistas .conquista-desbloqueada { border-color:#d5ae4e !important; background:#fffaf0 !important; }
+#ecran-conquistas .conquista-desbloqueada .medalha-conquista { box-shadow:0 0 0 4px #f2dda7,0 6px 16px rgba(138,96,15,.2); }
+
+/* Roda */
+.roda-visual {
+  width:150px; height:150px; margin:14px auto 16px; border-radius:50%;
+  position:relative; border:7px solid #fff; outline:2px solid #d6a235;
+  background: conic-gradient(#123f54 0 45deg,#e9c96e 45deg 90deg,#2d7883 90deg 135deg,#f3e5b7 135deg 180deg,#123f54 180deg 225deg,#e9c96e 225deg 270deg,#2d7883 270deg 315deg,#f3e5b7 315deg 360deg);
+  box-shadow:0 8px 20px rgba(18,63,84,.18);
+}
+.roda-visual::before { content:""; position:absolute; inset:42px; border-radius:50%; background:#fffdf8; border:3px solid #d6a235; }
+.roda-visual::after { content:"▼"; position:absolute; top:-24px; left:50%; transform:translateX(-50%); color:#b87913; font-size:27px; }
+.roda-visual.a-rodar { animation:tqSpin 1.65s cubic-bezier(.12,.62,.19,1) forwards; }
+@keyframes tqSpin { from{transform:rotate(0)} to{transform:rotate(1550deg)} }
+#resultado-roda-mapa { text-align:center; font-weight:800; color:var(--tq-azul); min-height:24px; }
+
+/* Cartões de lugares: imagem/ilustração acima, nome sempre fora da foto */
+#ecran-mapa .cartao-local-tq { padding:0 !important; overflow:hidden; }
+#ecran-mapa .imagem-local-tq { height:118px; background-size:cover; background-position:center; position:relative; }
+#ecran-mapa .imagem-local-tq::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,0),rgba(18,63,84,.15)); }
+#ecran-mapa .corpo-local-tq { padding:14px 16px 16px; }
+#ecran-mapa .corpo-local-tq h3 { margin:0 0 6px; color:var(--tq-azul); }
+
+/* Ícones consistentes */
+.painel .icone-categoria-tq { display:inline-grid; width:28px; height:28px; place-items:center; margin-right:7px; border-radius:50%; background:#f5edd4; font-size:16px; vertical-align:middle; }
+
+/* Modal de recomeço */
+.tq-modal-backdrop { position:fixed; inset:0; z-index:9999; display:grid; place-items:center; padding:22px; background:rgba(7,31,42,.64); }
+.tq-modal { width:min(360px,100%); padding:22px; border-radius:22px; background:#fffdf8; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.tq-modal h3 { margin:0 0 8px; color:var(--tq-azul); font-size:22px; }
+.tq-modal p { margin:0 0 18px; line-height:1.45; color:#52656a; }
+.tq-modal-acoes { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.tq-modal-acoes button { min-height:45px; border-radius:999px; font-weight:800; }
+.tq-modal .tq-perigo { background:#9d542f !important; color:#fff !important; border:0 !important; }
+.tq-undo { position:fixed; left:50%; bottom:82px; transform:translateX(-50%); z-index:9998; width:min(360px,calc(100% - 28px)); padding:11px 12px; border-radius:14px; background:#123f54; color:#fff; display:flex; align-items:center; justify-content:space-between; gap:10px; box-shadow:0 8px 24px rgba(0,0,0,.25); }
+.tq-undo button { background:#fff; color:#123f54; border:0; border-radius:999px; padding:8px 12px; font-weight:800; }
+
+#ecran-mais .botao-reset-teste { background:linear-gradient(180deg,#b87635,#8f4b2c) !important; }
+
+@media(max-width:360px){
+ #ecran-principal .topo { padding-inline:11px !important; }
+ #ecran-conquistas .painel.conquista-cartao { padding-left:94px !important; }
+ #ecran-conquistas .medalha-conquista { left:12px; width:64px; height:64px; }
+ .roda-visual { width:132px; height:132px; }
+}
