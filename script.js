@@ -3,6 +3,7 @@
 // ==================================================
 
 const CHAVE_ESTADO_FAMILIA = "terceiraQuestEstadoFamilia";
+const CHAVE_ESTADO_FAMILIA_RECUPERACAO = "terceiraQuestEstadoFamiliaRecuperacao";
 const CHAVE_JOGADOR_ATUAL = "terceiraQuestJogadorAtual";
 const CHAVE_TEMPORIZADORES = "terceiraQuestTemporizadores";
 const MISSOES_DIARIAS_POR_DIA = 3;
@@ -824,6 +825,14 @@ function obterEstadoFamilia() {
         return normalizarEstado(JSON.parse(guardado));
     } catch (erro) {
         console.warn("Não foi possível ler o estado familiar. Foi repetida a migração segura.", erro);
+        if (localStorage.getItem(CHAVE_ESTADO_FAMILIA_RECUPERACAO) === null) {
+            try {
+                localStorage.setItem(CHAVE_ESTADO_FAMILIA_RECUPERACAO, guardado);
+            } catch (erroRecuperacao) {
+                console.warn("Não foi possível guardar uma cópia de recuperação do estado familiar.", erroRecuperacao);
+                return criarEstadoMigrado();
+            }
+        }
         const migrado = criarEstadoMigrado();
         guardarEstadoFamilia(migrado);
         return migrado;
