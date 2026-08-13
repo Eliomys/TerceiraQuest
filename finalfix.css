@@ -22,6 +22,45 @@
   border-color:#d5b45b!important;background:#fff7dc!important;color:#a67a19!important
 }
 
+/* Garantir que as seis medalhas oficiais usam sempre a imagem aprovada,
+   mesmo que o JS não consiga ler a variável CSS através de getComputedStyle. */
+.medalha-final[aria-label="Medalha Cagarro"],
+.medalha-mini-final[aria-label="Medalha Cagarro"]{background-image:var(--tq-medalha_cagarro)!important}
+.medalha-final[aria-label="Medalha Golfinho"],
+.medalha-mini-final[aria-label="Medalha Golfinho"]{background-image:var(--tq-medalha_golfinho)!important}
+.medalha-final[aria-label="Medalha Touro Bravo"],
+.medalha-mini-final[aria-label="Medalha Touro Bravo"]{background-image:var(--tq-medalha_touro_bravo)!important}
+.medalha-final[aria-label="Medalha Turista"],
+.medalha-mini-final[aria-label="Medalha Turista"]{background-image:var(--tq-medalha_turista)!important}
+.medalha-final[aria-label="Medalha Terceirense"],
+.medalha-mini-final[aria-label="Medalha Terceirense"]{background-image:var(--tq-medalha_terceirense)!important}
+.medalha-final[aria-label="Medalha Pés na Terra"],
+.medalha-mini-final[aria-label="Medalha Pés na Terra"]{background-image:var(--tq-medalha_trilhos)!important}
+
+.medalha-final[aria-label="Medalha Cagarro"],
+.medalha-final[aria-label="Medalha Golfinho"],
+.medalha-final[aria-label="Medalha Touro Bravo"],
+.medalha-final[aria-label="Medalha Turista"],
+.medalha-final[aria-label="Medalha Terceirense"],
+.medalha-final[aria-label="Medalha Pés na Terra"],
+.medalha-mini-final[aria-label="Medalha Cagarro"],
+.medalha-mini-final[aria-label="Medalha Golfinho"],
+.medalha-mini-final[aria-label="Medalha Touro Bravo"],
+.medalha-mini-final[aria-label="Medalha Turista"],
+.medalha-mini-final[aria-label="Medalha Terceirense"],
+.medalha-mini-final[aria-label="Medalha Pés na Terra"]{
+  color:transparent!important;border:none!important;background-color:transparent!important
+}
+
+/* Se ainda não houver nenhuma conquista, a Home continua a mostrar a primeira
+   medalha como referência visual, esbatida. */
+#ecran-principal .estatistica:nth-child(2):not(:has(.medalha-mini-final))::before{
+  content:"";grid-row:1!important;justify-self:center!important;
+  width:36px;height:36px;display:block;
+  background-image:var(--tq-medalha_cagarro);background-size:contain;background-position:center;background-repeat:no-repeat;
+  filter:grayscale(1);opacity:.34
+}
+
 /* JOGO DO DIA — imagem inteira, sem a esticar nem cortar */
 #ecran-principal .atividade-para-hoje:last-child{
   min-height:150px!important;
@@ -55,10 +94,7 @@
   border:1px solid rgba(18,63,84,.16)!important;text-shadow:none!important
 }
 
-/* CABEÇALHOS — mostrar a imagem inteira e dissolver no creme */
-#ecran-album .cabecalho-area,
-#ecran-conquistas .cabecalho-area,
-#ecran-diario .cabecalho-area,
+/* CABEÇALHOS GERAIS — imagem completa, sem corte */
 #ecran-mais .cabecalho-area,
 #ecran-jogos .cabecalho-area,
 #ecran-jogo .cabecalho-area,
@@ -71,9 +107,6 @@
   background-repeat:no-repeat!important;
   background-color:#fffdf8!important
 }
-#ecran-album .cabecalho-area::after,
-#ecran-conquistas .cabecalho-area::after,
-#ecran-diario .cabecalho-area::after,
 #ecran-mais .cabecalho-area::after,
 #ecran-jogos .cabecalho-area::after,
 #ecran-jogo .cabecalho-area::after,
@@ -85,6 +118,35 @@
     linear-gradient(90deg,rgba(255,253,248,1) 0%,rgba(255,253,248,.92) 30%,rgba(255,253,248,.58) 52%,rgba(255,253,248,.14) 73%,rgba(255,253,248,0) 88%),
     linear-gradient(180deg,rgba(255,253,248,0) 54%,rgba(255,253,248,.18) 72%,rgba(255,253,248,.92) 100%)!important
 }
+
+/* ÁLBUM / CONQUISTAS / DIÁRIO — regressão corrigida.
+   A fotografia fica numa camada própria à direita, inteira, e o creme dissolve
+   sobre ela. Assim desaparece a linha/corte vertical sem usar cover. */
+#ecran-album .cabecalho-area,
+#ecran-conquistas .cabecalho-area,
+#ecran-diario .cabecalho-area{
+  position:relative!important;overflow:hidden!important;min-height:112px!important;
+  background-image:none!important;background-color:#fffdf8!important
+}
+#ecran-album .cabecalho-area{--tq-cabecalho-foto:var(--tq-fotografia)}
+#ecran-conquistas .cabecalho-area{--tq-cabecalho-foto:var(--tq-conquistas)}
+#ecran-diario .cabecalho-area{--tq-cabecalho-foto:var(--tq-diario)}
+#ecran-album .cabecalho-area::before,
+#ecran-conquistas .cabecalho-area::before,
+#ecran-diario .cabecalho-area::before{
+  content:""!important;position:absolute!important;top:0!important;right:0!important;bottom:0!important;left:34%!important;
+  background-image:var(--tq-cabecalho-foto)!important;background-size:contain!important;
+  background-position:right center!important;background-repeat:no-repeat!important;z-index:0!important;pointer-events:none!important
+}
+#ecran-album .cabecalho-area::after,
+#ecran-conquistas .cabecalho-area::after,
+#ecran-diario .cabecalho-area::after{
+  content:""!important;position:absolute!important;inset:0!important;z-index:0!important;pointer-events:none!important;
+  background:linear-gradient(90deg,#fffdf8 0%,rgba(255,253,248,.98) 28%,rgba(255,253,248,.80) 42%,rgba(255,253,248,.42) 58%,rgba(255,253,248,.10) 74%,rgba(255,253,248,0) 88%)!important
+}
+#ecran-album .cabecalho-area>*,
+#ecran-conquistas .cabecalho-area>*,
+#ecran-diario .cabecalho-area>*{position:relative!important;z-index:1!important}
 
 /* REGRA GLOBAL DE IMAGENS IMPORTANTES — não cortar */
 #ecran-missao .missao-imagem{height:auto!important;min-height:180px!important;background:#f4f0e5!important}
@@ -111,6 +173,9 @@
     min-height:158px!important;padding-right:44%!important;background-size:auto,40% auto!important
   }
   #ecran-principal .cabecalho-bonus{background-size:auto,68% auto!important}
+  #ecran-album .cabecalho-area::before,
+  #ecran-conquistas .cabecalho-area::before,
+  #ecran-diario .cabecalho-area::before{left:28%!important}
 }
 @media(max-width:360px){
   .medalha-final{width:76px!important;height:76px!important}
