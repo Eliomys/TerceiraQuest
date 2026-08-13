@@ -1,0 +1,60 @@
+/* TERCEIRAQUEST — quarta afinação */
+
+/* HOME: medalha integrada no bloco estatístico, sem faixa extra */
+.medalha-home-tq{display:none!important}
+#ecran-principal .estatisticas{grid-template-columns:1fr 1fr 1fr!important}
+#ecran-principal .estatistica:nth-child(2){position:relative}
+#ecran-principal .estatistica:nth-child(2) .medalha-mini-tq{
+  width:34px;height:34px;margin:0 auto 3px;background-position:center;background-repeat:no-repeat;background-size:contain;display:block
+}
+#ecran-principal .estatistica:nth-child(2)>span{display:none!important}
+#ecran-principal .barra{height:17px!important}
+
+/* menos nevoeiro nas imagens */
+.ecran-area .cabecalho-area::after,#ecran-missao .cabecalho-missao::after{
+  background:linear-gradient(90deg,rgba(255,253,248,.90) 0 34%,rgba(255,253,248,.48) 58%,rgba(255,253,248,.06))!important
+}
+#ecran-principal .cabecalho-bonus{
+  background-image:linear-gradient(90deg,rgba(255,248,221,.80) 0 38%,rgba(255,248,221,.36) 64%,rgba(255,248,221,.05)),var(--tq-se_acontecer)!important;
+  background-size:auto,68% auto!important
+}
+
+/* remover a velha faixa coletiva de medalhas */
+#ecran-conquistas #conteudo-conquistas::before{display:none!important;content:none!important}
+
+/* Conquistas */
+#conteudo-conquistas .conquista-cartao-tq{grid-template-columns:96px minmax(0,1fr)!important;padding:15px!important}
+#conteudo-conquistas .medalha-real-tq{width:90px!important;height:90px!important}
+/* medalhas novas, coerentes com a linguagem dourado/azul das existentes */
+.medalha-lenda-tq,.medalha-cacadores-tq,.medalha-ferias-tq{
+  width:86px;height:86px;align-self:center;justify-self:center;border-radius:50%;background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important;filter:drop-shadow(0 4px 7px rgba(18,63,84,.14))
+}
+.medalha-lenda-tq{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop stop-color='%2325687a'/%3E%3Cstop offset='1' stop-color='%23123f54'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='46' fill='%23d6a73a'/%3E%3Ccircle cx='50' cy='50' r='39' fill='url(%23g)' stroke='%23f5df9a' stroke-width='3'/%3E%3Cpath d='M25 58 31 36l15 13 9-22 12 22 15-13 3 22z' fill='%23f0c85a' stroke='%23fff2b7' stroke-width='2'/%3E%3Cpath d='M29 65h48v9H29z' rx='4' fill='%23d6a73a'/%3E%3C/svg%3E")!important}
+.medalha-cacadores-tq{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23d6a73a'/%3E%3Ccircle cx='50' cy='50' r='39' fill='%23123f54' stroke='%23f5df9a' stroke-width='3'/%3E%3Ccircle cx='50' cy='50' r='25' fill='%23f5f1df' stroke='%23d6a73a' stroke-width='3'/%3E%3Cpath d='m50 27 7 18 17 5-17 6-7 18-7-18-17-6 17-5z' fill='%23c98724'/%3E%3Ccircle cx='50' cy='50' r='5' fill='%23123f54'/%3E%3C/svg%3E")!important}
+.medalha-ferias-tq{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23d6a73a'/%3E%3Ccircle cx='50' cy='50' r='39' fill='%2325687a' stroke='%23f5df9a' stroke-width='3'/%3E%3Ccircle cx='50' cy='41' r='13' fill='%23f5c94e'/%3E%3Cg stroke='%23f5c94e' stroke-width='4'%3E%3Cpath d='M50 19v9M50 54v9M28 41h9M63 41h9M35 26l6 7M59 49l6 7M65 26l-6 7M41 49l-6 7'/%3E%3C/g%3E%3Cpath d='M20 70c10-8 20-8 30 0s20 8 30 0v10H20z' fill='%23f4eee0'/%3E%3C/svg%3E")!important}
+.conquista-cartao-tq:not(.conquistada) .medalha-lenda-tq,.conquista-cartao-tq:not(.conquistada) .medalha-cacadores-tq,.conquista-cartao-tq:not(.conquistada) .medalha-ferias-tq{filter:grayscale(1);opacity:.28}
+
+/* Lugares: nada de duplicados visuais antigos */
+#conteudo-mapa .painel> .foto-lugar-tq~.foto-lugar-tq{display:none!important}
+#conteudo-mapa .roda-visual-tq~.roda-visual-tq,#conteudo-mapa .ponteiro-roda-tq~.ponteiro-roda-tq{display:none!important}
+#conteudo-mapa .roda-visual-tq{transition:transform 3.8s cubic-bezier(.08,.72,.12,1)!important}
+
+/* Diário */
+#conteudo-diario .painel{padding:16px!important}
+#conteudo-diario .painel h3{font-size:17px!important;font-weight:800!important}
+#conteudo-diario .painel>small.diario-autor-tq{display:none!important}
+#conteudo-diario .painel p{margin-top:5px!important;color:#51645d!important}
+
+/* Álbum: uma memória por cartão, fotografia dominante */
+#conteudo-album .grelha-album{gap:14px!important}
+#conteudo-album .item-album{grid-template-columns:132px minmax(0,1fr)!important;min-height:124px!important;padding:9px!important;border-radius:20px!important}
+#conteudo-album .item-album img{width:132px!important;height:112px!important;border-radius:15px!important}
+#conteudo-album .item-album strong{font-size:15px!important;line-height:1.3!important}
+#conteudo-album .item-album small{font-size:12px!important}
+
+@media(max-width:360px){
+ #conteudo-album .item-album{grid-template-columns:108px minmax(0,1fr)!important}
+ #conteudo-album .item-album img{width:108px!important;height:100px!important}
+ #conteudo-conquistas .conquista-cartao-tq{grid-template-columns:80px minmax(0,1fr)!important}
+ #conteudo-conquistas .medalha-real-tq,.medalha-lenda-tq,.medalha-cacadores-tq,.medalha-ferias-tq{width:76px!important;height:76px!important}
+}
