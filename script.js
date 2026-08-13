@@ -524,7 +524,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xpPorUnidade: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-trilhos-ilha.jpg",
+            imagem: "images/missoes/completar-3-trilhos.webp",
             objetivo: 3,
             unidade: "trilhos"
         },
@@ -534,7 +534,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xp: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-piquenique.jpg"
+            imagem: "images/missoes/fazer-piquenique.webp"
         },
         {
             id: "ferias-paddle",
@@ -542,7 +542,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xp: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-paddle.jpg"
+            imagem: "images/missoes/fazer-paddle.webp"
         },
         {
             id: "ferias-almocar-fora",
@@ -550,7 +550,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xp: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-almocar-fora.jpg"
+            imagem: "images/missoes/ir-almocar-fora.webp"
         },
         {
             id: "ferias-atividade-tipica-terceira",
@@ -558,7 +558,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xp: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-atividade-tipica-terceira.jpg"
+            imagem: "images/missoes/atividade-tipica-terceira.webp"
         },
         {
             id: "ferias-local-desconhecido",
@@ -582,7 +582,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xp: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-snorkeling.jpg"
+            imagem: "images/missoes/fazer-snorkeling.webp"
         },
         {
             id: "ferias-receita-avos",
@@ -590,7 +590,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xp: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-receita-avos.jpg"
+            imagem: "images/missoes/fazer-receita-nova-avos.webp"
         },
         {
             id: "ferias-jogo-novo",
@@ -598,7 +598,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xp: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-jogo-novo.jpg"
+            imagem: "images/missoes/jogar-jogo-novo.webp"
         },
         {
             id: "ferias-algo-novo-familia",
@@ -606,7 +606,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xp: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-algo-novo-familia.jpg"
+            imagem: "images/missoes/fazer-algo-novo-em-familia.webp"
         },
         {
             id: "ferias-ler-50-paginas",
@@ -614,7 +614,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xp: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-ler-50-paginas.jpg"
+            imagem: "images/missoes/ler-50-paginas-livro.webp"
         },
         {
             id: "ferias-geocaching-10-caches",
@@ -622,7 +622,7 @@ const catalogo = {
             tipo: "desafio-ferias",
             categoria: "ferias",
             xpPorUnidade: XP_DESAFIO_FERIAS,
-            imagem: "images/desafios-ferias/ferias-geocaching-10-caches.jpg",
+            imagem: "images/missoes/fazer-10-caches-geocaching.webp",
             objetivo: 10,
             unidade: "caches"
         }
