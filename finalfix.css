@@ -1,49 +1,27 @@
 /* TERCEIRAQUEST — afinação final sem novas camadas */
 
-/* HOME — métricas e medalha real */
+/* HOME — métricas e ícone simples de medalhas */
 #ecran-principal .estatistica{align-items:center!important}
-.medalha-mini-final{
-  width:36px!important;height:36px!important;display:block!important;
-  background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important
-}
-/* Esta regra tem de vencer as regras antigas de refine4/refine5/refine6 que escondiam TODOS os spans. */
-#ecran-principal .estatistica:nth-child(2)>span.medalha-mini-final{
-  display:block!important;grid-row:1!important;place-self:center!important;margin:0 auto!important
-}
+#ecran-principal .estatistica:nth-child(2)>span.medalha-mini-final{display:none!important}
 #ecran-principal .estatistica:nth-child(2)>span:not(.medalha-mini-final){display:none!important}
-#ecran-principal .medalha-mini-final.medalha-mini-por-conquistar{filter:grayscale(1)!important;opacity:.34!important}
 
+/* CONQUISTAS — novo pack aprovado, sempre inteiro e sem fallback */
 .medalha-final{
   width:90px!important;height:90px!important;display:block!important;justify-self:center!important;align-self:center!important;
   background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important
 }
-#conteudo-conquistas .conquista-cartao-tq>.medalha-final{
-  display:block!important;width:90px!important;height:90px!important;min-width:90px!important;min-height:90px!important
+#conteudo-conquistas .conquista-cartao-tq>.medalha-final.medalha-pack-novo{
+  display:block!important;width:90px!important;height:90px!important;min-width:90px!important;min-height:90px!important;
+  background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important;
+  background-color:transparent!important;border:none!important;
+  opacity:1!important;filter:drop-shadow(0 5px 9px rgba(18,63,84,.16))!important
 }
-.conquista-cartao-tq:not(.conquistada) .medalha-final{filter:grayscale(1)!important;opacity:.32!important}
-.medalha-fallback-final{
-  display:grid!important;place-items:center!important;background-image:none!important;
-  border-radius:50%!important;border:2px solid #d9d4c4!important;
-  background:#f2efe5!important;color:#9d8f69!important;font-size:25px!important;font-weight:800!important
+#conteudo-conquistas .conquista-cartao-tq:not(.conquistada)>.medalha-pack-novo{
+  filter:grayscale(1)!important;opacity:.30!important
 }
-.medalha-mini-final.medalha-fallback-final{font-size:16px!important;border-width:1px!important}
-.conquista-cartao-tq.conquistada .medalha-fallback-final{
-  border-color:#d5b45b!important;background:#fff7dc!important;color:#a67a19!important
+#conteudo-conquistas .conquista-cartao-tq.conquistada>.medalha-pack-novo{
+  filter:drop-shadow(0 6px 10px rgba(126,88,17,.22))!important;opacity:1!important
 }
-
-/* Reutilizar as seis imagens oficiais exatamente pelas classes já estáveis de refine3.css. */
-#conteudo-conquistas .medalha-final.medalha-cagarro-tq,
-#ecran-principal .medalha-mini-final.medalha-cagarro-tq{background-image:var(--tq-medalha_cagarro)!important}
-#conteudo-conquistas .medalha-final.medalha-golfinho-tq,
-#ecran-principal .medalha-mini-final.medalha-golfinho-tq{background-image:var(--tq-medalha_golfinho)!important}
-#conteudo-conquistas .medalha-final.medalha-touro-tq,
-#ecran-principal .medalha-mini-final.medalha-touro-tq{background-image:var(--tq-medalha_touro_bravo)!important}
-#conteudo-conquistas .medalha-final.medalha-turista-tq,
-#ecran-principal .medalha-mini-final.medalha-turista-tq{background-image:var(--tq-medalha_turista)!important}
-#conteudo-conquistas .medalha-final.medalha-terceirense-tq,
-#ecran-principal .medalha-mini-final.medalha-terceirense-tq{background-image:var(--tq-medalha_terceirense)!important}
-#conteudo-conquistas .medalha-final.medalha-trilhos-tq,
-#ecran-principal .medalha-mini-final.medalha-trilhos-tq{background-image:var(--tq-medalha_trilhos)!important}
 
 /* JOGO DO DIA — imagem inteira, sem a esticar nem cortar */
 #ecran-principal .atividade-para-hoje:last-child{
@@ -160,7 +138,7 @@
 }
 @media(max-width:360px){
   .medalha-final{width:76px!important;height:76px!important}
-  #conteudo-conquistas .conquista-cartao-tq>.medalha-final{
+  #conteudo-conquistas .conquista-cartao-tq>.medalha-final.medalha-pack-novo{
     width:76px!important;height:76px!important;min-width:76px!important;min-height:76px!important
   }
   #ecran-principal .atividade-para-hoje:last-child{
