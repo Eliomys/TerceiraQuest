@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#FFD54F">
+    <meta name="theme-color" content="#123f54">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -16,6 +16,7 @@
     <link rel="apple-touch-icon" href="icons/terceiraquest-192.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="final.css">
 </head>
 
 <body>
@@ -71,130 +72,46 @@
 
     <!-- ECRÃ PRINCIPAL DA AVENTURA -->
 
-    <!-- ECRÃ PRINCIPAL DA AVENTURA -->
-
 <div id="ecran-principal" class="container escondido">
 
-    <!-- CABEÇALHO -->
-
     <div class="topo">
-
         <button class="botao-voltar" onclick="voltarEscolha()">←</button>
-
         <div class="perfil">
-
-            <img id="avatar-principal"
-                 class="avatar avatar-pequeno"
-                 src=""
-                 alt="">
-
+            <img id="avatar-principal" class="avatar avatar-pequeno" src="" alt="">
             <div>
                 <p class="saudacao">Bom dia,</p>
                 <h2 id="nome-jogador"></h2>
             </div>
-
         </div>
-
         <div class="sino">🔔</div>
-
     </div>
-
-
-    <!-- ESTATÍSTICAS -->
 
    <div class="estatisticas">
-
-    <div class="estatistica">
-        <span>⭐</span>
-        <strong id="xp-jogador">0</strong>
-        <small>XP</small>
-    </div>
-
-    <div class="estatistica">
-        <span>🏆</span>
-        <strong id="medalhas-jogador">0</strong>
-        <small>Medalhas</small>
-    </div>
-
-    <div class="estatistica">
-        <span>📍</span>
-        <strong id="missoes-jogador">0</strong>
-        <small>Atividades</small>
-    </div>
-
-</div>
-
-
-    <!-- PROGRESSO -->
+    <div class="estatistica"><span>⭐</span><strong id="xp-jogador">0</strong><small>XP</small></div>
+    <div class="estatistica"><span>🏆</span><strong id="medalhas-jogador">0</strong><small>Medalhas</small></div>
+    <div class="estatistica"><span>📍</span><strong id="missoes-jogador">0</strong><small>Atividades</small></div>
+   </div>
 
     <div class="progresso">
-
-        <div class="progresso-titulo">
-            <strong id="titulo-progresso">Progresso da aventura</strong>
-            <strong id="progresso-percentagem">0%</strong>
-        </div>
-
-        <div class="barra">
-            <div class="barra-preenchida"></div>
-        </div>
-
+        <div class="progresso-titulo"><strong id="titulo-progresso">Progresso da aventura</strong><strong id="progresso-percentagem">0%</strong></div>
+        <div class="barra"><div class="barra-preenchida"></div></div>
     </div>
-
-
-    <!-- PARA HOJE -->
 
     <h3 id="titulo-seccao-missao" class="titulo-seccao">Para hoje</h3>
-
     <div id="escolha-tipo-dia" class="escolha-tipo-dia escondido" aria-live="polite"></div>
-
     <div id="missao-destaque" class="missao-destaque">
-
-        <div class="icone-missao">
-    <img id="imagem-missao-destaque" src="images/missoes/arco-iris.jpg" alt="Arco-íris na Ilha Terceira">
-</div>
-
+        <div class="icone-missao"><img id="imagem-missao-destaque" src="images/missoes/arco-iris.jpg" alt="Arco-íris na Ilha Terceira"></div>
         <div class="missao-conteudo">
-
             <h3 id="titulo-missao-destaque">Caçar um arco-íris</h3>
-
-            <p id="descricao-missao-destaque">
-                Encontra um arco-íris na Ilha Terceira
-                e regista o momento.
-            </p>
-
-            <div class="missao-rodape">
-
-                <span id="xp-missao-destaque">⭐ 30 XP</span>
-
-          <button
-            id="botao-missao-destaque"
-            onclick="abrirMissaoDoDia()">
-            COMEÇAR
-          </button>
-
-            </div>
-
+            <p id="descricao-missao-destaque">Encontra um arco-íris na Ilha Terceira e regista o momento.</p>
+            <div class="missao-rodape"><span id="xp-missao-destaque">⭐ 30 XP</span><button id="botao-missao-destaque" onclick="abrirMissaoDoDia()">COMEÇAR</button></div>
         </div>
-
     </div>
 
-
-    <!-- EXPLORAR -->
-
     <h3 class="titulo-seccao">Explorar</h3>
-
     <div class="atalhos">
-
-        <button onclick="abrirArea('ecran-desafios-ferias')">
-            <span>🌞</span>
-            <small>Desafios de férias</small>
-        </button>
-
-        <button onclick="abrirArea('ecran-mapa')">
-            <span>🗺️</span>
-            <small>Lugares</small>
-        </button>
-
+        <button onclick="abrirArea('ecran-desafios-ferias')"><span>🌞</span><small>Desafios de férias</small></button>
+        <button onclick="abrirArea('ecran-mapa')"><span>🗺️</span><small>Lugares</small></button>
     </div>
 
     <section class="bonus-discretos" aria-labelledby="titulo-bonus">
@@ -205,171 +122,44 @@
         <div id="conteudo-bonus"></div>
     </section>
 
-
-    <!-- NAVEGAÇÃO -->
-
     <div class="navegacao">
-
-        <button onclick="abrirArea('ecran-album')">
-            📷
-            <small>Álbum</small>
-        </button>
-
-        <button onclick="abrirArea('ecran-conquistas')">
-            🏆
-            <small>Conquistas</small>
-        </button>
-
-        <button onclick="abrirArea('ecran-diario')">
-            📖
-            <small>Diário</small>
-        </button>
-
-        <button onclick="abrirArea('ecran-mais')">
-            ☰
-            <small>Mais</small>
-        </button>
-
+        <button onclick="abrirArea('ecran-album')">📷<small>Álbum</small></button>
+        <button onclick="abrirArea('ecran-conquistas')">🏆<small>Conquistas</small></button>
+        <button onclick="abrirArea('ecran-diario')">📖<small>Diário</small></button>
+        <button onclick="abrirArea('ecran-mais')">☰<small>Mais</small></button>
     </div>
-
 </div>
-
-
-<!-- ECRÃ DA MISSÃO -->
 
 <div id="ecran-missao" class="container escondido">
-
-    <div class="cabecalho-missao">
-        <button onclick="mostrarEcra('ecran-principal')">←</button>
-        <h2>Missão</h2>
-    </div>
-
+    <div class="cabecalho-missao"><button onclick="mostrarEcra('ecran-principal')">←</button><h2>Missão</h2></div>
    <div class="missao-imagem" style="width: 100%; height: 180px; overflow: hidden; border-radius: 16px 16px 0 0; margin: 0 0 20px 0;">
-    <img
-        id="imagem-missao"
-        src="./images/missoes/arco-iris.jpg"
-        alt="Arco-íris na Ilha Terceira"
-        style="width: 100%; height: 100%; object-fit: cover; display: block;"
-    >
-</div>
-
+    <img id="imagem-missao" src="./images/missoes/arco-iris.jpg" alt="Arco-íris na Ilha Terceira" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+   </div>
     <h1 id="titulo-missao">Caçar um arco-íris</h1>
-
     <p id="xp-missao" class="xp-missao">⭐ 30 XP</p>
-
-    <p id="descricao-missao">
-        Encontra um arco-íris na Ilha Terceira
-        e regista o momento.
-    </p>
-
-    <div class="prova">
-        📷
-        <p id="prova-missao">Tira uma fotografia como prova!</p>
-    </div>
-
-    <button id="botao-concluir-missao" class="botao-principal" onclick="concluirMissaoAtual()">
-    CONCLUIR MISSÃO
-</button>
-
-    <button id="botao-anular-missao" class="botao-secundario escondido" onclick="desfazerMissaoAtual()">
-    ANULAR CONCLUSÃO
-</button>
-
+    <p id="descricao-missao">Encontra um arco-íris na Ilha Terceira e regista o momento.</p>
+    <div class="prova">📷<p id="prova-missao">Tira uma fotografia como prova!</p></div>
+    <button id="botao-concluir-missao" class="botao-principal" onclick="concluirMissaoAtual()">CONCLUIR MISSÃO</button>
+    <button id="botao-anular-missao" class="botao-secundario escondido" onclick="desfazerMissaoAtual()">ANULAR CONCLUSÃO</button>
     <div id="controlos-foto-missao" class="controlos-fotografia escondido" data-fotografias-atividade="">
         <small class="indicador-fotografias"></small>
-        <button id="botao-tirar-foto-missao" class="botao-secundario" onclick="adicionarFotografiaAtividade(missaoAbertaId, 'camara')">
-            📷 TIRAR FOTO
-        </button>
-        <button id="botao-escolher-foto-missao" class="botao-secundario" onclick="adicionarFotografiaAtividade(missaoAbertaId, 'galeria')">
-            🖼️ ESCOLHER FOTO
-        </button>
+        <button id="botao-tirar-foto-missao" class="botao-secundario" onclick="adicionarFotografiaAtividade(missaoAbertaId, 'camara')">📷 TIRAR FOTO</button>
+        <button id="botao-escolher-foto-missao" class="botao-secundario" onclick="adicionarFotografiaAtividade(missaoAbertaId, 'galeria')">🖼️ ESCOLHER FOTO</button>
     </div>
-
 </div>
 
+<div id="ecran-desafios-ferias" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="abrirInicio()">←</button><h2>Desafios de férias</h2></div><div id="conteudo-desafios-ferias"></div></div>
+<div id="ecran-desafios-diarios" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="abrirInicio()">←</button><h2>Desafios diários</h2></div><div id="conteudo-desafios-diarios"></div></div>
+<div id="ecran-jogos" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="abrirInicio()">←</button><h2>Jogos</h2></div><div id="conteudo-jogos"></div></div>
+<div id="ecran-jogo" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="voltarDoJogo()">←</button><h2>Jogo</h2></div><div id="conteudo-jogo"></div></div>
+<div id="ecran-mapa" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="abrirInicio()">←</button><h2>Lugares</h2></div><div id="conteudo-mapa"></div></div>
+<div id="ecran-album" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="abrirInicio()">←</button><h2>Álbum</h2></div><div id="conteudo-album"></div></div>
+<div id="ecran-fotografia" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="abrirArea('ecran-album')">←</button><h2>Fotografia</h2></div><div id="conteudo-fotografia"></div></div>
+<div id="ecran-conquistas" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="abrirInicio()">←</button><h2>Conquistas</h2></div><div id="conteudo-conquistas"></div></div>
+<div id="ecran-diario" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="abrirInicio()">←</button><h2>Diário</h2></div><div id="conteudo-diario"></div></div>
+<div id="ecran-mais" class="container escondido ecran-area"><div class="cabecalho-area"><button onclick="abrirInicio()">←</button><h2>Mais</h2></div><div id="conteudo-mais"></div></div>
 
-<!-- ÁREAS DE NAVEGAÇÃO -->
-
-<div id="ecran-desafios-ferias" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="abrirInicio()">←</button>
-        <h2>Desafios de férias</h2>
-    </div>
-    <div id="conteudo-desafios-ferias"></div>
-</div>
-
-<div id="ecran-desafios-diarios" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="abrirInicio()">←</button>
-        <h2>Desafios diários</h2>
-    </div>
-    <div id="conteudo-desafios-diarios"></div>
-</div>
-
-<div id="ecran-jogos" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="abrirInicio()">←</button>
-        <h2>Jogos</h2>
-    </div>
-    <div id="conteudo-jogos"></div>
-</div>
-
-<div id="ecran-jogo" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="voltarDoJogo()">←</button>
-        <h2>Jogo</h2>
-    </div>
-    <div id="conteudo-jogo"></div>
-</div>
-
-<div id="ecran-mapa" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="abrirInicio()">←</button>
-        <h2>Lugares</h2>
-    </div>
-    <div id="conteudo-mapa"></div>
-</div>
-
-<div id="ecran-album" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="abrirInicio()">←</button>
-        <h2>Álbum</h2>
-    </div>
-    <div id="conteudo-album"></div>
-</div>
-
-<div id="ecran-fotografia" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="abrirArea('ecran-album')">←</button>
-        <h2>Fotografia</h2>
-    </div>
-    <div id="conteudo-fotografia"></div>
-</div>
-
-<div id="ecran-conquistas" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="abrirInicio()">←</button>
-        <h2>Conquistas</h2>
-    </div>
-    <div id="conteudo-conquistas"></div>
-</div>
-
-<div id="ecran-diario" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="abrirInicio()">←</button>
-        <h2>Diário</h2>
-    </div>
-    <div id="conteudo-diario"></div>
-</div>
-
-<div id="ecran-mais" class="container escondido ecran-area">
-    <div class="cabecalho-area">
-        <button onclick="abrirInicio()">←</button>
-        <h2>Mais</h2>
-    </div>
-    <div id="conteudo-mais"></div>
-</div>
-    <script src="script.js"></script>
-
+<script src="script.js"></script>
+<script src="enhancements.js"></script>
 </body>
 </html>
