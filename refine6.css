@@ -1,0 +1,62 @@
+/* TERCEIRAQUEST — sexta afinação */
+
+/* HOME: manter alinhamento e mostrar medalha como moeda real, não img quebrada */
+#ecran-principal .estatistica{grid-template-rows:38px 30px 20px!important}
+#ecran-principal .medalha-mini-tq6{grid-row:1!important;width:34px!important;height:34px!important;margin:0 auto!important;display:block!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important;filter:drop-shadow(0 2px 3px rgba(101,70,10,.22))}
+#ecran-principal .estatistica:nth-child(2)>span:not(.medalha-mini-tq6){display:none!important}
+
+/* Jogo do dia: menos desvanecimento, fotografia mais presente */
+#ecran-principal .atividade-para-hoje:last-child{
+ background-image:linear-gradient(90deg,rgba(255,250,240,.90) 0 48%,rgba(255,250,240,.58) 68%,rgba(255,250,240,.18)),var(--tq-jogo_do_dia)!important;
+ background-size:auto,56% auto!important;background-position:center,right center!important;background-repeat:no-repeat!important
+}
+
+/* Se acontecer: um pouco mais desvanecido que na ronda anterior */
+#ecran-principal .cabecalho-bonus{
+ background-image:
+  linear-gradient(180deg,rgba(255,248,221,.20) 0%,rgba(255,248,221,.25) 42%,rgba(11,42,53,.62) 100%),
+  linear-gradient(90deg,rgba(255,248,221,.26) 0%,rgba(255,248,221,.08) 68%,rgba(255,248,221,0) 100%),
+  var(--tq-se_acontecer)!important;
+ background-size:cover!important;background-position:center!important
+}
+
+/* Todos os cabeçalhos visuais relevantes: imagem ocupa toda a faixa e dissolve em vez de cortar */
+#ecran-album .cabecalho-area,
+#ecran-conquistas .cabecalho-area,
+#ecran-diario .cabecalho-area,
+#ecran-mais .cabecalho-area,
+#ecran-jogos .cabecalho-area,
+#ecran-jogo .cabecalho-area,
+#ecran-missao .cabecalho-missao{
+ min-height:116px!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important
+}
+#ecran-album .cabecalho-area::after,
+#ecran-conquistas .cabecalho-area::after,
+#ecran-diario .cabecalho-area::after,
+#ecran-mais .cabecalho-area::after,
+#ecran-jogos .cabecalho-area::after,
+#ecran-jogo .cabecalho-area::after,
+#ecran-missao .cabecalho-missao::after{
+ background:
+  linear-gradient(90deg,rgba(255,253,248,.98) 0%,rgba(255,253,248,.80) 27%,rgba(255,253,248,.38) 56%,rgba(255,253,248,.08) 82%,rgba(255,253,248,0) 100%),
+  linear-gradient(180deg,rgba(255,253,248,0) 36%,rgba(255,253,248,.10) 62%,rgba(255,253,248,.94) 100%)!important
+}
+
+/* Conquistas: imagens aprovadas aplicadas como fundo, muito robusto */
+.medalha-bg-tq6{width:90px!important;height:90px!important;align-self:center!important;justify-self:center!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important;display:block!important;filter:drop-shadow(0 4px 8px rgba(18,63,84,.16))}
+.conquista-cartao-tq:not(.conquistada) .medalha-bg-tq6{filter:grayscale(1)!important;opacity:.30!important}
+.conquista-cartao-tq.conquistada .medalha-bg-tq6{opacity:1!important;filter:drop-shadow(0 6px 10px rgba(126,88,17,.22))!important}
+
+/* Novas medalhas: mesmo volume e aro da família existente */
+.medalha-nova-tq6{width:90px!important;height:90px!important;align-self:center!important;justify-self:center!important;border-radius:50%!important;display:block!important;object-fit:contain!important;filter:drop-shadow(0 5px 9px rgba(18,63,84,.18))}
+.conquista-cartao-tq:not(.conquistada) .medalha-nova-tq6{filter:grayscale(1)!important;opacity:.30!important}
+
+/* Lugares: uma única fotografia por cartão */
+#conteudo-mapa .cartao-lugar-tq{overflow:hidden!important}
+#conteudo-mapa .foto-lugar-tq{position:relative!important;height:160px!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
+#conteudo-mapa .foto-lugar-tq~.foto-lugar-tq{display:none!important}
+
+@media(max-width:360px){
+ .medalha-bg-tq6,.medalha-nova-tq6{width:76px!important;height:76px!important}
+ #ecran-principal .atividade-para-hoje:last-child{background-size:auto,62% auto!important}
+}
