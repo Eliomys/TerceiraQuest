@@ -277,6 +277,22 @@
     outline-offset: 2px;
 }
 
+/* HOME — indicador Medalhas com ícone simples e estável. */
+html body #ecran-principal .estatistica:nth-child(2)>span.medalha-mini-final {
+    display: none !important;
+}
+html body #ecran-principal .estatistica:nth-child(2)::before {
+    content: "🏅" !important;
+    grid-row: 1 !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    margin: 0 auto !important;
+    font-size: 22px !important;
+    line-height: 1 !important;
+}
+
 @media (max-width: 360px) {
     #ecran-principal .opcoes-tipo-dia {
         grid-template-columns: 1fr 1fr;
