@@ -6,10 +6,19 @@
   width:36px!important;height:36px!important;display:block!important;
   background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important
 }
+/* Esta regra tem de vencer as regras antigas de refine4/refine5/refine6 que escondiam TODOS os spans. */
+#ecran-principal .estatistica:nth-child(2)>span.medalha-mini-final{
+  display:block!important;grid-row:1!important;place-self:center!important;margin:0 auto!important
+}
 #ecran-principal .estatistica:nth-child(2)>span:not(.medalha-mini-final){display:none!important}
+#ecran-principal .medalha-mini-final.medalha-mini-por-conquistar{filter:grayscale(1)!important;opacity:.34!important}
+
 .medalha-final{
-  width:90px!important;height:90px!important;display:block!important;justify-self:center!important;
+  width:90px!important;height:90px!important;display:block!important;justify-self:center!important;align-self:center!important;
   background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important
+}
+#conteudo-conquistas .conquista-cartao-tq>.medalha-final{
+  display:block!important;width:90px!important;height:90px!important;min-width:90px!important;min-height:90px!important
 }
 .conquista-cartao-tq:not(.conquistada) .medalha-final{filter:grayscale(1)!important;opacity:.32!important}
 .medalha-fallback-final{
@@ -22,44 +31,19 @@
   border-color:#d5b45b!important;background:#fff7dc!important;color:#a67a19!important
 }
 
-/* Garantir que as seis medalhas oficiais usam sempre a imagem aprovada,
-   mesmo que o JS não consiga ler a variável CSS através de getComputedStyle. */
-.medalha-final[aria-label="Medalha Cagarro"],
-.medalha-mini-final[aria-label="Medalha Cagarro"]{background-image:var(--tq-medalha_cagarro)!important}
-.medalha-final[aria-label="Medalha Golfinho"],
-.medalha-mini-final[aria-label="Medalha Golfinho"]{background-image:var(--tq-medalha_golfinho)!important}
-.medalha-final[aria-label="Medalha Touro Bravo"],
-.medalha-mini-final[aria-label="Medalha Touro Bravo"]{background-image:var(--tq-medalha_touro_bravo)!important}
-.medalha-final[aria-label="Medalha Turista"],
-.medalha-mini-final[aria-label="Medalha Turista"]{background-image:var(--tq-medalha_turista)!important}
-.medalha-final[aria-label="Medalha Terceirense"],
-.medalha-mini-final[aria-label="Medalha Terceirense"]{background-image:var(--tq-medalha_terceirense)!important}
-.medalha-final[aria-label="Medalha Pés na Terra"],
-.medalha-mini-final[aria-label="Medalha Pés na Terra"]{background-image:var(--tq-medalha_trilhos)!important}
-
-.medalha-final[aria-label="Medalha Cagarro"],
-.medalha-final[aria-label="Medalha Golfinho"],
-.medalha-final[aria-label="Medalha Touro Bravo"],
-.medalha-final[aria-label="Medalha Turista"],
-.medalha-final[aria-label="Medalha Terceirense"],
-.medalha-final[aria-label="Medalha Pés na Terra"],
-.medalha-mini-final[aria-label="Medalha Cagarro"],
-.medalha-mini-final[aria-label="Medalha Golfinho"],
-.medalha-mini-final[aria-label="Medalha Touro Bravo"],
-.medalha-mini-final[aria-label="Medalha Turista"],
-.medalha-mini-final[aria-label="Medalha Terceirense"],
-.medalha-mini-final[aria-label="Medalha Pés na Terra"]{
-  color:transparent!important;border:none!important;background-color:transparent!important
-}
-
-/* Se ainda não houver nenhuma conquista, a Home continua a mostrar a primeira
-   medalha como referência visual, esbatida. */
-#ecran-principal .estatistica:nth-child(2):not(:has(.medalha-mini-final))::before{
-  content:"";grid-row:1!important;justify-self:center!important;
-  width:36px;height:36px;display:block;
-  background-image:var(--tq-medalha_cagarro);background-size:contain;background-position:center;background-repeat:no-repeat;
-  filter:grayscale(1);opacity:.34
-}
+/* Reutilizar as seis imagens oficiais exatamente pelas classes já estáveis de refine3.css. */
+#conteudo-conquistas .medalha-final.medalha-cagarro-tq,
+#ecran-principal .medalha-mini-final.medalha-cagarro-tq{background-image:var(--tq-medalha_cagarro)!important}
+#conteudo-conquistas .medalha-final.medalha-golfinho-tq,
+#ecran-principal .medalha-mini-final.medalha-golfinho-tq{background-image:var(--tq-medalha_golfinho)!important}
+#conteudo-conquistas .medalha-final.medalha-touro-tq,
+#ecran-principal .medalha-mini-final.medalha-touro-tq{background-image:var(--tq-medalha_touro_bravo)!important}
+#conteudo-conquistas .medalha-final.medalha-turista-tq,
+#ecran-principal .medalha-mini-final.medalha-turista-tq{background-image:var(--tq-medalha_turista)!important}
+#conteudo-conquistas .medalha-final.medalha-terceirense-tq,
+#ecran-principal .medalha-mini-final.medalha-terceirense-tq{background-image:var(--tq-medalha_terceirense)!important}
+#conteudo-conquistas .medalha-final.medalha-trilhos-tq,
+#ecran-principal .medalha-mini-final.medalha-trilhos-tq{background-image:var(--tq-medalha_trilhos)!important}
 
 /* JOGO DO DIA — imagem inteira, sem a esticar nem cortar */
 #ecran-principal .atividade-para-hoje:last-child{
@@ -119,30 +103,27 @@
     linear-gradient(180deg,rgba(255,253,248,0) 54%,rgba(255,253,248,.18) 72%,rgba(255,253,248,.92) 100%)!important
 }
 
-/* ÁLBUM / CONQUISTAS / DIÁRIO — regressão corrigida.
-   A fotografia fica numa camada própria à direita, inteira, e o creme dissolve
-   sobre ela. Assim desaparece a linha/corte vertical sem usar cover. */
+/* ÁLBUM / CONQUISTAS / DIÁRIO — restaurado ao método que já funcionava.
+   A imagem ocupa toda a faixa e o gradiente dissolve por cima; não há uma
+   segunda camada com limite vertical, que era o corte agora observado. */
 #ecran-album .cabecalho-area,
 #ecran-conquistas .cabecalho-area,
 #ecran-diario .cabecalho-area{
-  position:relative!important;overflow:hidden!important;min-height:112px!important;
-  background-image:none!important;background-color:#fffdf8!important
+  min-height:116px!important;
+  background-size:cover!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important
 }
-#ecran-album .cabecalho-area{--tq-cabecalho-foto:var(--tq-fotografia)}
-#ecran-conquistas .cabecalho-area{--tq-cabecalho-foto:var(--tq-conquistas)}
-#ecran-diario .cabecalho-area{--tq-cabecalho-foto:var(--tq-diario)}
 #ecran-album .cabecalho-area::before,
 #ecran-conquistas .cabecalho-area::before,
-#ecran-diario .cabecalho-area::before{
-  content:""!important;position:absolute!important;top:0!important;right:0!important;bottom:0!important;left:34%!important;
-  background-image:var(--tq-cabecalho-foto)!important;background-size:contain!important;
-  background-position:right center!important;background-repeat:no-repeat!important;z-index:0!important;pointer-events:none!important
-}
+#ecran-diario .cabecalho-area::before{content:none!important;display:none!important}
 #ecran-album .cabecalho-area::after,
 #ecran-conquistas .cabecalho-area::after,
 #ecran-diario .cabecalho-area::after{
-  content:""!important;position:absolute!important;inset:0!important;z-index:0!important;pointer-events:none!important;
-  background:linear-gradient(90deg,#fffdf8 0%,rgba(255,253,248,.98) 28%,rgba(255,253,248,.80) 42%,rgba(255,253,248,.42) 58%,rgba(255,253,248,.10) 74%,rgba(255,253,248,0) 88%)!important
+  content:""!important;display:block!important;position:absolute!important;inset:0!important;pointer-events:none!important;
+  background:
+    linear-gradient(90deg,rgba(255,253,248,.98) 0%,rgba(255,253,248,.84) 31%,rgba(255,253,248,.43) 57%,rgba(255,253,248,.10) 82%,rgba(255,253,248,0) 100%),
+    linear-gradient(180deg,rgba(255,253,248,0) 42%,rgba(255,253,248,.20) 67%,rgba(255,253,248,.96) 100%)!important
 }
 #ecran-album .cabecalho-area>*,
 #ecran-conquistas .cabecalho-area>*,
@@ -166,19 +147,22 @@
 #conteudo-mapa .roda-visual{display:none!important}
 #conteudo-mapa .roda-visual-tq~.roda-visual-tq,
 #conteudo-mapa .ponteiro-roda-tq~.ponteiro-roda-tq{display:none!important}
-#conteudo-mapa .roda-visual-tq{transition:transform 3.8s cubic-bezier(.08,.72,.12,1)!important}
+#conteudo-mapa .roda-visual-tq{
+  transition:transform 3.8s cubic-bezier(.08,.72,.12,1)!important;
+  will-change:transform!important
+}
 
 @media(max-width:420px){
   #ecran-principal .atividade-para-hoje:last-child{
     min-height:158px!important;padding-right:44%!important;background-size:auto,40% auto!important
   }
   #ecran-principal .cabecalho-bonus{background-size:auto,68% auto!important}
-  #ecran-album .cabecalho-area::before,
-  #ecran-conquistas .cabecalho-area::before,
-  #ecran-diario .cabecalho-area::before{left:28%!important}
 }
 @media(max-width:360px){
   .medalha-final{width:76px!important;height:76px!important}
+  #conteudo-conquistas .conquista-cartao-tq>.medalha-final{
+    width:76px!important;height:76px!important;min-width:76px!important;min-height:76px!important
+  }
   #ecran-principal .atividade-para-hoje:last-child{
     padding-right:41%!important;background-size:auto,37% auto!important
   }
