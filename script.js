@@ -1316,6 +1316,7 @@ function renderMapa(localAbertoId) {
 function abrirLocal(localId) {
     renderMapa(localId);
     mostrarEcra("ecran-mapa");
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
 function renderDesafiosDoLocal(conteudo, local) {
@@ -1324,6 +1325,7 @@ function renderDesafiosDoLocal(conteudo, local) {
     botaoVoltar.textContent = "← TODOS OS LOCAIS";
     botaoVoltar.addEventListener("click", function() {
         renderMapa();
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     });
     conteudo.appendChild(botaoVoltar);
 
